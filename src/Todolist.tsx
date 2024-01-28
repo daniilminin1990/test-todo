@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { TaskStatusFilter, TaskType } from './App'
 
 type TodolistProps = {
@@ -7,10 +7,20 @@ type TodolistProps = {
   changeTaskStatus: (taskId: string, isDone: boolean) => void
   removeTask: (taskId: string) => void
   changeTasksFilter: (newTasksFilterValue: TaskStatusFilter) => void
-  // addTask: (newTaskTitle: string) => void
+  addTask: (newTaskTitle: string) => void
 }
 
 export const Todolist = (props: TodolistProps) => {
+
+  const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+
+  const onClickAddTaskHandler = () => {
+    props.addTask(newTaskTitle)
+    setNewTaskTitle('')
+  }
+  const onAddTaskChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTaskTitle(e.currentTarget.value)
+  }
 
   return (
 
@@ -19,8 +29,8 @@ export const Todolist = (props: TodolistProps) => {
         <span>{props.todoTitle}</span>
         <button>x</button>
       </h3>
-      <input />
-      <button>+</button>
+      <input value={newTaskTitle} onChange={onAddTaskChangeHandler} />
+      <button onClick={onClickAddTaskHandler}>+</button>
       <ul>
         {
           props.tasks.map(t => {
