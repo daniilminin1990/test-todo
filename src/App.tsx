@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
@@ -78,8 +77,8 @@ function App() {
         changeTaskStatus={changeTaskStatus}
         removeTask={removeTask}
         changeTasksFilter={changeTasksFilter}
-
       // addTask={addTask}
+
       />
     </div>
   );
