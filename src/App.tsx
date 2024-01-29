@@ -39,8 +39,6 @@ function App() {
   // state для фильтрации
   let [tasksFilter, setTasksFilter] = useState<TaskStatusFilter>('all')
 
-
-
   // Удаление задачи
   const removeTask = (taskId: string) => {
     setTasks(tasks.filter(t => t.id !== taskId))
