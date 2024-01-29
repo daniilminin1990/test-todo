@@ -28,9 +28,10 @@ export const Todolist = (props: TodolistProps) => {
   }
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const titleTyping = e.currentTarget.value
+    setNewTaskTitle(titleTyping)
     if (titleTyping.length !== 0) {
       setError('')
-      setNewTaskTitle(titleTyping)
+      console.log(titleTyping.length)
     }
   }
   const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
