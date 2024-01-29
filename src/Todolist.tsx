@@ -20,12 +20,18 @@ export const Todolist = (props: TodolistProps) => {
     if (newTaskTitle.trim() !== '') {
       props.addTask(newTaskTitle.trim())
       setNewTaskTitle('')
+      setError('')
     } else {
+      setNewTaskTitle('')
       setError('Title is required')
     }
   }
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value)
+    const titleTyping = e.currentTarget.value
+    if (titleTyping.length !== 0) {
+      setError('')
+      setNewTaskTitle(titleTyping)
+    }
   }
   const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === 'Enter' && onClickAddTaskHandler()
