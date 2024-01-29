@@ -65,6 +65,10 @@ function App() {
   // Изменение статуса задачи
   const changeTaskStatus = (taskId: string, isDone: boolean) => {
     setTasks(tasks.map(t => t.id === taskId ? { ...t, isDone } : t))
+    // Еще один вариант без map, но с find
+    // let task = tasks.find(t => t.id === taskId)
+    // if (task) task.isDone = isDone
+    // setTasks([...tasks])
   }
 
   return (
