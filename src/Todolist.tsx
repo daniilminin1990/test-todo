@@ -4,6 +4,7 @@ import { TaskStatusFilter, TaskType } from './App'
 type TodolistProps = {
   todoTitle: string,
   tasks: TaskType[]
+  tasksFilter: TaskStatusFilter
   changeTaskStatus: (taskId: string, isDone: boolean) => void
   removeTask: (taskId: string) => void
   changeTasksFilter: (newTasksFilterValue: TaskStatusFilter) => void
@@ -76,9 +77,9 @@ export const Todolist = (props: TodolistProps) => {
             })
           }
         </ul>}
-      <button onClick={onAllClickHandler}>All</button>
-      <button onClick={onActiveClickHandler}>Active</button>
-      <button onClick={onCompletedClickHandler}>Completed</button>
+      <button className={props.tasksFilter === 'all' ? 'active-filter' : ''} onClick={onAllClickHandler}>All</button>
+      <button className={props.tasksFilter === 'active' ? 'active-filter' : ''} onClick={onActiveClickHandler}>Active</button>
+      <button className={props.tasksFilter === 'completed' ? 'active-filter' : ''} onClick={onCompletedClickHandler}>Completed</button>
     </div>
   )
 }
