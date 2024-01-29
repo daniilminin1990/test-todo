@@ -11,13 +11,17 @@ type TodolistProps = {
 }
 
 export const Todolist = (props: TodolistProps) => {
-
+  // State для нового названия task
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
+  // State для ошибки
+  const [error, setError] = useState<string | null>(null)
 
   const onClickAddTaskHandler = () => {
     if (newTaskTitle.trim() !== '') {
       props.addTask(newTaskTitle.trim())
       setNewTaskTitle('')
+    } else {
+      setError('Title is required')
     }
   }
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +42,14 @@ export const Todolist = (props: TodolistProps) => {
         <span>{props.todoTitle}</span>
         <button>x</button>
       </h3>
-      <input value={newTaskTitle} onChange={onNewTitleChangeHandler} onKeyDown={onEnterAddTask} />
+      <input
+        value={newTaskTitle}
+        onChange={onNewTitleChangeHandler}
+        onKeyDown={onEnterAddTask}
+        className={error ? 'error' : ''}
+      />
       <button onClick={onClickAddTaskHandler}>+</button>
+      {error && <div className={'error-message'}>Title is required</div>}
       {props.tasks.length === 0
         ? <p>Nothing to show</p>
         : <ul>
