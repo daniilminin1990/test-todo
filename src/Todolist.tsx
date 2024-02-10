@@ -41,7 +41,6 @@ export const Todolist = (props: TodolistProps) => {
   const onCompletedClickHandler = () => { props.changeTasksFilter('completed') }
 
   return (
-
     <div>
       <h3>
         <span>{props.todoTitle}</span>
