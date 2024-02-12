@@ -32,26 +32,22 @@ function App() {
 
   // Удаление задачи
   const removeTask = (todolistId: string, taskId: string) => {
-    // setTasks(tasks.filter(t => t.id !== taskId))
     setTasks({...tasks, [todolistId]:tasks[todolistId].filter(t => t.id !== taskId)})
   }
 
   // Фильтрация задач
   const changeFilter = (todolistId: string, newFilterValue: FilterValuesType) => {
-    // setTasksFilter(newFilterValue)
     setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter: newFilterValue} : tl))
   }
 
   // Добавление задачи
   const addTask = (todolistId: string, newTaskTitle: string) => {
     let newTask: TaskType = { id: v1(), taskTitle: newTaskTitle, isDone: false }
-    // setTasks([newTask, ...tasks])
     setTasks({...tasks, [todolistId]:[newTask, ...tasks[todolistId]]})
   }
 
   // Изменение статуса задачи
   const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-    // setTasks(tasks.map(t => t.id === taskId ? { ...t, isDone } : t))
     setTasks({...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, isDone} : t)})
   }
 
@@ -73,6 +69,21 @@ function App() {
 
   const addTodoTitleHandler = (newTodoTitle: string) => {
     addTodo(newTodoTitle)
+  }
+
+  const updateTodoTitle = (todolistId: string, updTodoTitle: string) => {
+    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: updTodoTitle} : tl))
+  }
+
+  const updateTaskTitle = (todolistId: string, taskId: string, updTaskTitle: string)=> {
+    setTasks({
+      ...tasks,
+      [todolistId]:
+        tasks[todolistId].map(t => {
+          return t.id === taskId
+            ? {...t, taskTitle
+            : updTaskTitle} : t
+        })})
   }
 
   return (
@@ -99,6 +110,8 @@ function App() {
               changeFilter={changeFilter}
               addTask={addTask}
               removeTodo={removeTodo}
+              updateTodoTitle = {updateTodoTitle}
+              updateTaskTitle = {updateTaskTitle}
             />
           )
         })
