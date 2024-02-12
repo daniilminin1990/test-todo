@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {v1} from 'uuid';
 import {Todolist} from './Todolist';
@@ -75,6 +75,13 @@ function App() {
     addTodo(newTodoTitle)
   }
 
+  const updTodoTitle = (todolistId: string, updTodoTitle: string) => {
+    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: updTodoTitle} : tl))
+  }
+
+  const updTaskTitle = (todolistId: string, taskId: string, updTaskTitle: string) => {
+    setTasks({...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? {...t, taskTitle: updTaskTitle} : t)})
+  }
   return (
     <div className="App">
       {/*<div>*/}
@@ -103,6 +110,8 @@ function App() {
               changeFilter={changeFilter}
               addTask={addTask}
               removeTodo={removeTodo}
+              updTodoTitle={updTodoTitle}
+              updTaskTitle={updTaskTitle}
             />
           )
         })
