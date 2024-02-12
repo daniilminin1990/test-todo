@@ -77,10 +77,6 @@ function App() {
 
   return (
     <div className="App">
-      {/*<div>*/}
-      {/*  <input value={newTodoTitle} onChange={onChangeAddTodoTitle}/>*/}
-      {/*  <button onClick={()=>{addTodo(newTodoTitle)}}>+</button>*/}
-      {/*</div>*/}
       <AddItemForm callback={addTodoTitleHandler}/>
       {
         todolists.map(tl => {

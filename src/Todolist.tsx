@@ -1,5 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { FilterValuesType, TaskType } from './App'
+import {AddItemForm} from "./AddItemForm";
 
 type TodolistProps = {
   todoTitle: string,
@@ -14,28 +15,8 @@ type TodolistProps = {
 }
 
 export const Todolist = (props: TodolistProps) => {
-  // State для нового названия task
-  const [newTaskTitle, setNewTaskTitle] = useState<string>('')
-  // State для ошибки
-  const [error, setError] = useState<string | null>(null)
-
-  const onClickAddTaskHandler = () => {
-    if (newTaskTitle.trim() !== '') {
-      props.addTask(props.todolistId, newTaskTitle.trim())
-      setNewTaskTitle('')
-      setError('')
-    } else {
-      setNewTaskTitle('')
-      setError('Title is required')
-    }
-  }
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const titleTyping = e.currentTarget.value
-    setNewTaskTitle(titleTyping)
-    titleTyping.length !== 0 && setError('')
-  }
-  const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.key === 'Enter' && onClickAddTaskHandler()
+  const callbackAddTaskHandler = (newTitle: string) => {
+    props.addTask(props.todolistId, newTitle)
   }
 
   const onAllClickHandler = () => { props.changeFilter(props.todolistId,'all') }
@@ -48,14 +29,7 @@ export const Todolist = (props: TodolistProps) => {
         <span>{props.todoTitle}</span>
         <button onClick={()=> {props.removeTodo(props.todolistId)}}>x</button>
       </h3>
-      <input
-        value={newTaskTitle}
-        onChange={onNewTitleChangeHandler}
-        onKeyDown={onEnterAddTask}
-        className={error ? 'error' : ''}
-      />
-      <button onClick={onClickAddTaskHandler}>+</button>
-      {error && <div className={'error-message'}>Title is required</div>}
+      <AddItemForm callback={callbackAddTaskHandler} />
       {props.tasks.length === 0
         ? <p>Nothing to show</p>
         : <ul>
