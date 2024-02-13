@@ -10,7 +10,7 @@ type TaskProps = {
   updTaskTitle: (updTaskTitle: string)=>void
 }
 
-export const Task = (props: TaskProps) => React.memo (()=>{
+export const Task =  React.memo ((props: TaskProps) =>{
 
 const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=>{
   let checked = e.currentTarget.checked
@@ -26,11 +26,11 @@ const updTaskTitleHandler = (updTaskTitle: string) => {
 
 
   return (
-    <li className={props.tIsDone ? 'is-done' : ''}>
+    <>
       <input type="checkbox" checked={props.tIsDone} onChange={onChangeHandler}/>
       {/*<span>{t.taskTitle}</span>*/}
       <EdiatbleSpan oldTitle={props.oldTitle} callback={updTaskTitleHandler}/>
       <button onClick={onClickHandler}>x</button>
-    </li>
+    </>
   );
 });
