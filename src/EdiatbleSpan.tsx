@@ -4,7 +4,7 @@ type EdiatbleSpanProps = {
   oldTitle: string
   callback: (updTitle: string) => void
 }
-const EdiatbleSpan = (props: EdiatbleSpanProps) => {
+const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [updTitle, setUpdTitle] = useState<string>(props.oldTitle)
 
@@ -22,6 +22,6 @@ const EdiatbleSpan = (props: EdiatbleSpanProps) => {
       ? <input onBlur={swapHandler} value={updTitle} onChange={onChangeHandler} autoFocus/>
       : <span onDoubleClick={swapHandler}>{updTitle}</span>
   );
-};
+});
 
 export default EdiatbleSpan;

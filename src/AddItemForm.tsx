@@ -8,7 +8,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
   console.log('AddItemForm')
   const [newTitle, setNewTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
-  const onClickAddTaskHandler = () => {
+  const onClickAddItemHandler = () => {
     if (newTitle.trim() !== '') {
       props.callback(newTitle.trim())
       setNewTitle('')
@@ -23,8 +23,8 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
     setNewTitle(titleTyping)
     titleTyping.length !== 0 && setError('')
   }
-  const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.key === 'Enter' && onClickAddTaskHandler()
+  const onEnterAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
+    e.key === 'Enter' && onClickAddItemHandler()
   }
 
   return (
@@ -32,10 +32,10 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
       <input
         value={newTitle}
         onChange={onNewTitleChangeHandler}
-        onKeyDown={onEnterAddTask}
+        onKeyDown={onEnterAddItem}
         className={error ? 'error' : ''}
       />
-      <button onClick={onClickAddTaskHandler}>+</button>
+      <button onClick={onClickAddItemHandler}>+</button>
       {error && <div className={'error-message'}>Title is required</div>}
     </div>
   );
