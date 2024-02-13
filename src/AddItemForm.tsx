@@ -4,7 +4,8 @@ type AddItemFormProps = {
   callback: (newTitle: string)=>void
 }
 
-export const AddItemForm = (props: AddItemFormProps) => {
+export const AddItemForm = React.memo((props: AddItemFormProps) => {
+  console.log('AddItemForm')
   const [newTitle, setNewTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   const onClickAddTaskHandler = () => {
@@ -38,4 +39,4 @@ export const AddItemForm = (props: AddItemFormProps) => {
       {error && <div className={'error-message'}>Title is required</div>}
     </div>
   );
-};
+});
