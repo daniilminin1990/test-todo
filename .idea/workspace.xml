@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/integration/addItemForm.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration/jest.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/integration/setupTests.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Todolist.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +64,7 @@
       <recent name="D:\IT программирование\Работа\Git repos\Обучение IT-incubator\Frontend\Преподавание\test-todo\src\stories" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.storybook">
+  <component name="RunManager" selected="npm.start">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -92,8 +87,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.storybook" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.storybook" />
       </list>
     </recent_temporary>
   </component>
@@ -114,7 +109,7 @@
       <workItem from="1707848622091" duration="878000" />
       <workItem from="1707851552296" duration="7166000" />
       <workItem from="1707894359855" duration="5851000" />
-      <workItem from="1707916005054" duration="5235000" />
+      <workItem from="1707916005054" duration="8123000" />
     </task>
     <servers />
   </component>

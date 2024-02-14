@@ -43,10 +43,9 @@ export const Todolist = React.memo(({updTodoTitle,changeFilter, ...props}:Todoli
     props.tasks = props.tasks.filter(t => !t.isDone)
   }
 
-  const onAllClickHandler = useCallback(() => {changeFilter(props.todolistId,'all') }, [changeFilter, props.todolistId]
-  )
+  const onAllClickHandler = useCallback(() => {changeFilter(props.todolistId,'all') }, [changeFilter, props.todolistId]  )
   const onActiveClickHandler = useCallback(() => { changeFilter(props.todolistId,'active') }, [changeFilter, props.todolistId])
-  const onCompletedClickHandler = () => { changeFilter(props.todolistId,'completed') }
+  const onCompletedClickHandler = useCallback(() => { changeFilter(props.todolistId,'completed') }, [changeFilter, props.todolistId])
 
   const removeTodo = useCallback((todolistId: string) => {
     dispatch(removeTodoAC(todolistId))

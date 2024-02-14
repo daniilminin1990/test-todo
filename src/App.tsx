@@ -13,7 +13,7 @@ export type TodoType = {id: string, title: string, filter: FilterValuesType}
 export type TaskType = { id: string, taskTitle: string, isDone: boolean,}
 export type TaskStateType = {[todolistId: string]: TaskType[]}
 
-const App = React.memo(() =>{
+const App = () =>{
   console.log('App')
   const dispatch = useDispatch()
   const todolists = useSelector<RootReducerType, TodoType[]>((state)=>state.todolistReducer)
@@ -55,7 +55,7 @@ const App = React.memo(() =>{
 
     </div>
   );
-})
+}
 
 export default App;
 
