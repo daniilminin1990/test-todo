@@ -13,7 +13,6 @@ export type TodoType = {id: string, title: string, filter: FilterValuesType}
 export type TaskType = { id: string, taskTitle: string, isDone: boolean,}
 export type TaskStateType = {[todolistId: string]: TaskType[]}
 
-
 const App = React.memo(() =>{
   console.log('App')
   const dispatch = useDispatch()
@@ -24,9 +23,6 @@ const App = React.memo(() =>{
   const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
     dispatch(changeFilterAC(todolistId,newFilterValue))
   }, [dispatch])
-
-
-
 
   const addTodo = useCallback((newTodoTitle: string)=> {
     const newTodolistId = v1()
