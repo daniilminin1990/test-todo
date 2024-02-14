@@ -35,6 +35,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         onKeyDown={onEnterAddItem}
         className={error ? 'error' : ''}
       />
+      1
       <button onClick={onClickAddItemHandler}>+</button>
       {error && <div className={'error-message'}>Title is required</div>}
     </div>
