@@ -45,7 +45,6 @@ const App = React.memo(() => {
           {
             todolists.map(tl => {
               // let allTodoTasks = tasks[tl.id]
-
               return (
                 <Grid item key={tl.id}>
                   <Paper elevation={6} style={{ padding: '30px' }}>
