@@ -40,7 +40,6 @@ const App = React.memo(() => {
       <Container fixed >
         <Grid container style={{ padding: '20px' }} >
           <AddItemForm callback={addTodo} />
-          <p>ЖОПА</p>
         </Grid>
         <Grid container spacing={3}>
           {
