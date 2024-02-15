@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { FilterValuesType, TaskType } from './App'
+import { FilterValuesType, TaskStateType, TaskType } from './App'
 import { AddItemForm } from "./AddItemForm";
 import EdiatbleSpan from "./EdiatbleSpan";
 import { useDispatch } from "react-redux";
@@ -9,10 +9,12 @@ import { removeTodoAC } from "./redux/todolistReducer";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useSelector } from 'react-redux';
+import { RootReducerType } from './store/store';
 
 type TodolistProps = {
   todoTitle: string,
-  tasks: TaskType[]
+  // tasks: TaskType[]
   tasksFilter: FilterValuesType
   todolistId: string
   changeFilter: (todolistId: string, newTasksFilterValue: FilterValuesType) => void
@@ -21,6 +23,8 @@ type TodolistProps = {
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   console.log('Todolist')
+  const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
+  let allTodoTasks = tasks[props.todolistId]
   const dispatch = useDispatch()
 
   const removeTask = useCallback((taskId: string) => {
@@ -40,10 +44,10 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, [dispatch, props.todolistId])
 
   if (props.tasksFilter === 'completed') {
-    props.tasks = props.tasks.filter(t => t.isDone)
+    allTodoTasks = allTodoTasks.filter(t => t.isDone)
   }
   if (props.tasksFilter === 'active') {
-    props.tasks = props.tasks.filter(t => !t.isDone)
+    allTodoTasks = allTodoTasks.filter(t => !t.isDone)
   }
 
   const onAllClickHandler = useCallback(() => { changeFilter(props.todolistId, 'all') }, [changeFilter, props.todolistId])
@@ -62,16 +66,16 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
     <div>
       <h3>
         <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} />
-        <IconButton aria-label="delete" onClick={() => { removeTodo(props.todolistId) }}>
+        <IconButton aria-label="delete" onClick={useCallback(() => { removeTodo(props.todolistId) }, [removeTodo, props.todolistId])}>
           <DeleteIcon />
         </IconButton>
       </h3>
       <AddItemForm callback={addTask} />
-      {props.tasks.length === 0
+      {allTodoTasks.length === 0
         ? <p>Nothing to show</p>
         : <ul>
           {
-            props.tasks.map(t => {
+            allTodoTasks.map(t => {
               return (
                 <Task key={t.id}
                   taskId={t.id}

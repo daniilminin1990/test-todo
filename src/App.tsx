@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
@@ -15,11 +15,11 @@ export type TodoType = { id: string, title: string, filter: FilterValuesType }
 export type TaskType = { id: string, taskTitle: string, isDone: boolean, }
 export type TaskStateType = { [todolistId: string]: TaskType[] }
 
-const App = () => {
+const App = React.memo(() => {
   console.log('App')
   const dispatch = useDispatch()
   const todolists = useSelector<RootReducerType, TodoType[]>((state) => state.todolistReducer)
-  const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
+  // const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
 
   // Фильтрация задач
   const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
@@ -44,7 +44,7 @@ const App = () => {
         <Grid container spacing={3}>
           {
             todolists.map(tl => {
-              let allTodoTasks = tasks[tl.id]
+              // let allTodoTasks = tasks[tl.id]
 
               return (
                 <Grid item key={tl.id}>
@@ -53,7 +53,7 @@ const App = () => {
                       key={tl.id}
                       todolistId={tl.id}
                       todoTitle={tl.title}
-                      tasks={allTodoTasks}
+                      // tasks={allTodoTasks}
                       tasksFilter={tl.filter}
                       changeFilter={changeFilter}
                       updTodoTitle={updTodoTitle}
@@ -66,9 +66,9 @@ const App = () => {
           }
         </Grid>
       </Container>
-    </div>
+    </div >
   );
-}
+})
 
 export default App;
 
