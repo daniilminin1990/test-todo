@@ -1,11 +1,11 @@
-import {Meta, StoryObj} from "@storybook/react";
-import {action} from '@storybook/addon-actions'
+import { Meta, StoryObj } from "@storybook/react";
+import { action } from '@storybook/addon-actions'
 import EdiatbleSpan from "../EdiatbleSpan";
 
 const meta: Meta<typeof EdiatbleSpan> = {
   title: 'EditableSpan',
   component: EdiatbleSpan,
-  parameters: ['autodocks'],
+  tags: ['autodocs'],
   argTypes: {
     oldTitle: {
       description: 'previousTtle'
@@ -21,7 +21,7 @@ export type Story = StoryObj<typeof EdiatbleSpan>
 
 export const EditableSpanExample: Story = {
   args: {
-    oldTitle: 'sss',
+    oldTitle: 'oldTitle',
     callback: action('title from editable span changed')
   },
 }
