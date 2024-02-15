@@ -1,4 +1,4 @@
-.App {
+/* .App {
   padding: 30px;
   display: flex;
 }
@@ -18,7 +18,15 @@
 .active-filter {
   background-color: lightseagreen;
 }
-
+*/
 .is-done {
-  opacity: 0.5;
+  /* opacity: 0.65; */
+  color: rgb(157, 157, 157);
+} 
+
+ul {
+  padding: 0;
+}
+li {
+  list-style: none;
 }

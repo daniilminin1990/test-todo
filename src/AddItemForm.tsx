@@ -1,8 +1,24 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField/TextField';
+import { styles, styleTextField } from "./styles";
+import { styled } from '@mui/system';
 
 type AddItemFormProps = {
-  callback: (newTitle: string)=>void
+  callback: (newTitle: string) => void
 }
+
+// Кастомная стилизация TextField от MUI
+const StyledTextField = styled(TextField, {
+  name: 'StyledTextField'
+})({
+  '& .MuiOutlinedInput-input': {
+    padding: '8px 14px'
+  },
+  '& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root': {
+    transform: 'translate(14px, 10px) scale(1)'
+  },
+})
 
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
   console.log('AddItemForm')
@@ -29,15 +45,19 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
 
   return (
     <div>
-      <input
+      <StyledTextField
+        id="outlined-basic"
+        error={!!error}
+        // label="Type title"
+        label={error ? error : 'Type smth'}
+        variant="outlined"
         value={newTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onEnterAddItem}
         className={error ? 'error' : ''}
       />
-      1
-      <button onClick={onClickAddItemHandler}>+</button>
-      {error && <div className={'error-message'}>Title is required</div>}
+      <Button onClick={onClickAddItemHandler} variant="contained" style={styles}>+</Button>
+      {/*{error && <div className={'error-message'}>Title is required</div>}*/}
     </div>
   );
 });
