@@ -36,7 +36,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "jest:integration": "jest -c integration/jest.config.js",
-    "test:integration": "start-server-and-test storybook http-get://localhost:6006 jest:integration"
+    "test:integration": "start-server-and-test storybook http-get://localhost:6006 jest:integration",
+    "chromatic": "npx chromatic --project-token=chpt_054470e028a5b36"
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +67,7 @@
     "@storybook/react": "^7.6.15",
     "@storybook/react-webpack5": "^7.6.15",
     "@storybook/test": "^7.6.15",
+    "chromatic": "^10.9.5",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-image-snapshot": "^6.4.0",
