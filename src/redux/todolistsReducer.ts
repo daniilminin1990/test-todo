@@ -3,7 +3,15 @@ import { v1 } from "uuid"
 import { ACTION_TYPES } from "./actionTypes"
 import { TodoType } from "../App"
 
-export const todolistsReducer = (state: Array<TodoType>, action: MutualTypes): Array<TodoType>=> {
+export const todolistId1 = v1()
+export const todolistId2 = v1()
+const initialTodolistsState: Array<TodoType> = [
+  { id: todolistId1, title: 'Оп-оп', filter: 'all' },
+  { id: todolistId2, title: 'Вот те нате', filter: 'all' },
+]
+
+
+export const todolistsReducer = (state: Array<TodoType> = initialTodolistsState, action: MutualTypes): Array<TodoType>=> {
   switch(action.type){
     case ACTION_TYPES.todolists.addTodo: {
       const newTodo: TodoType = {id: action.payload.todolistId, title: action.payload.newTodoTitle, filter: 'all'}

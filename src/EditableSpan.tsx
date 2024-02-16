@@ -16,7 +16,7 @@ export const EditableSpan = (props: EditableSpanProps) => {
     if (typing.trim() !== '') {
       setError('')
     } else {
-      setError('Title is required')
+      setError('Title shouldn\'t be empty')
     }
   }
 
@@ -36,7 +36,7 @@ export const EditableSpan = (props: EditableSpanProps) => {
 
   return (
     <>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red', fontSize: '12px' }}>{error}</p>}
       {editMode === false
         ? <span onDoubleClick={changeEditHandler}> {props.oldTitle} </span>
         : <input value={title} onChange={onChangeTitle} onBlur={changeEditHandler} autoFocus onKeyDown={onKeyDownHandler} />}

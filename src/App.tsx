@@ -1,8 +1,13 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useReducer, useState } from 'react';
 import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
 import { AddItemForm } from "./AddItemForm";
+import { addTodoAC, changeFilterAC, removeTodoAC, todolistsReducer, updTodoTitleAC } from './redux/todolistsReducer';
+import { addTaskAC, changeTaskStatusAC, removeTaskAC, tasksReducer, updTaskTitleAC } from './redux/tasksReducer';
+import { useSelector } from 'react-redux';
+import { RootStoreType } from './store/store';
+import { useDispatch } from 'react-redux';
 
 // тип task status
 export type FilterValuesType = 'all' | 'active' | 'completed'
@@ -12,79 +17,48 @@ export type TaskStateType = { [todolistId: string]: TaskType[] }
 
 
 function App() {
-  const todolistId1 = v1()
-  const todolistId2 = v1()
-  const [todolists, setTodolists] = useState<TodoType[]>([
-    { id: todolistId1, title: 'Оп-оп', filter: 'all' },
-    { id: todolistId2, title: 'Вот те нате', filter: 'all' },
-  ])
-  let [tasks, setTasks] = useState<TaskStateType>({
-    [todolistId1]: [
-      { id: v1(), taskTitle: 'Купить молоко', isDone: true, },
-      { id: v1(), taskTitle: 'Сходить побегать', isDone: false, },
-      { id: v1(), taskTitle: 'Понюхать цветы', isDone: false, },
-    ],
-    [todolistId2]: [
-      { id: v1(), taskTitle: 'Купить молоко', isDone: true, },
-      { id: v1(), taskTitle: 'Понюхать цветы', isDone: false, },
-    ]
-  })
+  const todolists = useSelector<RootStoreType, Array<TodoType>>(state => state.todolistsReducer)
+  const tasks = useSelector<RootStoreType, TaskStateType>(state => state.tasksReducer)
+  const dispatch = useDispatch()
 
   // Удаление задачи
   const removeTask = (todolistId: string, taskId: string) => {
-    // setTasks(tasks.filter(t => t.id !== taskId))
-    setTasks({ ...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId) })
+    dispatch(removeTaskAC(todolistId, taskId))
   }
 
   // Добавление задачи
   const addTask = (todolistId: string, newTaskTitle: string) => {
-    let newTask: TaskType = { id: v1(), taskTitle: newTaskTitle, isDone: false }
-    // setTasks([newTask, ...tasks])
-    setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] })
+    dispatch(addTaskAC(todolistId, newTaskTitle))
   }
 
   // Изменение статуса задачи
   const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-    // setTasks(tasks.map(t => t.id === taskId ? { ...t, isDone } : t))
-    setTasks({ ...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? { ...t, isDone } : t) })
+    dispatch(changeTaskStatusAC(todolistId, taskId, isDone))
   }
 
   const updTaskTitle = (todolistId: string, taskId: string, newTaskTitle: string) => {
-    setTasks({ ...tasks, [todolistId]: tasks[todolistId].map(t => t.id === taskId ? { ...t, taskTitle: newTaskTitle } : t) })
+    dispatch(updTaskTitleAC(todolistId, taskId, newTaskTitle))
   }
 
   const removeTodo = (todolistId: string) => {
-    setTodolists(todolists.filter(tl => tl.id !== todolistId))
-    // const {[todolistId]:rrr, ...rest} = tasks
-    // setTasks(rest)
-    const copyTasks = { ...tasks }
-    delete copyTasks[todolistId]
-    setTasks(copyTasks)
+    dispatch(removeTodoAC(todolistId))
   }
 
   const addTodo = (newTodoTitle: string) => {
-    const newTodolistId = v1()
-    const newTodo: TodoType = { id: newTodolistId, title: newTodoTitle, filter: 'all' }
-    setTodolists([newTodo, ...todolists])
-    setTasks({ ...tasks, [newTodolistId]: [] })
+    dispatch(addTodoAC(newTodoTitle))
   }
 
   // Фильтрация задач
   const changeFilter = (todolistId: string, newFilterValue: FilterValuesType) => {
-    // setTasksFilter(newFilterValue)
-    setTodolists(todolists.map(tl => tl.id === todolistId ? { ...tl, filter: newFilterValue } : tl))
+    dispatch(changeFilterAC(todolistId, newFilterValue))
   }
 
   const updTodoTitle = (todolistId: string, newTodoTitle: string) => {
-    setTodolists(todolists.map(tl => tl.id === todolistId ? { ...tl, title: newTodoTitle } : tl))
+    dispatch(updTodoTitleAC(todolistId, newTodoTitle))
   }
 
   return (
     <div className="App">
-      {/*<div>*/}
-      {/*  <input value={newTodoTitle} onChange={onChangeAddTodoTitle}/>*/}
-      {/*  <button onClick={()=>{addTodo(newTodoTitle)}}>+</button>*/}
-      {/*</div>*/}
       <AddItemForm callback={addTodo} />
       {
         todolists.map(tl => {

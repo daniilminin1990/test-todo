@@ -1,9 +1,21 @@
 import { FilterValuesType, TaskStateType, TaskType } from './../App';
 import { v1 } from "uuid"
 import { ACTION_TYPES } from "./actionTypes"
-import { AddTodoType, RemoveTodoType } from './todolistsReducer';
+import { AddTodoType, RemoveTodoType, todolistId1, todolistId2 } from './todolistsReducer';
 
-export const todolistsReducer = (state: TaskStateType, action: MutualTypes): TaskStateType=> {
+let tasksInitialState: TaskStateType = {
+  [todolistId1]: [
+    { id: v1(), taskTitle: 'Купить молоко', isDone: true, },
+    { id: v1(), taskTitle: 'Сходить побегать', isDone: false, },
+    { id: v1(), taskTitle: 'Понюхать цветы', isDone: false, },
+  ],
+  [todolistId2]: [
+    { id: v1(), taskTitle: 'Купить молоко', isDone: true, },
+    { id: v1(), taskTitle: 'Понюхать цветы', isDone: false, },
+  ]
+}
+
+export const tasksReducer = (state: TaskStateType = tasksInitialState, action: MutualTypes): TaskStateType=> {
   switch(action.type){
     case ACTION_TYPES.tasks.addTask: {
       const el = action.payload
