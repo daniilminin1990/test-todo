@@ -13,7 +13,7 @@ type TodolistProps = {
   todoTitle: string,
   tasksFilter: FilterValuesType
   todolistId: string
-  allTasks: TaskType[]
+  // allTasks: TaskType[]
   // changeFilter: (todolistId: string, newTasksFilterValue: FilterValuesType) => void
   removeTodo: (todolistId: string) => void
   updTodoTitle: (todolistId: string, newTodoTitle: string) => void
@@ -21,14 +21,23 @@ type TodolistProps = {
 
 export const Todolist = memo(({ updTodoTitle, removeTodo, ...props }: TodolistProps) => {
   console.log('Todolist')
+  const tasks = useSelector<RootStoreType, TaskStateType>(state => state.tasksReducer)
   const dispatch = useDispatch()
 
-  let allTlTasks = props.allTasks
+  // let allTlTasks = props.allTasks
+  // if (props.tasksFilter === 'completed') {
+  //   allTlTasks = allTlTasks.filter(t => t.isDone)
+  // }
+  // if (props.tasksFilter === 'active') {
+  //   allTlTasks = allTlTasks.filter(t => !t.isDone)
+  // }
+
+  let allTasks = tasks[props.todolistId]
   if (props.tasksFilter === 'completed') {
-    allTlTasks = allTlTasks.filter(t => t.isDone)
+    allTasks = allTasks.filter(t => t.isDone)
   }
   if (props.tasksFilter === 'active') {
-    allTlTasks = allTlTasks.filter(t => !t.isDone)
+    allTasks = allTasks.filter(t => !t.isDone)
   }
 
   // Удаление задачи
@@ -72,11 +81,13 @@ export const Todolist = memo(({ updTodoTitle, removeTodo, ...props }: TodolistPr
         <button onClick={removeTodoHandler}>x</button>
       </h3>
       <AddItemForm callback={addTask} />
-      {allTlTasks.length === 0
+      {/* {allTlTasks.length === 0 */}
+      {allTasks.length === 0
         ? <p>Nothing to show</p>
         : <ul>
           {
-            allTlTasks.map(t => {
+            // allTlTasks.map(t => {
+            allTasks.map(t => {
               return <Task
                 key={t.id}
                 taskId={t.id}
