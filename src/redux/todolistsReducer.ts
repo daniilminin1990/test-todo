@@ -18,13 +18,20 @@ export const todolistsReducer = (state: Array<TodoType>, action: MutualTypes): A
           ? {...tl, filter: action.payload.newFilterValue} 
           : tl})
     }
+    case ACTION_TYPES.todolists.updateTodo: {
+      return state.map(tl => {
+        return tl.id === action.payload.todolistId 
+          ? {...tl, title: action.payload.newTodoTitle} 
+          : tl
+      })
+    }
     default:return state
   }
 }
 
-type MutualTypes = AddTodoACType | RemoveTodoAC | ChangeFilterAC
+type MutualTypes = AddTodoType | RemoveTodoType | ChangeFilterType | UpdTaskTitleType
 
-export type AddTodoACType = ReturnType<typeof addTodoAC>
+export type AddTodoType = ReturnType<typeof addTodoAC>
 
 export const addTodoAC = (newTodoTitle: string) => ({
     type: ACTION_TYPES.todolists.addTodo,
@@ -35,7 +42,7 @@ export const addTodoAC = (newTodoTitle: string) => ({
   }
 )
 
-export type RemoveTodoAC = ReturnType<typeof removeTodoAC>
+export type RemoveTodoType = ReturnType<typeof removeTodoAC>
 
 export const removeTodoAC = (todolistId: string) => ({
     type: ACTION_TYPES.todolists.removeTodo,
@@ -45,13 +52,23 @@ export const removeTodoAC = (todolistId: string) => ({
   }
 )
 
-export type ChangeFilterAC = ReturnType<typeof changeFilterAC>
+export type ChangeFilterType = ReturnType<typeof changeFilterAC>
 
 export const changeFilterAC = (todolistId: string, newFilterValue: FilterValuesType) => ({
-  type: ACTION_TYPES.todolists.changeFilter,
+    type: ACTION_TYPES.todolists.changeFilter,
+    payload: {
+      todolistId,
+      newFilterValue
+    }
+  }
+)
+
+export type UpdTaskTitleType = ReturnType<typeof updTodoTitleAC>
+
+export const updTodoTitleAC = (todolistId: string, newTodoTitle: string) => ({
+  type: ACTION_TYPES.todolists.updateTodo,
   payload: {
     todolistId,
-    newFilterValue
+    newTodoTitle
   }
-}
-)
+})

@@ -9,5 +9,6 @@ export const ACTION_TYPES = {
     addTask: 'TL/TASKS/ADD-TASK',
     removeTask: 'TL/TASKS/REMOVE-TASK',
     updateTask: 'TL/TASKS/UPDATE-TASK',
+    changeTaskStatus: 'TL/TASKS/CHANGE-TASK-STATUS'
   }
 } as const
