@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useReducer, useState } from 'react';
+import React, { ChangeEvent, memo, useCallback, useReducer, useState } from 'react';
 import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
@@ -16,67 +16,45 @@ export type TaskType = { id: string, taskTitle: string, isDone: boolean, }
 export type TaskStateType = { [todolistId: string]: TaskType[] }
 
 
-function App() {
+const App = memo(() => {
+  console.log('App')
   const todolists = useSelector<RootStoreType, Array<TodoType>>(state => state.todolistsReducer)
   const tasks = useSelector<RootStoreType, TaskStateType>(state => state.tasksReducer)
   const dispatch = useDispatch()
 
-  // Удаление задачи
-  const removeTask = (todolistId: string, taskId: string) => {
-    dispatch(removeTaskAC(todolistId, taskId))
-  }
-
-  // Добавление задачи
-  const addTask = (todolistId: string, newTaskTitle: string) => {
-    dispatch(addTaskAC(todolistId, newTaskTitle))
-  }
-
-  // Изменение статуса задачи
-  const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-    dispatch(changeTaskStatusAC(todolistId, taskId, isDone))
-  }
-
-  const updTaskTitle = (todolistId: string, taskId: string, newTaskTitle: string) => {
-    dispatch(updTaskTitleAC(todolistId, taskId, newTaskTitle))
-  }
-
-  const removeTodo = (todolistId: string) => {
+  const removeTodo = useCallback((todolistId: string) => {
     dispatch(removeTodoAC(todolistId))
-  }
-
-  const addTodo = (newTodoTitle: string) => {
-    dispatch(addTodoAC(newTodoTitle))
-  }
+  }, [dispatch])
 
   // Фильтрация задач
-  const changeFilter = (todolistId: string, newFilterValue: FilterValuesType) => {
-    dispatch(changeFilterAC(todolistId, newFilterValue))
-  }
+  // const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
+  //   dispatch(changeFilterAC(todolistId, newFilterValue))
+  // }, [dispatch])
 
-  const updTodoTitle = (todolistId: string, newTodoTitle: string) => {
+  const updTodoTitle = useCallback((todolistId: string, newTodoTitle: string) => {
     dispatch(updTodoTitleAC(todolistId, newTodoTitle))
-  }
+  }, [dispatch])
+
+  const addTodo = useCallback((newTodoTitle: string) => {
+    dispatch(addTodoAC(newTodoTitle))
+  }, [dispatch])
 
   return (
     <div className="App">
       <AddItemForm callback={addTodo} />
       {
         todolists.map(tl => {
-          let tasksChangedByFilter = tasks[tl.id]
+          let allTasks = tasks[tl.id]
           return (
             <Todolist
               key={tl.id}
               todolistId={tl.id}
               todoTitle={tl.title}
-              tasks={tasksChangedByFilter}
               tasksFilter={tl.filter}
-              changeTaskStatus={changeTaskStatus}
-              removeTask={removeTask}
-              changeFilter={changeFilter}
-              addTask={addTask}
+              allTasks={allTasks}
+              // changeFilter={changeFilter}
               removeTodo={removeTodo}
               updTodoTitle={updTodoTitle}
-              updTaskTitle={updTaskTitle}
             />
           )
         })
@@ -84,7 +62,7 @@ function App() {
 
     </div>
   );
-}
+})
 
 export default App;
 
