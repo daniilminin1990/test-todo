@@ -1,7 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 type AddItemFormProps = {
-  callback: (newTitle: string)=>void
+  callback: (newTitle: string) => void
 }
 
 export const AddItemForm = (props: AddItemFormProps) => {
@@ -13,12 +13,12 @@ export const AddItemForm = (props: AddItemFormProps) => {
     titleTyping.length !== 0 && setError('')
   }
   const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.key === 'Enter' && onClickAddTaskHandler()
+    e.key === 'Enter' && onNewTitleChangeHandler
   }
 
   return (
     <div>
-      <input value={newTitle} onChange={onChangeAddTodoTitle}/>
+      <input value={newTitle} onChange={onNewTitleChangeHandler} />
       <button onClick={() => {
         props.callback(newTitle)
       }}>+

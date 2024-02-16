@@ -14,6 +14,12 @@ type TodolistProps = {
 }
 
 export const Todolist = (props: TodolistProps) => {
+  if (props.tasksFilter === 'completed') {
+    props.tasks = props.tasks.filter(t => t.isDone)
+  }
+  if (props.tasksFilter === 'active') {
+    props.tasks = props.tasks.filter(t => !t.isDone)
+  }
   // State для нового названия task
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
   // State для ошибки
@@ -38,15 +44,15 @@ export const Todolist = (props: TodolistProps) => {
     e.key === 'Enter' && onClickAddTaskHandler()
   }
 
-  const onAllClickHandler = () => { props.changeFilter(props.todolistId,'all') }
-  const onActiveClickHandler = () => { props.changeFilter(props.todolistId,'active') }
-  const onCompletedClickHandler = () => { props.changeFilter(props.todolistId,'completed') }
+  const onAllClickHandler = () => { props.changeFilter(props.todolistId, 'all') }
+  const onActiveClickHandler = () => { props.changeFilter(props.todolistId, 'active') }
+  const onCompletedClickHandler = () => { props.changeFilter(props.todolistId, 'completed') }
 
   return (
     <div>
       <h3>
         <span>{props.todoTitle}</span>
-        <button onClick={()=> {props.removeTodo(props.todolistId)}}>x</button>
+        <button onClick={() => { props.removeTodo(props.todolistId) }}>x</button>
       </h3>
       <input
         value={newTaskTitle}
@@ -63,10 +69,10 @@ export const Todolist = (props: TodolistProps) => {
             props.tasks.map(t => {
               const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                 let checked = e.currentTarget.checked
-                props.changeTaskStatus(props.todolistId,t.id, checked)
+                props.changeTaskStatus(props.todolistId, t.id, checked)
               }
               const onClickHandler = () => {
-                props.removeTask(props.todolistId,t.id)
+                props.removeTask(props.todolistId, t.id)
               }
               return (
                 <li key={t.id} className={t.isDone ? 'is-done' : ''}>
