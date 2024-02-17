@@ -27,7 +27,6 @@ export const Task = React.memo((props: TaskProps) => {
     props.updTaskTitle(props.taskId, updTaskTitle)
   }
 
-
   return (
     <li className={props.tIsDone ? 'is-done' : ''}>
       <input type="checkbox" checked={props.tIsDone} onChange={onChangeHandler} />
