@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { addTaskAC, changeTaskStatusAC, removeTaskAC, updTaskTitleAC } from './redux/tasksReducer'
 import Task from './Task'
 import { changeFilterAC } from './redux/todolistsReducer'
-
+//
 type TodolistProps = {
   todoTitle: string,
   tasksFilter: FilterValuesType
