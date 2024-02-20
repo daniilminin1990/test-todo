@@ -23,8 +23,8 @@ type TodolistProps = {
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   console.log('Todolist')
-  const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
-  let allTodoTasks = tasks[props.todolistId]
+  let allTodoTasks = useSelector<RootReducerType, TaskType[]>((state) => state.tasksReducer[props.todolistId])
+  // let allTodoTasks = tasks[props.todolistId]
   const dispatch = useDispatch()
 
   const removeTask = useCallback((taskId: string) => {
