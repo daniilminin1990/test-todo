@@ -50,6 +50,7 @@ export const AddItemFormError =(props: AddItemFormProps) => {
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const titleTyping = e.currentTarget.value
     setNewTitle(titleTyping)
+    console.log(newTitle)
     titleTyping.length !== 0 && setError('')
   }
   const onEnterAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
