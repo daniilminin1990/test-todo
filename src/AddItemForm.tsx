@@ -4,12 +4,12 @@ import TextField from '@material-ui/core/TextField/TextField';
 import { styles, styleTextField } from "./styles";
 import { styled } from '@mui/system';
 
-type AddItemFormProps = {
+export type AddItemFormProps = {
   callback: (newTitle: string) => void
 }
 
 // Кастомная стилизация TextField от MUI
-const StyledTextField = styled(TextField, {
+export const StyledTextField = styled(TextField, {
   name: 'StyledTextField'
 })({
   '& .MuiOutlinedInput-input': {

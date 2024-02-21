@@ -1,26 +1,46 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 
-type EdiatbleSpanProps = {
+export type EdiatbleSpanProps = {
   oldTitle: string
   callback: (updTitle: string) => void
 }
 const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [edit, setEdit] = useState<boolean>(false)
   const [updTitle, setUpdTitle] = useState<string>(props.oldTitle)
+  const [error, setError] = useState<string | null>(null)
 
   const swapHandler = () => {
     setEdit(!edit)
     edit === false && props.callback(updTitle)
+    if (updTitle.trim() === '') {
+      setEdit(true)
+    }
   }
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setUpdTitle(e.currentTarget.value)
+    let typing = e.currentTarget.value
+    setUpdTitle(typing)
+    if (typing.trim() !== '') {
+      setError('')
+    } else {
+      setError('Title is required')
+    }
+  }
+
+  const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      swapHandler()
+    }
   }
 
   return (
-    edit
-      ? <input onBlur={swapHandler} value={updTitle} onChange={onChangeHandler} autoFocus/>
-      : <span onDoubleClick={swapHandler}>{updTitle}</span>
+    <>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {edit
+        ?
+        <input onBlur={swapHandler} value={updTitle} onChange={onChangeHandler} autoFocus onKeyDown={onKeyDownHandler}/>
+        : <span onDoubleClick={swapHandler}>{updTitle}</span>}
+    </>
   );
 });
 
