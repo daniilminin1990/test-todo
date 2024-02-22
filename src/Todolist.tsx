@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { FilterValuesType, TaskStateType, TaskType } from './App'
 import { AddItemForm } from "./AddItemForm";
 import EdiatbleSpan from "./EdiatbleSpan";
@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useSelector } from 'react-redux';
 import { RootReducerType } from './store/store';
+import { log } from 'console';
 
 type TodolistProps = {
   todoTitle: string,
@@ -49,6 +50,34 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   if (props.tasksFilter === 'active') {
     allTodoTasks = allTodoTasks.filter(t => !t.isDone)
   }
+
+  // ! ---1--- 
+  // ! Этот код не нужен. Причина в том, что фильтр меняется при нажатии на кнопку, удетает в state todolist. Затем происходит локальное изменение тасок тудулистId.
+  // ! Это изменение тасок иммутабельное, мы не изменяем таски, значит ререндера для if не будет. Смысл useMemo в оптимизации, избалвение от ререндера. А тут ререндера не будет, т.к. state не изменяем
+  // ! --2--
+  // ! Использовать useMemo нужно только с переменной, к которой будем присваивать возвращаемый результат. Иначе useMemo будет работать в холостую, сам по себе. Либо писать UseMemo в JSX, тогда можно результат писать прямо там без переменной
+  // allTodoTasks = useMemo(() => {
+  //   console.log('useMemo')
+  //   if (props.tasksFilter === 'completed') {
+  //     allTodoTasks = allTodoTasks.filter(t => t.isDone)
+  //   }
+  //   if (props.tasksFilter === 'active') {
+  //     allTodoTasks = allTodoTasks.filter(t => !t.isDone)
+  //   }
+  //   return allTodoTasks
+  // }, [props.tasksFilter, allTodoTasks])
+  // ? И так работает
+  // useMemo(() => {
+  //   console.log('useMemo')
+  //   if (props.tasksFilter === 'completed') {
+  //     allTodoTasks = allTodoTasks.filter(t => t.isDone)
+  //   }
+  //   if (props.tasksFilter === 'active') {
+  //     allTodoTasks = allTodoTasks.filter(t => !t.isDone)
+  //   }
+  //   return allTodoTasks
+  // }, [props.tasksFilter])
+  // console.log(allTodoTasks)
 
   const onAllClickHandler = useCallback(() => { changeFilter(props.todolistId, 'all') }, [changeFilter, props.todolistId])
   const onActiveClickHandler = useCallback(() => { changeFilter(props.todolistId, 'active') }, [changeFilter, props.todolistId])
