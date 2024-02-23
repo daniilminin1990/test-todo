@@ -1,10 +1,13 @@
-import {Meta, StoryObj} from "@storybook/react";
-import {ReduxStoreProviderDecorator} from "./Decorator";
+import { Meta, StoryObj } from "@storybook/react";
+import { ReduxStoreProviderDecorator } from "./Decorator";
 import App from "../App";
 
 const meta: Meta<typeof App> = {
   title: 'App',
   component: App,
+  parameters: {
+    layout: 'centered',
+  },
   tags: ['autodocks'],
   decorators: [ReduxStoreProviderDecorator]
 }

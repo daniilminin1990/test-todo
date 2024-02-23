@@ -4,7 +4,7 @@ import { addTaskAC, changeTaskStatusAC, removeTaskAC, updTaskTitleAC } from "./r
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-type TaskProps = {
+export type TaskProps = {
   taskId: string,
   tIsDone: boolean,
   oldTitle: string,

@@ -17,7 +17,7 @@ const meta: Meta<typeof EdiatbleSpan> = {
     callback: {
       description: 'add newTitle for tl or task'
     }
-  }
+  },
 }
 export default meta
 
