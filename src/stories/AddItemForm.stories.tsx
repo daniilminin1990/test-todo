@@ -75,6 +75,7 @@ export const AddItemFormError = (props: AddItemFormProps) => {
     </div>
   );
 };
+//! Тут начался 4 спринт
 
 // // Вид с ошибкой № 2
 // const AddItemFormError1 = (props: AddItemFormProps) => {
