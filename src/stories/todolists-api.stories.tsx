@@ -31,6 +31,7 @@ export const CreateTodolist = () => {
       .then((res) => {
         setState(res.data)
       })
+    setCreateTodo('')
   }
 
   const onChangeNewTodoTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,8 +54,9 @@ export const DeleteTodolist = () => {
   const deleteTodolist = () => {
     todolistsAPI.deleteTodolist(todolistId)
       .then((res) => {
-        setState(res.data)
+        setState(res.data.data)
       })
+    setTodolistId('')
   }
 
   const onChangeTodolistId = (e: ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +89,8 @@ export const UpdateTodolistTitle = () => {
       .then((res) => {
         setState(res.data)
       })
+    setTodolistId('')
+    setTodoUpdateTitle('')
   }
 
   return <div>

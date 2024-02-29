@@ -18,6 +18,7 @@ export const GetTasks = () => {
       .then((res) => {
         setState(res.data.items)
       })
+    setTodolistId('')
   }
 
   return <div>
@@ -36,12 +37,10 @@ export const CreateTask = () => {
 
   const onTodoChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTodolistId(e.currentTarget.value)
-    setTodolistId('')
   }
 
   const onTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCreatedTaskTitle(e.currentTarget.value)
-    setCreatedTaskTitle('')
   }
 
   const createTask = () => {
@@ -49,6 +48,8 @@ export const CreateTask = () => {
       .then((res) => {
         setState(res.data)
       })
+    setTodolistId('')
+    setCreatedTaskTitle('')
   }
 
   return <div>
@@ -67,11 +68,9 @@ export const DeleteTask = () => {
 
   const onTodoChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTodolistId(e.currentTarget.value)
-    setTodolistId('')
   }
   const onTaskChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTaskId(e.currentTarget.value)
-    setTaskId('')
   }
 
   const deleteTask = () => {
@@ -79,6 +78,8 @@ export const DeleteTask = () => {
       .then((res) => {
         setState(res.data)
       })
+    setTodolistId('')
+    setTaskId('')
   }
 
 
@@ -97,26 +98,38 @@ export const UpdateTask = () => {
   const [taskId, setTaskId] = useState<string>('')
   const [newTaskTitle, setNewTaskTitle] = useState<string>('')
 
+  const [taskDescription, setTaskDescription] = useState<string>('')
+  const [status, setStatus] = useState<number>(0)
+  const [priority, setPriority] = useState<number>(0)
+  const [startDate, setStartDaate] = useState<string>('')
+  const [deadLine, setDeadline] = useState<string>('')
+
   const onTodoChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTodolistId(e.currentTarget.value)
-    setTodolistId('')
   }
   const onTaskChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTaskId(e.currentTarget.value)
-    setTaskId('')
   }
   const onTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(e.currentTarget.value)
-    setNewTaskTitle('')
   }
   const updateTitle = () => {
-    tasksApi.updateTask(todolistId, taskId, newTaskTitle)
+    tasksApi.updateTask(todolistId, taskId, {
+      deadline: '',
+      description: taskDescription,
+      priority: priority,
+      startDate: '',
+      status: status,
+      title: newTaskTitle
+    })
       .then((res) => {
         setState(res.data)
       })
     setTodolistId('')
     setTaskId('')
     setNewTaskTitle('')
+    setTaskDescription('')
+    setStatus(0)
   }
   return <div>
     {JSON.stringify(state)}
@@ -124,6 +137,9 @@ export const UpdateTask = () => {
       <input placeholder={'todolistId'} value={todolistId} onChange={onTodoChange}/>
       <input placeholder={'taskId'} value={taskId} onChange={onTaskChange}/>
       <input placeholder={'set new taskTitle'} value={newTaskTitle} onChange={onTitleChange}/>
+      <input placeholder={'task descripton'} value={taskDescription} onChange={(e) => setTaskDescription(e.currentTarget.value)}/>
+      <input placeholder={'status'} value={status} onChange={(e) => setStatus(+e.currentTarget.value)} type={'number'}/>
+      <input placeholder={'priority'} value={priority} onChange={(e) => setPriority(+e.currentTarget.value)} type={'number'}/>
     </div>
     <button onClick={updateTitle}>Update taskTitle</button>
   </div>
