@@ -1,20 +1,6 @@
 import {instance} from "./todolists-api";
 import axios from "axios";
 
-export type TaskType = {
-  description: string
-  title: string
-  completed: boolean
-  status: number
-  priority: number
-  startDate: string
-  deadline: string
-  id: string
-  todolistId: string
-  order: number
-  addedDate: string
-}
-
 export type UpdateTaskType = Omit<TaskType, 'id' | 'todolistId' | 'order' | 'addedDate' | 'completed'>
 
 export type GetTasksResponse = {
@@ -27,6 +13,34 @@ type ResponseType<D = {}> = {
   resultCode: number,
   messages: Array<string>,
   data: D
+}
+
+export type TaskType = {
+  id: string
+  todolistId: string
+  description: string
+  order: number
+  startDate: string
+  deadline: string
+  addedDate: string
+  title: string
+  status: TasksStatuses
+  priority: TaskPriorities
+}
+
+export enum TasksStatuses {
+  New = 0,
+  InProgress = 1,
+  Completed = 2,
+  Draft = 3,
+}
+
+export enum TaskPriorities {
+  Low = 0,
+  Middle = 1,
+  High = 2,
+  Urgent = 3,
+  Later = 4
 }
 
 export const tasksApi = {

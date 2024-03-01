@@ -1,28 +1,37 @@
-import {FilterValuesType, TodoType} from "../App";
 import {v1} from "uuid";
+import {TodolistType} from "../api/todolists-api";
+
+export type FilterValuesType = 'all' | 'active' | 'completed'
+
+export type TodoUIType = TodolistType & {
+  filter: FilterValuesType
+}
 
 export const todolistId1 = v1()
 export const todolistId2 = v1()
 
-const initState: TodoType[] =[
-  {id: todolistId1, title: 'Оп-оп', filter: 'all'},
-  {id: todolistId2, title: 'Вот те нате', filter: 'all'},
+const initState: TodoUIType[] =[
+  {id: todolistId1, title: 'Оп-оп', filter: 'all', addedDate: '', order: 0},
+  {id: todolistId2, title: 'Вот те нате', filter: 'all', addedDate: '', order: 0},
 ]
 
-export const todolistReducer = (state: TodoType[]=initState, action: MutualTodoType): Array <TodoType> => {
+export const todolistReducer = (state: TodoUIType[]=initState, action: MutualTodoType): Array <TodoUIType> => {
   switch(action.type){
     case 'REMOVE-TODO': {
       return state.filter(tl => tl.id !== action.payload.todolistId)
     }
     case 'ADD-TODO': {
-      const newTodo: TodoType = {id: action.payload.todolistId, title: action.payload.newTodoTitle, filter: 'all'}
+    const a = action.payload
+      const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
       return [newTodo, ...state]
     }
     case 'CHANGE-TODO-FILTER': {
-      return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.newFilterValue} : tl)
+      const a = action.payload
+      return state.map(tl => tl.id === a.todolistId ? {...tl, filter: a.newFilterValue} : tl)
     }
     case "UPDATE-TODO-TITLE": {
-      return state.map(tl => tl.id === action.payload.todolistId ? {...tl, title: action.payload.updTodoTitle} : tl)
+      const a = action.payload
+      return state.map(tl => tl.id === a.todolistId ? {...tl, title: a.updTodoTitle} : tl)
     }
     default: {
       return state

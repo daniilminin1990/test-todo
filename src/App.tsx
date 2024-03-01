@@ -5,20 +5,15 @@ import { Todolist } from './Todolist';
 import { AddItemForm } from "./AddItemForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducerType } from "./store/store";
-import { addTodoAC, changeFilterAC, updateTodoTitleAC } from "./redux/todolistReducer";
+import {addTodoAC, changeFilterAC, FilterValuesType, TodoUIType, updateTodoTitleAC} from "./redux/todolistReducer";
 import ButtonAppBar from './ButtonAppBar';
 import { Container, Grid, Paper } from '@mui/material';
 
-// тип task status
-export type FilterValuesType = 'all' | 'active' | 'completed'
-export type TodoType = { id: string, title: string, filter: FilterValuesType }
-export type TaskType = { id: string, taskTitle: string, isDone: boolean, }
-export type TaskStateType = { [todolistId: string]: TaskType[] }
 
 const App = React.memo(() => {
   console.log('App')
   const dispatch = useDispatch()
-  const todolists = useSelector<RootReducerType, TodoType[]>((state) => state.todolistReducer)
+  const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
   // const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
 
   // Фильтрация задач

@@ -1,10 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { action } from '@storybook/addon-actions'
-import { Task } from "../Task";
-import EdiatbleSpan from "../EdiatbleSpan";
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { useState } from "react";
+import {Meta, StoryObj} from "@storybook/react";
+import {action} from '@storybook/addon-actions'
+import {Task} from "../Task";
+import {useState} from "react";
+import {TasksStatuses} from "../api/tasks-api";
 
 const meta: Meta<typeof Task> = {
   title: 'TODOLIST/Task',
@@ -14,7 +12,7 @@ const meta: Meta<typeof Task> = {
     layout: 'centered'
   },
   args: {
-    tIsDone: false, // Состояние по умолчанию
+    tIsDone: TasksStatuses.New, // Состояние по умолчанию
     oldTitle: 'Title',
     taskId: 'taskId', // Это слово я увижу в toolbar в control
     onChange: action('Change task status'), // Меняю статус - показывает этот текст в actions
@@ -47,16 +45,16 @@ export const TaskExampleNoCheck: Story = {}
 export const TaskCheck: Story = {
   args: {
     oldTitle: 'Алиллуйя', // Это слово я увижу в toolbar в control
-    tIsDone: true,
+    tIsDone: TasksStatuses.Completed,
   },
 }
 
 // Чек таски
 export const TaskToDelete = () => {
-  const [tIsDone, setTIsDone] = useState(false)
+  const [tIsDone, setTIsDone] = useState<TasksStatuses>(TasksStatuses.New)
 
   const onChange = () => {
-    setTIsDone(!tIsDone)
+    setTIsDone(tIsDone ? TasksStatuses.Completed : TasksStatuses.New)
   }
 
   return <Task
