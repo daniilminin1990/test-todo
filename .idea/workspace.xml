@@ -6,13 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Todolist.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksReducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistReducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/Task.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,24 +40,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/long-term-projects-it-incubator/WebPack/web-pack-rs-school&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;npm.storybook.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\IT программирование\\Работа\\Git repos\\Обучение IT-incubator\\Frontend\\Преподавание\\test-todo\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Jest.renders learn react link.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/long-term-projects-it-incubator/WebPack/web-pack-rs-school",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "D:/IT программирование/Работа/Git repos/Обучение IT-incubator/Frontend/Преподавание/test-todo/node_modules/react-scripts",
+    "nodejs_package_manager_path": "yarn",
+    "npm.build.executor": "Run",
+    "npm.deploy.executor": "Run",
+    "npm.start.executor": "Run",
+    "npm.storybook.executor": "Run",
+    "npm.test.executor": "Run",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "D:\\IT программирование\\Работа\\Git repos\\Обучение IT-incubator\\Frontend\\Преподавание\\test-todo\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="es6.move.members.recent.items">
       <recent name="D:\IT программирование\Работа\Git repos\Обучение IT-incubator\Frontend\Преподавание\test-todo\src\AddItemForm.tsx" />
@@ -74,7 +72,39 @@
       <recent name="D:\IT программирование\Работа\Git repos\Обучение IT-incubator\Frontend\Преподавание\test-todo\src\stories" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="npm.build">
+    <configuration name="renders learn react link" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/App.test.tsx" />
+      <test-names>
+        <test-name value="renders learn react link" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="deploy" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -85,11 +115,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="storybook" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="test" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="storybook" />
+        <script value="test" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -97,8 +127,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build" />
+        <item itemvalue="npm.test" />
+        <item itemvalue="Jest.renders learn react link" />
         <item itemvalue="npm.start" />
-        <item itemvalue="npm.storybook" />
+        <item itemvalue="npm.deploy" />
       </list>
     </recent_temporary>
   </component>
@@ -133,6 +166,7 @@
       <workItem from="1709108237110" duration="9000" />
       <workItem from="1709214585807" duration="14920000" />
       <workItem from="1709299226315" duration="6523000" />
+      <workItem from="1709399894661" duration="2229000" />
     </task>
     <servers />
   </component>
