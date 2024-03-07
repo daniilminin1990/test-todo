@@ -1,20 +1,32 @@
-import React, { memo, useCallback } from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
 import { AddItemForm } from "./AddItemForm";
 import { useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "./store/store";
-import {addTodoAC, changeFilterAC, FilterValuesType, TodoUIType, updateTodoTitleAC} from "./redux/todolistReducer";
+import {RootReducerType, useAppDispatch} from "./store/store";
+import {
+  addTodoAC,
+  changeFilterAC,
+  FilterValuesType, setTodolistsTC,
+  TodoUIType,
+  updateTodoTitleAC
+} from "./redux/todolistReducer";
 import ButtonAppBar from './ButtonAppBar';
 import { Container, Grid, Paper } from '@mui/material';
 
 
 const App = React.memo(() => {
   console.log('App')
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
   // const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
+
+  useEffect(() => {
+    dispatch(setTodolistsTC())
+  }, []);
+
+  //? КАк бы это выглядело на async await
 
   // Фильтрация задач
   const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
