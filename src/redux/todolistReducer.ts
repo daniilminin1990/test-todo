@@ -90,11 +90,15 @@ export const updateTodoTitleAC = (todolistId: string, updTodoTitle: string)=> {
 }
 
 //! ActionCreator для сета тудулистов с сервера
-export type SetTodosActionType = {
-  type: 'SET-TODO',
-  todolists: TodolistType[]
-}
-export const setTodosAC = (todolists: TodolistType[]): SetTodosActionType => {
+// export type SetTodosActionType = {
+//   type: 'SET-TODO',
+//   todolists: TodolistType[]
+// }
+// или так
+export type SetTodosActionType = ReturnType<typeof setTodosAC>
+
+// export const setTodosAC = (todolists: TodolistType[]): SetTodosActionType => {
+export const setTodosAC = (todolists: TodolistType[]) => {
   return {
     type: "SET-TODO",
     todolists: todolists

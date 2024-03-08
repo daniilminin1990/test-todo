@@ -153,3 +153,17 @@ export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
       dispatch(setTasksAC(todoId, res.data.items))
     })
 }
+
+export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
+  tasksApi.deleteTask(todoId, taskId)
+    .then(res => {
+      dispatch(removeTaskAC(todoId, taskId))
+    })
+}
+
+export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
+  tasksApi.createTask(todoId, newTaskTitle)
+    .then(res => {
+      dispatch(addTaskAC(todoId, newTaskTitle))
+    })
+}

@@ -2,7 +2,14 @@ import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from "./AddItemForm";
 import EdiatbleSpan from "./EdiatbleSpan";
 import {useDispatch, useSelector} from "react-redux";
-import {addTaskAC, changeTaskStatusAC, removeTaskAC, setTasksTC, updTaskTitleAC} from "./redux/tasksReducer";
+import {
+  addTaskAC, addTaskTC,
+  changeTaskStatusAC,
+  deleteTaskTC,
+  removeTaskAC,
+  setTasksTC,
+  updTaskTitleAC
+} from "./redux/tasksReducer";
 import {Task} from "./Task";
 import {FilterValuesType, removeTodoAC} from "./redux/todolistReducer";
 import Button from "@material-ui/core/Button";
@@ -31,11 +38,13 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, []);
 
   const removeTask = useCallback((taskId: string) => {
-    dispatch(removeTaskAC(props.todolistId, taskId))
+    dispatch(deleteTaskTC(props.todolistId, taskId))
+    // dispatch(removeTaskAC(props.todolistId, taskId))
   }, [dispatch, props.todolistId])
 
-  const addTask = useCallback((newTodolTitle: string) => {
-    dispatch(addTaskAC(props.todolistId, newTodolTitle))
+  const addTask = useCallback((newTaskTitle: string) => {
+    dispatch(addTaskTC(props.todolistId, newTaskTitle))
+    // dispatch(addTaskAC(props.todolistId, newTodolTitle))
   }, [dispatch, props.todolistId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TasksStatuses) => {
