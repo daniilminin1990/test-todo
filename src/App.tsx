@@ -3,7 +3,7 @@ import './App.css';
 import { v1 } from 'uuid';
 import { Todolist } from './Todolist';
 import { AddItemForm } from "./AddItemForm";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {RootReducerType, useAppDispatch} from "./store/store";
 import {
   addTodoAC,
@@ -20,13 +20,12 @@ const App = React.memo(() => {
   console.log('App')
   const dispatch = useAppDispatch()
   const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
-  // const tasks = useSelector<RootReducerType, TaskStateType>((state) => state.tasksReducer)
 
   useEffect(() => {
     dispatch(setTodolistsTC())
   }, []);
 
-  //? КАк бы это выглядело на async await
+  //? КАк бы это выглядело на async await???
 
   // Фильтрация задач
   const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
