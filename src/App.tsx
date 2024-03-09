@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import {RootReducerType, useAppDispatch} from "./store/store";
 import {
   addTodoAC, addTodoTC,
-  changeFilterAC,
+  changeFilterAC, changeTodoTitleTC,
   FilterValuesType, setTodolistsTC,
   TodoUIType,
   updateTodoTitleAC
@@ -39,7 +39,8 @@ const App = React.memo(() => {
   }, [dispatch])
 
   const updTodoTitle = useCallback((todolistId: string, updTodoTitle: string) => {
-    dispatch(updateTodoTitleAC(todolistId, updTodoTitle))
+    // dispatch(updateTodoTitleAC(todolistId, updTodoTitle))
+    dispatch(changeTodoTitleTC(todolistId, updTodoTitle))
   }, [dispatch])
   return (
     <div className="App">

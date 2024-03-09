@@ -11,7 +11,8 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
 
   const swapHandler = () => {
     setEdit(!edit)
-    edit === false && props.callback(updTitle)
+    // edit === false && props.callback(updTitle)
+    edit === true && props.callback(updTitle)
     if (updTitle.trim() === '') {
       setEdit(true)
     }
