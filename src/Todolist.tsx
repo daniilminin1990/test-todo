@@ -1,16 +1,10 @@
 import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from "./AddItemForm";
 import EdiatbleSpan from "./EdiatbleSpan";
-import {useDispatch, useSelector} from "react-redux";
-import {
-  addTaskAC, addTaskTC,
-  changeTaskStatusAC,
-  deleteTaskTC,
-  setTasksTC,
-  updTaskTitleAC
-} from "./redux/tasksReducer";
+import {useSelector} from "react-redux";
+import {addTaskTC, updateTaskTC, deleteTaskTC, setTasksTC} from "./redux/tasksReducer";
 import {Task} from "./Task";
-import {deleteTodoTC, FilterValuesType, removeTodoAC} from "./redux/todolistReducer";
+import {deleteTodoTC, FilterValuesType} from "./redux/todolistReducer";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -46,11 +40,13 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, [dispatch, props.todolistId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TasksStatuses) => {
-    dispatch(changeTaskStatusAC(props.todolistId, taskId, checked))
+    // dispatch(changeTaskStatusAC(props.todolistId, taskId, checked))
+    dispatch(updateTaskTC(props.todolistId, taskId, {status: checked}))
   }, [dispatch, props.todolistId])
 
   const updTaskTitle = useCallback((taskId: string, updTaskTitle: string) => {
-    dispatch(updTaskTitleAC(props.todolistId, taskId, updTaskTitle))
+    // dispatch(updTaskTitleAC(props.todolistId, taskId, updTaskTitle))
+    dispatch(updateTaskTC(props.todolistId, taskId, {title: updTaskTitle}))
   }, [dispatch, props.todolistId])
 
   if (props.tasksFilter === 'completed') {

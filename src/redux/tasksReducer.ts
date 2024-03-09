@@ -1,10 +1,20 @@
 import {v1} from "uuid";
-import {AddTodoACType, RemoveTodoACType, SetTodosActionType, todolistId1, todolistId2} from "./todolistReducer";
-import {TaskPriorities, tasksApi, TasksStatuses, TaskType} from "../api/tasks-api";
+import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistReducer";
+import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
+import {RootReducerType} from "../store/store";
 
 export type TaskStateType = {
   [todolistId: string]: TaskType[]
+}
+
+export type UpdateTaskUtilityType = {
+  title?: string,
+  description?: string,
+  status?: TasksStatuses,
+  priority?: TaskPriorities,
+  startDate?: string,
+  deadline?: string
 }
 
 const initStateTasks: TaskStateType = {
@@ -47,9 +57,10 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
       }
       return {...state, [a.todolistId]: [newTask, ...state[a.todolistId]]}
     }
-    case "CHANGE-TASK-STATUS": {
+    case "UPDATE-TASK": {
       const a = action.payload
-      return {...state, [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, status: a.status} : t)}
+      // return {...state, [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, status: a.status} : t)}
+      return {...state, [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, ...a.model} : t)}
     }
     case "UPDATE-TASK-TITLE": {
       const a = action.payload
@@ -126,14 +137,14 @@ export const addTaskAC = (todolistId: string, newTaskTitle: string) => {
   } as const
 }
 
-export type ChangeTaskStatusAC = ReturnType<typeof changeTaskStatusAC>
-export const changeTaskStatusAC = (todolistId: string, taskId: string, status: TasksStatuses) => {
+export type ChangeTaskStatusAC = ReturnType<typeof updateTaskAC>
+export const updateTaskAC = (todolistId: string, taskId: string, model: UpdateTaskUtilityType) => {
   return {
-    type: 'CHANGE-TASK-STATUS',
+    type: 'UPDATE-TASK',
     payload: {
       todolistId,
       taskId,
-      status
+      model
     }
   } as const
 }
@@ -186,5 +197,28 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       dispatch(addTaskAC(todoId, newTaskTitle))
+    })
+}
+export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType ) => (dispatch: Dispatch, getState: () => RootReducerType) => {
+  const state = getState()
+  const task = state.tasksReducer[todolistId].find(tl => tl.id === taskId)
+
+  if(!task){
+    throw new Error('Task not found in the state')
+    console.warn('Task not found in the state')
+    return
+  }
+  const apiModel: UpdateTaskType = {
+    status: task.status,
+    startDate: task.deadline,
+    title: task.title,
+    priority: task.priority,
+    description: task.description,
+    deadline: task.deadline,
+    ...utilityModel
+  }
+  tasksApi.updateTask(todolistId, taskId, apiModel)
+    .then(res => {
+      dispatch(updateTaskAC(todolistId, taskId, apiModel))
     })
 }

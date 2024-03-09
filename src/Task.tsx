@@ -16,7 +16,7 @@ export type TaskProps = {
 export const Task = React.memo((props: TaskProps) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    let checkedEvent = e.currentTarget.checked
+    let checkToGo = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New
     // let checked = () => {
     //   if (checkedEvent === true) {
     //     return TasksStatuses.Completed
@@ -25,7 +25,8 @@ export const Task = React.memo((props: TaskProps) => {
     //   }
     // }
     // props.onChange(props.taskId, checked())
-    props.onChange(props.taskId, checkedEvent ? TasksStatuses.Completed : TasksStatuses.New)
+    console.log(checkToGo)
+    props.onChange(props.taskId, checkToGo)
   }
   const onClickHandler = () => {
     props.onClick(props.taskId)
