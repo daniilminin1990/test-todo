@@ -60,7 +60,8 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
     }
     case "ADD-TODO": {
       const a = action.payload
-      return {...state, [a.todolistId]: []}
+      // return {...state, [a.todolistId]: []}
+      return {...state, [a.newTodolist.id]: []}
     }
     case 'REMOVE-TODO': {
       const a = action.payload

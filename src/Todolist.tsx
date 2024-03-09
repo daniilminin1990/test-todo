@@ -10,7 +10,7 @@ import {
   updTaskTitleAC
 } from "./redux/tasksReducer";
 import {Task} from "./Task";
-import {FilterValuesType, removeTodoAC} from "./redux/todolistReducer";
+import {deleteTodoTC, FilterValuesType, removeTodoAC} from "./redux/todolistReducer";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -64,8 +64,8 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   const onActiveClickHandler = useCallback(() => { changeFilter(props.todolistId, 'active') }, [changeFilter, props.todolistId])
   const onCompletedClickHandler = useCallback(() => { changeFilter(props.todolistId, 'completed') }, [changeFilter, props.todolistId])
 
-  const removeTodo = useCallback((todolistId: string) => {
-    dispatch(removeTodoAC(todolistId))
+  const removeTodo = useCallback(() => {
+    dispatch(deleteTodoTC(props.todolistId))
   }, [dispatch])
 
   const updTodoTitleHandler = useCallback((updTlTitle: string) => {
@@ -76,7 +76,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
     <div>
       <h3>
         <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} />
-        <IconButton aria-label="delete" onClick={useCallback(() => { removeTodo(props.todolistId) }, [removeTodo, props.todolistId])}>
+        <IconButton aria-label="delete" onClick={removeTodo}>
           <DeleteIcon />
         </IconButton>
       </h3>

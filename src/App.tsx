@@ -6,7 +6,7 @@ import { AddItemForm } from "./AddItemForm";
 import { useSelector } from "react-redux";
 import {RootReducerType, useAppDispatch} from "./store/store";
 import {
-  addTodoAC,
+  addTodoAC, addTodoTC,
   changeFilterAC,
   FilterValuesType, setTodolistsTC,
   TodoUIType,
@@ -33,8 +33,9 @@ const App = React.memo(() => {
   }, [dispatch])
 
   const addTodo = useCallback((newTodoTitle: string) => {
-    const newTodolistId = v1()
-    dispatch(addTodoAC(newTodolistId, newTodoTitle))
+    // const newTodolistId = v1()
+    // dispatch(addTodoAC(newTodolistId, newTodoTitle))
+    dispatch(addTodoTC(newTodoTitle))
   }, [dispatch])
 
   const updTodoTitle = useCallback((todolistId: string, updTodoTitle: string) => {

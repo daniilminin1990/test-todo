@@ -22,8 +22,10 @@ export const todolistReducer = (state: TodoUIType[]=initState, action: MutualTod
       return state.filter(tl => tl.id !== action.payload.todolistId)
     }
     case 'ADD-TODO': {
-    const a = action.payload
-      const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
+    // const a = action.payload
+    // const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
+    // return [newTodo, ...state]
+      const newTodo: TodoUIType = {...action.payload.newTodolist, filter: 'all'}
       return [newTodo, ...state]
     }
     case 'CHANGE-TODO-FILTER': {
@@ -57,12 +59,11 @@ export const removeTodoAC = (todolistId: string)=> {
 }
 
 export type AddTodoACType = ReturnType<typeof addTodoAC>
-export const addTodoAC = (todolistId: string, newTodoTitle: string)=>{
+export const addTodoAC = (newTodolist: TodolistType)=>{
   return {
     type:"ADD-TODO",
     payload:{
-      todolistId,
-      newTodoTitle
+      newTodolist
     }
   }as const
 }
@@ -110,5 +111,19 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
+    })
+}
+
+export const deleteTodoTC = (todolistId: string) => (dispatch: Dispatch) => {
+  todolistsAPI.deleteTodolist(todolistId)
+    .then(() => {
+      dispatch(removeTodoAC(todolistId))
+    })
+}
+
+export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
+  todolistsAPI.createTodolist(newTodotitle)
+    .then((res) => {
+      dispatch(addTodoAC(res.data.data.item))
     })
 }
