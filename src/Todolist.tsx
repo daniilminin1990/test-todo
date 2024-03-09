@@ -43,8 +43,8 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, [dispatch, props.todolistId])
 
   const addTask = useCallback((newTaskTitle: string) => {
-    dispatch(addTaskTC(props.todolistId, newTaskTitle))
-    // dispatch(addTaskAC(props.todolistId, newTodolTitle))
+    // dispatch(addTaskTC(props.todolistId, newTask))
+    dispatch(addTaskAC(props.todolistId, newTaskTitle))
   }, [dispatch, props.todolistId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TasksStatuses) => {

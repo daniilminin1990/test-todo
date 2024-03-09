@@ -34,6 +34,10 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
       const a = action.payload
       return {...state, [a.todolistId]: state[a.todolistId].filter(t => t.id !== a.taskId)}
     }
+    // case "ADD-TASK": {
+    //   const a = action.payload
+    //   return {...state, [a.todolistId]: [a.task, ...state[a.todolistId]]}
+    // }
     case "ADD-TASK": {
       const a = action.payload
       let newTask: TaskType = {
@@ -102,6 +106,15 @@ export const removeTaskAC = (todolistId: string, taskId: string) => {
 }
 
 export type AddTaskAC = ReturnType<typeof addTaskAC>
+// export const addTaskAC = (todolistId: string, newTask: TaskType) => {
+//   return {
+//     type: 'ADD-TASK',
+//     payload: {
+//       todolistId,
+//       task: newTask
+//     }
+//   } as const
+// }
 export const addTaskAC = (todolistId: string, newTaskTitle: string) => {
   return {
     type: 'ADD-TASK',
@@ -161,6 +174,13 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
     })
 }
 
+// export const addTaskTC = (todoId: string, newTask: TaskType) => (dispatch: Dispatch) => {
+//   tasksApi.createTask(todoId, newTask)
+//     .then(res => {
+//       dispatch(addTaskAC(todoId, newTask))
+//     })
+// }
+// }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
