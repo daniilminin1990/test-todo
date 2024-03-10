@@ -1,7 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField/TextField';
-import { styles, styleTextField } from "./styles";
+import { styles, styleTextField } from "../styles";
 import { styled } from '@mui/system';
 
 export type AddItemFormProps = {

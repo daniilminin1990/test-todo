@@ -1,8 +1,8 @@
 import React, {ChangeEvent} from 'react';
-import EdiatbleSpan from "./EdiatbleSpan";
+import EdiatbleSpan from "../../../../components/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {TasksStatuses} from "./api/tasks-api";
+import {TasksStatuses} from "../../../../api/tasks-api";
 
 export type TaskProps = {
   taskId: string,

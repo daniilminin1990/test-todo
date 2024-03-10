@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { action } from '@storybook/addon-actions'
-import EdiatbleSpan, { EdiatbleSpanProps } from "../EdiatbleSpan";
+import EdiatbleSpan, { EdiatbleSpanProps } from "../components/EdiatbleSpan";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 const meta: Meta<typeof EdiatbleSpan> = {

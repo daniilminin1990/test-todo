@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react";
 import {action} from '@storybook/addon-actions'
-import {Task} from "../Task";
+import {Task} from "../features/TodolistsBunch/Todolist/Task/Task";
 import {useState} from "react";
 import {TasksStatuses} from "../api/tasks-api";
 

@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from "./AddItemForm";
-import EdiatbleSpan from "./EdiatbleSpan";
+import {AddItemForm} from "../../../components/AddItemForm";
+import EdiatbleSpan from "../../../components/EdiatbleSpan";
 import {useSelector} from "react-redux";
-import {addTaskTC, updateTaskTC, deleteTaskTC, setTasksTC} from "./redux/tasksReducer";
-import {Task} from "./Task";
-import {deleteTodoTC, FilterValuesType} from "./redux/todolistReducer";
+import {addTaskTC, updateTaskTC, deleteTaskTC, setTasksTC} from "../../../redux/tasksReducer";
+import {Task} from "./Task/Task";
+import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistReducer";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {RootReducerType, useAppDispatch} from './store/store';
-import {TasksStatuses, TaskType} from "./api/tasks-api";
+import {RootReducerType, useAppDispatch} from '../../../store/store';
+import {TasksStatuses, TaskType} from "../../../api/tasks-api";
 
 type TodolistProps = {
   todoTitle: string,
