@@ -3,6 +3,7 @@ import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistRed
 import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
+import {addTaskStatusAC, AddTaskStatusACType} from "./appReducer";
 
 export type TaskStateType = {
   [todolistId: string]: TaskType[]
@@ -173,16 +174,20 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
+  dispatch(addTaskStatusAC('loading'))
   tasksApi.getTasks(todoId)
     .then(res => {
+      dispatch(addTaskStatusAC('success'))
       dispatch(setTasksAC(todoId, res.data.items))
     })
 }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
+  dispatch(addTaskStatusAC('loading'))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
       dispatch(removeTaskAC(todoId, taskId))
+      dispatch(addTaskStatusAC('success'))
     })
 }
 
@@ -194,16 +199,19 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
 // }
 // }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
+  dispatch(addTaskStatusAC('loading'))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       dispatch(addTaskAC(todoId, newTaskTitle))
+      dispatch(addTaskStatusAC('success'))
     })
 }
-export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType ) => (dispatch: Dispatch, getState: () => RootReducerType) => {
+export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
+  dispatch(addTaskStatusAC('loading'))
   const state = getState()
   const task = state.tasksReducer[todolistId].find(tl => tl.id === taskId)
 
-  if(!task){
+  if (!task) {
     throw new Error('Task not found in the state')
     console.warn('Task not found in the state')
     return
@@ -220,5 +228,6 @@ export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: U
   tasksApi.updateTask(todolistId, taskId, apiModel)
     .then(res => {
       dispatch(updateTaskAC(todolistId, taskId, apiModel))
+      dispatch(addTaskStatusAC('success'))
     })
 }

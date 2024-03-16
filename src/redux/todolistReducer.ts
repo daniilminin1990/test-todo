@@ -1,6 +1,7 @@
 import {v1} from "uuid";
 import {todolistsAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
+import {addStatusAC, addTodoStatusAC, AddTodoStatusACType, setErrorAC} from "./appReducer";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -11,20 +12,20 @@ export type TodoUIType = TodolistType & {
 export const todolistId1 = v1()
 export const todolistId2 = v1()
 
-const initState: TodoUIType[] =[
+const initState: TodoUIType[] = [
   // {id: todolistId1, title: 'Оп-оп', filter: 'all', addedDate: '', order: 0},
   // {id: todolistId2, title: 'Вот те нате', filter: 'all', addedDate: '', order: 0},
 ]
 
-export const todolistReducer = (state: TodoUIType[]=initState, action: MutualTodoType): Array <TodoUIType> => {
-  switch(action.type){
+export const todolistReducer = (state: TodoUIType[] = initState, action: MutualTodoType): Array<TodoUIType> => {
+  switch (action.type) {
     case 'REMOVE-TODO': {
       return state.filter(tl => tl.id !== action.payload.todolistId)
     }
     case 'ADD-TODO': {
-    // const a = action.payload
-    // const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
-    // return [newTodo, ...state]
+      // const a = action.payload
+      // const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
+      // return [newTodo, ...state]
       const newTodo: TodoUIType = {...action.payload.newTodolist, filter: 'all'}
       return [newTodo, ...state]
     }
@@ -46,10 +47,11 @@ export const todolistReducer = (state: TodoUIType[]=initState, action: MutualTod
 }
 
 
-export type MutualTodoType = RemoveTodoACType | AddTodoACType | ChangeFilterAC | UpdateTodoTitleAC | SetTodosActionType
+export type MutualTodoType = RemoveTodoACType | AddTodoACType
+  | ChangeFilterAC | UpdateTodoTitleAC | SetTodosActionType
 
 export type RemoveTodoACType = ReturnType<typeof removeTodoAC>
-export const removeTodoAC = (todolistId: string)=> {
+export const removeTodoAC = (todolistId: string) => {
   return {
     type: 'REMOVE-TODO',
     payload: {
@@ -59,13 +61,13 @@ export const removeTodoAC = (todolistId: string)=> {
 }
 
 export type AddTodoACType = ReturnType<typeof addTodoAC>
-export const addTodoAC = (newTodolist: TodolistType)=>{
+export const addTodoAC = (newTodolist: TodolistType) => {
   return {
-    type:"ADD-TODO",
-    payload:{
+    type: "ADD-TODO",
+    payload: {
       newTodolist
     }
-  }as const
+  } as const
 }
 
 export type ChangeFilterAC = ReturnType<typeof changeFilterAC>
@@ -80,7 +82,7 @@ export const changeFilterAC = (todolistId: string, newFilterValue: FilterValuesT
 }
 
 export type UpdateTodoTitleAC = ReturnType<typeof updateTodoTitleAC>
-export const updateTodoTitleAC = (todolistId: string, updTodoTitle: string)=> {
+export const updateTodoTitleAC = (todolistId: string, updTodoTitle: string) => {
   return {
     type: 'UPDATE-TODO-TITLE',
     payload: {
@@ -111,6 +113,7 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
+      dispatch(addTodoStatusAC('success'))
     })
 }
 
@@ -122,9 +125,22 @@ export const deleteTodoTC = (todolistId: string) => (dispatch: Dispatch) => {
 }
 
 export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
+  dispatch(addStatusAC('loading'))
   todolistsAPI.createTodolist(newTodotitle)
     .then((res) => {
-      dispatch(addTodoAC(res.data.data.item))
+      if(res.data.resultCode===0){
+        dispatch(addTodoAC(res.data.data.item))
+        dispatch(addStatusAC('success'))
+      } else {
+        if(res.data.messages.length){ // Если придет текст ошибки с сервера (МЫ НЕ ПРОВЕРЯЕМ НА 100 символов, это делает сервер)
+          dispatch(setErrorAC(res.data.messages[0]))
+        } else { // Если не придет текст ошибки с сервера, то откинем свой текст
+          dispatch(setErrorAC('Oops. Something went wrong. Reload page'))
+        }
+      }
+    })
+    .finally(() => {
+      dispatch(addStatusAC('success'))
     })
 }
 

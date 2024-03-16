@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from "react";
-import {RootReducerType, useAppDispatch} from "../../store/store";
+import {RootReducerType, useAppDispatch, useAppSelector} from "../../store/store";
 import {useSelector} from "react-redux";
 import {
   addTodoTC,
@@ -9,7 +9,7 @@ import {
   setTodolistsTC,
   TodoUIType
 } from "../../redux/todolistReducer";
-import {Grid, Paper} from "@mui/material";
+import {CircularProgress, Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 
@@ -17,6 +17,7 @@ type TodolistsBunchProps = {}
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const dispatch = useAppDispatch()
   const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
+  const statusAddTodo = useAppSelector(state => state.appReducer.addStatus)
 
   useEffect(() => {
     dispatch(setTodolistsTC())
@@ -38,6 +39,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         <>
           <Grid container style={{ padding: '20px' }} >
             <AddItemForm callback={addTodo} />
+            {statusAddTodo==='loading' && <CircularProgress color='info'/>}
           </Grid>
           <Grid container spacing={3}>
             {

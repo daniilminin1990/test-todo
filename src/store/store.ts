@@ -1,12 +1,14 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {todolistReducer} from "../redux/todolistReducer";
 import {tasksReducer} from "../redux/tasksReducer";
-import {thunk} from "redux-thunk";
-import {useDispatch} from "react-redux";
+import {thunk, ThunkDispatch} from "redux-thunk";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {appReducer} from "../redux/appReducer";
 
 const rootReducer = combineReducers({
   todolistReducer: todolistReducer,
   tasksReducer: tasksReducer,
+  appReducer: appReducer
 })
 export type RootReducerType = ReturnType<typeof rootReducer>
 // @ts-ignore
@@ -16,7 +18,18 @@ export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
 //   reducer: rootReducer,
 // })
 
-export type AppDispatch = typeof store.dispatch
-export const useAppDispatch: () => AppDispatch = useDispatch // Export a hook that can be reused to resolve types
+// * 1 вариант типизации из доки RTK
+// // Infer the `RootState` and `AppDispatch` types from the store itself
+// export type RootState = ReturnType<typeof store.getState>
+// export type AppDispatch = typeof store.dispatch
+// // Use throughout your app instead of plain `useDispatch` and `useSelector`
+// export const useAppDispatch: () => AppDispatch = useDispatch // Export a hook that can be reused to resolve types
+// export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+// * 2 вариант типизации для useDispatch и useSelector из урока
+export type AppDispatch = ThunkDispatch<RootReducerType, any, AnyAction>
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch = () => useDispatch<AppDispatch>() // Export a hook that can be reused to resolve types
+export const useAppSelector: TypedUseSelectorHook<RootReducerType> = useSelector
 
 export default store
