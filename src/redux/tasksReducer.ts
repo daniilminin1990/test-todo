@@ -3,7 +3,7 @@ import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistRed
 import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
-import {addTaskStatusAC, AddTaskStatusACType} from "./appReducer";
+import {addTaskStatusAC, AddTaskStatusACType, setErrorAC} from "./appReducer";
 
 export type TaskStateType = {
   [todolistId: string]: TaskType[]
@@ -202,7 +202,18 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
   dispatch(addTaskStatusAC('loading'))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
+      if(res.data.resultCode === 0){
       dispatch(addTaskAC(todoId, newTaskTitle))
+      dispatch(addTaskStatusAC('success'))
+      } else {
+        if(res.data.messages.length){
+          dispatch(setErrorAC(res.data.messages[0]))
+        } else {
+          dispatch(setErrorAC('Oops! Something gone wrong. Length of task should be less 100 symbols'))
+        }
+      }
+    })
+    .finally(() => {
       dispatch(addTaskStatusAC('success'))
     })
 }
