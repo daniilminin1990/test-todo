@@ -57,6 +57,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                         changeFilter={changeFilter}
                         updTodoTitle={updTodoTitle}
                         entityStatus={tl.entityStatus}
+                        disabled={tl.entityStatus}
                       />
                     </Paper>
                   </Grid>

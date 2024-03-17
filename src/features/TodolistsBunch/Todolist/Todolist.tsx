@@ -2,7 +2,13 @@ import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from "../../../components/AddItemForm";
 import EdiatbleSpan from "../../../components/EdiatbleSpan";
 import {useSelector} from "react-redux";
-import {addTaskTC, updateTaskTC, deleteTaskTC, setTasksTC} from "../../../redux/tasksReducer";
+import {
+  addTaskTC,
+  updateTaskTC,
+  deleteTaskTC,
+  setTasksTC,
+  TasksWithEntityStatusType
+} from "../../../redux/tasksReducer";
 import {Task} from "./Task/Task";
 import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistReducer";
 import Button from "@material-ui/core/Button";
@@ -21,11 +27,12 @@ type TodolistProps = {
   changeFilter: (todolistId: string, newTasksFilterValue: FilterValuesType) => void
   updTodoTitle: (todolistId: string, updTodoTitle: string) => void
   entityStatus: ServerResponseStatusType
+  disabled: ServerResponseStatusType
 }
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   console.log('Todolist')
-  let allTodoTasks = useSelector<RootReducerType, TaskType[]>((state) => state.tasksReducer[props.todolistId])
+  let allTodoTasks = useSelector<RootReducerType, TasksWithEntityStatusType[]>((state) => state.tasksReducer[props.todolistId])
   // let allTodoTasks = tasks[props.todolistId]
   const dispatch = useAppDispatch()
 
@@ -74,7 +81,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   return (
     <div>
       <h3>
-        <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} />
+        <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} disabled={props.disabled === 'loading'}/>
         <IconButton aria-label="delete" onClick={removeTodo} disabled={props.entityStatus === 'loading'}>
           <DeleteIcon />
         </IconButton>
@@ -100,6 +107,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
                         taskId={t.id}
                         tIsDone={t.status}
                         oldTitle={t.title}
+                        entityStatus = {t.entityStatus}
                         onChange={changeTaskStatus}
                         onClick={removeTask}
                         updTaskTitle={updTaskTitle}

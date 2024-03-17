@@ -3,10 +3,14 @@ import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistRed
 import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
-import {addTaskStatusAC, AddTaskStatusACType, setErrorAC} from "./appReducer";
+import {addTaskStatusAC, AddTaskStatusACType, ServerResponseStatusType, setErrorAC} from "./appReducer";
 
 export type TaskStateType = {
-  [todolistId: string]: TaskType[]
+  [todolistId: string]: TasksWithEntityStatusType[]
+}
+
+export type TasksWithEntityStatusType = TaskType & {
+  entityStatus: ServerResponseStatusType
 }
 
 export type UpdateTaskUtilityType = {
@@ -51,10 +55,11 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
     // }
     case "ADD-TASK": {
       const a = action.payload
-      let newTask: TaskType = {
+      let newTask: TasksWithEntityStatusType = {
         id: v1(), title: a.newTaskTitle, status: TasksStatuses.New,
         todolistId: a.todolistId, description: '', order: 0,
-        startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low
+        startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low,
+        entityStatus: 'idle'
       }
       return {...state, [a.todolistId]: [newTask, ...state[a.todolistId]]}
     }
@@ -88,9 +93,13 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
       return copyState
     }
     case "SET-TASKS": {
-      const copyState = {...state}
-      copyState[action.todoId] = action.tasks
-      return copyState
+      // const copyState = {...state}
+      // copyState[action.todoId] = action.tasks
+      return {...state, [action.todoId]: action.tasks.map(t => ({...t, entityStatus: 'idle'}))}
+    }
+    case "UPDATE-TASK-ENTITY-STATUS": {
+      const a = action.payload
+      return {...state, [a.todoId]:state[a.todoId].map(t => t.id === a.taskId ? {...t, entityStatus: a.entityStatus} : t)}
     }
     default: {
       return state
@@ -105,6 +114,7 @@ export type MutualTaskType = RemoveTaskAC
   | RemoveTodoACType
   | SetTodosActionType
   | SetTasksACType
+  | UpdateTaskEntityStatusAC
 
 export type RemoveTaskAC = ReturnType<typeof removeTaskAC>
 
@@ -162,6 +172,19 @@ export const updTaskTitleAC = (todolistId: string, taskId: string, updTaskTitle:
   } as const
 }
 
+// ! AC для entityStatus
+export type UpdateTaskEntityStatusAC = ReturnType<typeof updateTaskEntityStatusAC>
+export const updateTaskEntityStatusAC = (todoId: string, taskId: string, entityStatus: ServerResponseStatusType) => {
+  return {
+    type: 'UPDATE-TASK-ENTITY-STATUS',
+    payload: {
+      todoId,
+      taskId,
+      entityStatus
+    }
+  } as const
+}
+
 //! ActionCreator для сета тасок с сервера
 export type SetTasksACType = ReturnType<typeof setTasksAC>
 export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
@@ -184,10 +207,12 @@ export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
   dispatch(addTaskStatusAC('loading'))
+  dispatch(updateTaskEntityStatusAC(todoId, taskId, 'loading'))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
       dispatch(removeTaskAC(todoId, taskId))
       dispatch(addTaskStatusAC('success'))
+      dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
     })
 }
 
@@ -202,11 +227,11 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
   dispatch(addTaskStatusAC('loading'))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
-      if(res.data.resultCode === 0){
-      dispatch(addTaskAC(todoId, newTaskTitle))
-      dispatch(addTaskStatusAC('success'))
+      if (res.data.resultCode === 0) {
+        dispatch(addTaskAC(todoId, newTaskTitle))
+        dispatch(addTaskStatusAC('success'))
       } else {
-        if(res.data.messages.length){
+        if (res.data.messages.length) {
           dispatch(setErrorAC(res.data.messages[0]))
         } else {
           dispatch(setErrorAC('Oops! Something gone wrong. Length of task should be less 100 symbols'))
@@ -219,6 +244,7 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
 }
 export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
   dispatch(addTaskStatusAC('loading'))
+  dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'loading'))
   const state = getState()
   const task = state.tasksReducer[todolistId].find(tl => tl.id === taskId)
 
@@ -240,5 +266,6 @@ export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: U
     .then(res => {
       dispatch(updateTaskAC(todolistId, taskId, apiModel))
       dispatch(addTaskStatusAC('success'))
+      dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'success'))
     })
 }

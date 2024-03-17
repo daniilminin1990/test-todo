@@ -3,6 +3,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 export type EdiatbleSpanProps = {
   oldTitle: string
   callback: (updTitle: string) => void
+  disabled: boolean
 }
 const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [edit, setEdit] = useState<boolean>(false)
@@ -10,11 +11,13 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [error, setError] = useState<string | null>(null)
 
   const swapHandler = () => {
-    setEdit(!edit)
-    // edit === false && props.callback(updTitle)
-    edit === true && props.callback(updTitle)
-    if (updTitle.trim() === '') {
-      setEdit(true)
+    if(!props.disabled){
+      setEdit(!edit)
+      // edit === false && props.callback(updTitle)
+      edit === true && props.callback(updTitle)
+      if (updTitle.trim() === '') {
+        setEdit(true)
+      }
     }
   }
 

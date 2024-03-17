@@ -41,7 +41,7 @@ export const todolistReducer = (state: TodoUIType[] = initState, action: MutualT
     case "SET-TODO": {
       return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     }
-    case "UPDATE-ENTITY-STATUS": {
+    case "UPDATE-TODO-ENTITY-STATUS": {
       const a = action.payload
       return state.map(tl => tl.id === a.todoId ? {...tl, entityStatus: a.entityStatus} : tl)
     }
@@ -100,7 +100,7 @@ export const updateTodoTitleAC = (todolistId: string, updTodoTitle: string) => {
 export type UpdateEntityStatusTodoAC = ReturnType<typeof updateEntityStatusTodoAC>
 export const updateEntityStatusTodoAC = (todoId: string, entityStatus: ServerResponseStatusType) => {
   return {
-    type: 'UPDATE-ENTITY-STATUS',
+    type: 'UPDATE-TODO-ENTITY-STATUS',
     payload: {
       todoId,
       entityStatus
