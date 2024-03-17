@@ -8,8 +8,10 @@ import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistReducer";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Skeleton from '@mui/material/Skeleton';
 import {RootReducerType, useAppDispatch} from '../../../store/store';
 import {TasksStatuses, TaskType} from "../../../api/tasks-api";
+import {ServerResponseStatusType} from "../../../redux/appReducer";
 
 type TodolistProps = {
   todoTitle: string,
@@ -18,6 +20,7 @@ type TodolistProps = {
   todolistId: string
   changeFilter: (todolistId: string, newTasksFilterValue: FilterValuesType) => void
   updTodoTitle: (todolistId: string, updTodoTitle: string) => void
+  entityStatus: ServerResponseStatusType
 }
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
@@ -72,25 +75,35 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
     <div>
       <h3>
         <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} />
-        <IconButton aria-label="delete" onClick={removeTodo}>
+        <IconButton aria-label="delete" onClick={removeTodo} disabled={props.entityStatus === 'loading'}>
           <DeleteIcon />
         </IconButton>
       </h3>
-      <AddItemForm callback={addTask} />
+      <AddItemForm callback={addTask} disabled={props.entityStatus === 'loading'}/>
       {allTodoTasks.length === 0
         ? <p>Nothing to show</p>
         : <ul>
           {
             allTodoTasks.map(t => {
               return (
-                <Task key={t.id}
-                  taskId={t.id}
-                  tIsDone={t.status}
-                  oldTitle={t.title}
-                  onChange={changeTaskStatus}
-                  onClick={removeTask}
-                  updTaskTitle={updTaskTitle}
-                />
+                props.entityStatus === 'loading'
+                ? <Skeleton><Task key={t.id}
+                        taskId={t.id}
+                        tIsDone={t.status}
+                        oldTitle={t.title}
+                        onChange={changeTaskStatus}
+                        onClick={removeTask}
+                        updTaskTitle={updTaskTitle}
+                    />
+                  </Skeleton>
+                : <Task key={t.id}
+                        taskId={t.id}
+                        tIsDone={t.status}
+                        oldTitle={t.title}
+                        onChange={changeTaskStatus}
+                        onClick={removeTask}
+                        updTaskTitle={updTaskTitle}
+                  />
               )
             })
           }

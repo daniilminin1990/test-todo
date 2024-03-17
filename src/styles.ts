@@ -1,10 +1,10 @@
-const styles = {
+const getStyles = (disabled: boolean | undefined) => ({
   maxWidth: '38px',
   maxHeight: '38px',
   minWidth: '38px',
   minHeight: '38px',
-  backgroundColor: '#3cb37b'
-}
+  backgroundColor: disabled ? 'lightgray' : '#3cb37b'
+});
 
 const styleTextField = {
   maxHeight: '38px',
@@ -13,6 +13,6 @@ const styleTextField = {
 }
 
 export {
-  styles,
+  getStyles,
   styleTextField
 }

@@ -1,11 +1,12 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { styles } from "../styles";
+import {getStyles} from "../styles";
 import { styled } from '@mui/system';
 
 export type AddItemFormProps = {
   callback: (newTitle: string) => void
+  disabled?: boolean
 }
 
 // Кастомная стилизация TextField от MUI
@@ -55,8 +56,9 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         onChange={onNewTitleChangeHandler}
         onKeyDown={onEnterAddItem}
         className={error ? 'error' : ''}
+        disabled = {props.disabled}
       />
-      <Button onClick={onClickAddItemHandler} variant="contained" style={styles}>+</Button>
+      <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)} disabled = {props.disabled}>+</Button>
       {/*{error && <div className={'error-message'}>Title is required</div>}*/}
     </div>
   );

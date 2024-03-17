@@ -6,7 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +199,7 @@
       <workItem from="1710511422759" duration="554000" />
       <workItem from="1710512723215" duration="2092000" />
       <workItem from="1710571962251" duration="8493000" />
-      <workItem from="1710669714779" duration="803000" />
+      <workItem from="1710669714779" duration="5317000" />
     </task>
     <servers />
   </component>

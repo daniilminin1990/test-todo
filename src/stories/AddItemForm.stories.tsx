@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { AddItemForm, AddItemFormProps, StyledTextField } from "../components/AddItemForm";
 import { action } from '@storybook/addon-actions'
-import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from "@material-ui/core/Button";
-import { styles } from "../styles";
+import { getStyles } from "../styles";
 
 const meta: Meta<typeof AddItemForm> = {
   title: 'TODOLIST/AddItemForm',
@@ -70,7 +70,7 @@ export const AddItemFormError = (props: AddItemFormProps) => {
         onKeyDown={onEnterAddItem}
         className={error ? 'error' : ''}
       />
-      <Button onClick={onClickAddItemHandler} variant="contained" style={styles}>+</Button>
+      <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)}>+</Button>
       {/*{error && <div className={'error-message'}>Title is required</div>}*/}
     </div>
   );
