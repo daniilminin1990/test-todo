@@ -23,16 +23,16 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     dispatch(setTodolistsTC())
   }, []);
 
-  const changeFilter = useCallback((todolistId: string, newFilterValue: FilterValuesType) => {
-    dispatch(changeFilterAC(todolistId, newFilterValue))
+  const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
+    dispatch(changeFilterAC(todoListId, newFilterValue))
   }, [dispatch])
 
   const addTodo = useCallback((newTodoTitle: string) => {
     dispatch(addTodoTC(newTodoTitle))
   }, [dispatch])
 
-  const updTodoTitle = useCallback((todolistId: string, updTodoTitle: string) => {
-    dispatch(changeTodoTitleTC(todolistId, updTodoTitle))
+  const updTodoTitle = useCallback((todoListId: string, updTodoTitle: string) => {
+    dispatch(changeTodoTitleTC(todoListId, updTodoTitle))
   }, [dispatch])
 
       return (
@@ -50,7 +50,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                     <Paper elevation={6} style={{ padding: '30px' }}>
                       <Todolist
                         key={tl.id}
-                        todolistId={tl.id}
+                        todoListId={tl.id}
                         todoTitle={tl.title}
                         // tasks={allTodoTasks}
                         tasksFilter={tl.filter}

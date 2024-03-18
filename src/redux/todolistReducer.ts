@@ -12,33 +12,33 @@ export type TodoUIType = TodolistType & {
   entityStatus: ServerResponseStatusType
 }
 
-// export const todolistId1 = v1()
-// export const todolistId2 = v1()
+// export const todoListId1 = v1()
+// export const todoListId2 = v1()
 
 const initState: TodoUIType[] = [
-  // {id: todolistId1, title: 'Оп-оп', filter: 'all', addedDate: '', order: 0},
-  // {id: todolistId2, title: 'Вот те нате', filter: 'all', addedDate: '', order: 0},
+  // {id: todoListId1, title: 'Оп-оп', filter: 'all', addedDate: '', order: 0},
+  // {id: todoListId2, title: 'Вот те нате', filter: 'all', addedDate: '', order: 0},
 ]
 
 export const todolistReducer = (state: TodoUIType[] = initState, action: MutualTodoType): Array<TodoUIType> => {
   switch (action.type) {
     case 'REMOVE-TODO': {
-      return state.filter(tl => tl.id !== action.payload.todolistId)
+      return state.filter(tl => tl.id !== action.payload.todoListId)
     }
     case 'ADD-TODO': {
       // const a = action.payload
-      // const newTodo: TodoUIType = {id: a.todolistId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
+      // const newTodo: TodoUIType = {id: a.todoListId, title: a.newTodoTitle, filter: 'all', addedDate: '', order: 0}
       // return [newTodo, ...state]
       const newTodo: TodoUIType = {...action.payload.newTodolist, filter: 'all', entityStatus: 'idle'}
       return [newTodo, ...state]
     }
     case 'CHANGE-TODO-FILTER': {
       const a = action.payload
-      return state.map(tl => tl.id === a.todolistId ? {...tl, filter: a.newFilterValue} : tl)
+      return state.map(tl => tl.id === a.todoListId ? {...tl, filter: a.newFilterValue} : tl)
     }
     case "UPDATE-TODO-TITLE": {
       const a = action.payload
-      return state.map(tl => tl.id === a.todolistId ? {...tl, title: a.updTodoTitle} : tl)
+      return state.map(tl => tl.id === a.todoListId ? {...tl, title: a.updTodoTitle} : tl)
     }
     case "SET-TODO": {
       return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
@@ -57,11 +57,11 @@ export type MutualTodoType = RemoveTodoACType | AddTodoACType
   | ChangeFilterAC | UpdateTodoTitleAC | SetTodosActionType | UpdateEntityStatusTodoAC
 
 export type RemoveTodoACType = ReturnType<typeof removeTodoAC>
-export const removeTodoAC = (todolistId: string) => {
+export const removeTodoAC = (todoListId: string) => {
   return {
     type: 'REMOVE-TODO',
     payload: {
-      todolistId,
+      todoListId,
     }
   } as const
 }
@@ -77,22 +77,22 @@ export const addTodoAC = (newTodolist: TodolistType) => {
 }
 
 export type ChangeFilterAC = ReturnType<typeof changeFilterAC>
-export const changeFilterAC = (todolistId: string, newFilterValue: FilterValuesType) => {
+export const changeFilterAC = (todoListId: string, newFilterValue: FilterValuesType) => {
   return {
     type: 'CHANGE-TODO-FILTER',
     payload: {
-      todolistId,
+      todoListId,
       newFilterValue,
     }
   } as const
 }
 
 export type UpdateTodoTitleAC = ReturnType<typeof updateTodoTitleAC>
-export const updateTodoTitleAC = (todolistId: string, updTodoTitle: string) => {
+export const updateTodoTitleAC = (todoListId: string, updTodoTitle: string) => {
   return {
     type: 'UPDATE-TODO-TITLE',
     payload: {
-      todolistId,
+      todoListId,
       updTodoTitle
     }
   } as const
@@ -135,12 +135,12 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
     })
 }
 
-export const deleteTodoTC = (todolistId: string) => (dispatch: Dispatch) => {
-  dispatch(updateEntityStatusTodoAC(todolistId, 'loading')) // перед запросом поставим в loading
-  todolistsAPI.deleteTodolist(todolistId)
+export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
+  dispatch(updateEntityStatusTodoAC(todoListId, 'loading')) // перед запросом поставим в loading
+  todolistsAPI.deleteTodolist(todoListId)
     .then(() => {
-      dispatch(removeTodoAC(todolistId))
-      dispatch(updateEntityStatusTodoAC(todolistId, 'success')) // если все удачно, то в success
+      dispatch(removeTodoAC(todoListId))
+      dispatch(updateEntityStatusTodoAC(todoListId, 'success')) // если все удачно, то в success
     })
 }
 
@@ -161,10 +161,10 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
     })
 }
 
-export const changeTodoTitleTC = (todolistId: string, newTodotitle: string) => (dispatch: Dispatch) => {
-  todolistsAPI.updateTodolist(todolistId, newTodotitle)
+export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (dispatch: Dispatch) => {
+  todolistsAPI.updateTodolist(todoListId, newTodotitle)
     .then((res) => {
-      dispatch(updateTodoTitleAC(todolistId, newTodotitle))
+      dispatch(updateTodoTitleAC(todoListId, newTodotitle))
     })
 }
 

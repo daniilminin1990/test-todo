@@ -374,8 +374,8 @@ WARN src\Todolist.tsx
 WARN   Line 2:43:  'TaskType' is defined but never used  @typescript-eslint/no-unused-vars
 WARN 
 WARN src\stories\Decorator.tsx
-WARN   Line 20:5:  Unnecessarily computed property ["todolistId1"] found  no-useless-computed-key
-WARN   Line 24:5:  Unnecessarily computed property ["todolistId2"] found  no-useless-computed-key
+WARN   Line 20:5:  Unnecessarily computed property ["todoListId1"] found  no-useless-computed-key
+WARN   Line 24:5:  Unnecessarily computed property ["todoListId2"] found  no-useless-computed-key
 WARN 
 WARN 
 WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).

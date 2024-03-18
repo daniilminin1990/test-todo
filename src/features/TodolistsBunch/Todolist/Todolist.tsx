@@ -23,41 +23,41 @@ type TodolistProps = {
   todoTitle: string,
   // tasks: TaskType[]
   tasksFilter: FilterValuesType
-  todolistId: string
-  changeFilter: (todolistId: string, newTasksFilterValue: FilterValuesType) => void
-  updTodoTitle: (todolistId: string, updTodoTitle: string) => void
+  todoListId: string
+  changeFilter: (todoListId: string, newTasksFilterValue: FilterValuesType) => void
+  updTodoTitle: (todoListId: string, updTodoTitle: string) => void
   entityStatus: ServerResponseStatusType
   disabled: ServerResponseStatusType
 }
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   console.log('Todolist')
-  let allTodoTasks = useSelector<RootReducerType, TasksWithEntityStatusType[]>((state) => state.tasksReducer[props.todolistId])
-  // let allTodoTasks = tasks[props.todolistId]
+  let allTodoTasks = useSelector<RootReducerType, TasksWithEntityStatusType[]>((state) => state.tasksReducer[props.todoListId])
+  // let allTodoTasks = tasks[props.todoListId]
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(setTasksTC(props.todolistId))
+    dispatch(setTasksTC(props.todoListId))
   }, []);
 
   const removeTask = useCallback((taskId: string) => {
-    dispatch(deleteTaskTC(props.todolistId, taskId))
-    // dispatch(removeTaskAC(props.todolistId, taskId))
-  }, [dispatch, props.todolistId])
+    dispatch(deleteTaskTC(props.todoListId, taskId))
+    // dispatch(removeTaskAC(props.todoListId, taskId))
+  }, [dispatch, props.todoListId])
 
   const addTask = useCallback((newTaskTitle: string) => {
-    dispatch(addTaskTC(props.todolistId, newTaskTitle))
-  }, [dispatch, props.todolistId])
+    dispatch(addTaskTC(props.todoListId, newTaskTitle))
+  }, [dispatch, props.todoListId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TasksStatuses) => {
-    // dispatch(changeTaskStatusAC(props.todolistId, taskId, checked))
-    dispatch(updateTaskTC(props.todolistId, taskId, {status: checked}))
-  }, [dispatch, props.todolistId])
+    // dispatch(changeTaskStatusAC(props.todoListId, taskId, checked))
+    dispatch(updateTaskTC(props.todoListId, taskId, {status: checked}))
+  }, [dispatch, props.todoListId])
 
   const updTaskTitle = useCallback((taskId: string, updTaskTitle: string) => {
-    // dispatch(updTaskTitleAC(props.todolistId, taskId, updTaskTitle))
-    dispatch(updateTaskTC(props.todolistId, taskId, {title: updTaskTitle}))
-  }, [dispatch, props.todolistId])
+    // dispatch(updTaskTitleAC(props.todoListId, taskId, updTaskTitle))
+    dispatch(updateTaskTC(props.todoListId, taskId, {title: updTaskTitle}))
+  }, [dispatch, props.todoListId])
 
   if (props.tasksFilter === 'completed') {
     allTodoTasks = allTodoTasks.filter(t => t.status === TasksStatuses.Completed)
@@ -66,17 +66,17 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
     allTodoTasks = allTodoTasks.filter(t => t.status === TasksStatuses.New)
   }
 
-  const onAllClickHandler = useCallback(() => { changeFilter(props.todolistId, 'all') }, [changeFilter, props.todolistId])
-  const onActiveClickHandler = useCallback(() => { changeFilter(props.todolistId, 'active') }, [changeFilter, props.todolistId])
-  const onCompletedClickHandler = useCallback(() => { changeFilter(props.todolistId, 'completed') }, [changeFilter, props.todolistId])
+  const onAllClickHandler = useCallback(() => { changeFilter(props.todoListId, 'all') }, [changeFilter, props.todoListId])
+  const onActiveClickHandler = useCallback(() => { changeFilter(props.todoListId, 'active') }, [changeFilter, props.todoListId])
+  const onCompletedClickHandler = useCallback(() => { changeFilter(props.todoListId, 'completed') }, [changeFilter, props.todoListId])
 
   const removeTodo = useCallback(() => {
-    dispatch(deleteTodoTC(props.todolistId))
+    dispatch(deleteTodoTC(props.todoListId))
   }, [dispatch])
 
   const updTodoTitleHandler = useCallback((updTlTitle: string) => {
-    updTodoTitle(props.todolistId, updTlTitle)
-  }, [updTodoTitle, props.todolistId])
+    updTodoTitle(props.todoListId, updTlTitle)
+  }, [updTodoTitle, props.todoListId])
 
   return (
     <div>

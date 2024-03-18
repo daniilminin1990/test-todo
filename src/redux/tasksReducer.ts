@@ -8,7 +8,7 @@ import {errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
 
 export type TaskStateType = {
-  [todolistId: string]: TasksWithEntityStatusType[]
+  [todoListId: string]: TasksWithEntityStatusType[]
 }
 
 export type TasksWithEntityStatusType = TaskType & {
@@ -29,41 +29,32 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
   switch (action.type) {
     case 'REMOVE-TASK': {
       const a = action.payload
-      return {...state, [a.todolistId]: state[a.todolistId].filter(t => t.id !== a.taskId)}
+      return {...state, [a.todoListId]: state[a.todoListId].filter(t => t.id !== a.taskId)}
     }
-    // case "ADD-TASK": {
-    //   const a = action.payload
-    //   return {...state, [a.todolistId]: [a.task, ...state[a.todolistId]]}
-    // }
     case "ADD-TASK": {
       const a = action.payload
-      let newTask: TasksWithEntityStatusType = {
-        id: v1(), title: a.newTaskTitle, status: TasksStatuses.New,
-        todolistId: a.todolistId, description: '', order: 0,
-        startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low, entityStatus: 'idle'
-      }
-      return {...state, [a.todolistId]: [newTask, ...state[a.todolistId]]}
+      console.log('A-PAYLOAD', a)
+      return {...state, [a.todoListId]: [a, ...state[a.todoListId]]}
     }
     case "UPDATE-TASK": {
       const a = action.payload
-      // return {...state, [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, status: a.status} : t)}
-      return {...state, [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, ...a.model} : t)}
+      return {...state, [a.todoListId]: state[a.todoListId].map(t => t.id === a.taskId ? {...t, ...a.model} : t)}
     }
     case "UPDATE-TASK-TITLE": {
       const a = action.payload
       return {
         ...state,
-        [a.todolistId]: state[a.todolistId].map(t => t.id === a.taskId ? {...t, title: a.updTaskTitle} : t)
+        [a.todoListId]: state[a.todoListId].map(t => t.id === a.taskId ? {...t, title: a.updTaskTitle} : t)
       }
     }
     case "ADD-TODO": {
       const a = action.payload
-      // return {...state, [a.todolistId]: []}
+      // return {...state, [a.todoListId]: []}
       return {...state, [a.newTodolist.id]: []}
     }
     case 'REMOVE-TODO': {
       const a = action.payload
-      const {[a.todolistId]: rrr, ...rest} = state
+      const {[a.todoListId]: rrr, ...rest} = state
       return rest
     }
     case "SET-TODO": {
@@ -74,8 +65,6 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
       return copyState
     }
     case "SET-TASKS": {
-      // const copyState = {...state}
-      // copyState[action.todoId] = action.tasks
       return {...state, [action.todoId]: action.tasks.map(t => ({...t, entityStatus: 'idle'}))}
     }
     case "UPDATE-TASK-ENTITY-STATUS": {
@@ -102,42 +91,31 @@ export type MutualTaskType = RemoveTaskAC
 
 export type RemoveTaskAC = ReturnType<typeof removeTaskAC>
 
-export const removeTaskAC = (todolistId: string, taskId: string) => {
+export const removeTaskAC = (todoListId: string, taskId: string) => {
   return {
     type: 'REMOVE-TASK',
     payload: {
-      todolistId,
+      todoListId,
       taskId
     }
   } as const
 }
 
 export type AddTaskAC = ReturnType<typeof addTaskAC>
-// export const addTaskAC = (todolistId: string, newTask: TaskType) => {
-//   return {
-//     type: 'ADD-TASK',
-//     payload: {
-//       todolistId,
-//       task: newTask
-//     }
-//   } as const
-// }
-export const addTaskAC = (todolistId: string, newTaskTitle: string) => {
+export const addTaskAC = (task: TasksWithEntityStatusType) => {
+  console.log('TASK', task.todoListId)
   return {
     type: 'ADD-TASK',
-    payload: {
-      todolistId,
-      newTaskTitle,
-    }
+    payload: task
   } as const
 }
 
 export type ChangeTaskStatusAC = ReturnType<typeof updateTaskAC>
-export const updateTaskAC = (todolistId: string, taskId: string, model: UpdateTaskUtilityType) => {
+export const updateTaskAC = (todoListId: string, taskId: string, model: UpdateTaskUtilityType) => {
   return {
     type: 'UPDATE-TASK',
     payload: {
-      todolistId,
+      todoListId,
       taskId,
       model
     }
@@ -145,11 +123,11 @@ export const updateTaskAC = (todolistId: string, taskId: string, model: UpdateTa
 }
 
 export type UpdTaskTitleAC = ReturnType<typeof updTaskTitleAC>
-export const updTaskTitleAC = (todolistId: string, taskId: string, updTaskTitle: string) => {
+export const updTaskTitleAC = (todoListId: string, taskId: string, updTaskTitle: string) => {
   return {
     type: 'UPDATE-TASK-TITLE',
     payload: {
-      todolistId,
+      todoListId,
       taskId,
       updTaskTitle
     }
@@ -181,7 +159,6 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  // dispatch(addAppTaskStatusAC('loading'))
   tasksApi.getTasks(todoId)
     .then(res => {
       dispatch(setTasksAC(todoId, res.data.items))
@@ -207,35 +184,27 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
       setAppErrorAC(e.message)
     })
 }
-
-// export const addTaskTC = (todoId: string, newTask: TaskType) => (dispatch: Dispatch) => {
-//   tasksApi.createTask(todoId, newTask)
-//     .then(res => {
-//       dispatch(addTaskAC(todoId, newTask))
-//     })
-// }
-// }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
   dispatch(addAppTaskStatusAC('loading'))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       if (res.data.resultCode === 0) {
-        dispatch(addTaskAC(todoId, newTaskTitle))
+        console.log(res.data.data.item)
+        console.log(res.data.data.item.todoListId)
+        const taskToServer: TasksWithEntityStatusType = {...res.data.data.item, entityStatus: 'idle'}
+        console.log('197ifhsogfih', taskToServer)
+        dispatch(addTaskAC(taskToServer))
         dispatch(addAppTaskStatusAC('success'))
       } else {
         errorFunctionMessage(res.data, dispatch)
       }
-      return res
-    })
-    .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
     })
 }
-export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
+export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
   dispatch(addAppTaskStatusAC('loading'))
-  dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'loading'))
+  dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'loading'))
   const state = getState()
-  const task = state.tasksReducer[todolistId].find(tl => tl.id === taskId)
+  const task = state.tasksReducer[todoListId].find(tl => tl.id === taskId)
 
   if (!task) {
     throw new Error('Task not found in the state')
@@ -251,14 +220,14 @@ export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: U
     deadline: task.deadline,
     ...utilityModel
   }
-  tasksApi.updateTask(todolistId, taskId, apiModel)
+  tasksApi.updateTask(todoListId, taskId, apiModel)
     .then(res => {
       console.log(res)
       console.log(res.data.resultCode)
       if (res.data.resultCode === 0) {
-        dispatch(updateTaskAC(todolistId, taskId, apiModel))
+        dispatch(updateTaskAC(todoListId, taskId, apiModel))
         dispatch(addAppTaskStatusAC('success'))
-        dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'success'))
+        dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'success'))
       } else {
         errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch)
       }
