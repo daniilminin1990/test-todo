@@ -3,7 +3,7 @@ import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistRed
 import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
-import {addTaskStatusAC, AddTaskStatusACType, ServerResponseStatusType, setErrorAC} from "./appReducer";
+import {addAppTaskStatusAC, AddAppTaskStatusACType, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
 
 export type TaskStateType = {
   [todolistId: string]: TasksWithEntityStatusType[]
@@ -197,21 +197,21 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(addTaskStatusAC('loading'))
+  dispatch(addAppTaskStatusAC('loading'))
   tasksApi.getTasks(todoId)
     .then(res => {
-      dispatch(addTaskStatusAC('success'))
+      dispatch(addAppTaskStatusAC('success'))
       dispatch(setTasksAC(todoId, res.data.items))
     })
 }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
-  dispatch(addTaskStatusAC('loading'))
+  dispatch(addAppTaskStatusAC('loading'))
   dispatch(updateTaskEntityStatusAC(todoId, taskId, 'loading'))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
       dispatch(removeTaskAC(todoId, taskId))
-      dispatch(addTaskStatusAC('success'))
+      dispatch(addAppTaskStatusAC('success'))
       dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
     })
 }
@@ -224,26 +224,26 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
 // }
 // }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
-  dispatch(addTaskStatusAC('loading'))
+  dispatch(addAppTaskStatusAC('loading'))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       if (res.data.resultCode === 0) {
         dispatch(addTaskAC(todoId, newTaskTitle))
-        dispatch(addTaskStatusAC('success'))
+        dispatch(addAppTaskStatusAC('success'))
       } else {
         if (res.data.messages.length) {
-          dispatch(setErrorAC(res.data.messages[0]))
+          dispatch(setAppErrorAC(res.data.messages[0]))
         } else {
-          dispatch(setErrorAC('Oops! Something gone wrong. Length of task should be less 100 symbols'))
+          dispatch(setAppErrorAC('Oops! Something gone wrong. Length should be less 100 symbols'))
         }
       }
     })
     .finally(() => {
-      dispatch(addTaskStatusAC('success'))
+      dispatch(addAppTaskStatusAC('success'))
     })
 }
 export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
-  dispatch(addTaskStatusAC('loading'))
+  dispatch(addAppTaskStatusAC('loading'))
   dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'loading'))
   const state = getState()
   const task = state.tasksReducer[todolistId].find(tl => tl.id === taskId)
@@ -265,7 +265,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: U
   tasksApi.updateTask(todolistId, taskId, apiModel)
     .then(res => {
       dispatch(updateTaskAC(todolistId, taskId, apiModel))
-      dispatch(addTaskStatusAC('success'))
+      dispatch(addAppTaskStatusAC('success'))
       dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'success'))
     })
 }

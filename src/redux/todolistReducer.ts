@@ -1,7 +1,9 @@
 import {v1} from "uuid";
 import {todolistsAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {addStatusAC, addTodoStatusAC, AddTodoStatusACType, ServerResponseStatusType, setErrorAC} from "./appReducer";
+import {addAppStatusAC, addAppTodoStatusAC, AddAppTodoStatusACType, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
+import {AxiosError} from "axios";
+import {errorFunctionMessage} from "../utilities/utilities";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -129,7 +131,7 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
-      dispatch(addTodoStatusAC('success'))
+      dispatch(addAppTodoStatusAC('success'))
     })
 }
 
@@ -143,22 +145,19 @@ export const deleteTodoTC = (todolistId: string) => (dispatch: Dispatch) => {
 }
 
 export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
-  dispatch(addStatusAC('loading'))
+  dispatch(addAppStatusAC('loading'))
   todolistsAPI.createTodolist(newTodotitle)
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(addTodoAC(res.data.data.item))
-        dispatch(addStatusAC('success'))
+        dispatch(addAppStatusAC('success'))
       } else {
-        if (res.data.messages.length) { // Если придет текст ошибки с сервера (МЫ НЕ ПРОВЕРЯЕМ НА 100 символов, это делает сервер)
-          dispatch(setErrorAC(res.data.messages[0]))
-        } else { // Если не придет текст ошибки с сервера, то откинем свой текст
-          dispatch(setErrorAC('Oops. Something went wrong. Reload page'))
-        }
+        errorFunctionMessage(res.data, dispatch)
+        // errorFunctionMessage<{item: TodolistType}>(res.data, dispatch)
       }
-    })
+    }).catch((e: AxiosError) => setAppErrorAC(e.message))
     .finally(() => {
-      dispatch(addStatusAC('success'))
+      dispatch(addAppStatusAC('success'))
     })
 }
 

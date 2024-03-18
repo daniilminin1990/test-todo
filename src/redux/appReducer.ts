@@ -33,10 +33,10 @@ export const appReducer = (state = initialState, action: AppReducerType) => {
   }
 }
 
-type AppReducerType = AddTodoStatusACType | AddTaskStatusACType | AddStatusACType | SetErrorACType
+type AppReducerType = AddAppTodoStatusACType | AddAppTaskStatusACType | AddAppStatusACType | SetAppErrorACType
 
-export type AddTodoStatusACType = ReturnType<typeof addTodoStatusAC>
-export const addTodoStatusAC = (status: ServerResponseStatusType) => {
+export type AddAppTodoStatusACType = ReturnType<typeof addAppTodoStatusAC>
+export const addAppTodoStatusAC = (status: ServerResponseStatusType) => {
   return {
     type: 'SET-TODO-STATUS',
     payload: {
@@ -45,8 +45,8 @@ export const addTodoStatusAC = (status: ServerResponseStatusType) => {
   } as const
 }
 
-export type AddTaskStatusACType = ReturnType<typeof addTaskStatusAC>
-export const addTaskStatusAC = (status: ServerResponseStatusType) => {
+export type AddAppTaskStatusACType = ReturnType<typeof addAppTaskStatusAC>
+export const addAppTaskStatusAC = (status: ServerResponseStatusType) => {
   return {
     type: 'SET-TASK-STATUS',
     payload: {
@@ -55,8 +55,8 @@ export const addTaskStatusAC = (status: ServerResponseStatusType) => {
   } as const
 }
 
-export type AddStatusACType = ReturnType<typeof addStatusAC>
-export const addStatusAC = (status: ServerResponseStatusType) => {
+export type AddAppStatusACType = ReturnType<typeof addAppStatusAC>
+export const addAppStatusAC = (status: ServerResponseStatusType) => {
   return {
     type: 'ADD-STATUS',
     payload: {
@@ -65,8 +65,8 @@ export const addStatusAC = (status: ServerResponseStatusType) => {
   } as const
 }
 
-export type SetErrorACType = ReturnType<typeof setErrorAC>
-export const setErrorAC = (error: null|string) => {
+export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>
+export const setAppErrorAC = (error: null|string) => {
   return {
     type: 'SET-ERROR',
     payload: {
