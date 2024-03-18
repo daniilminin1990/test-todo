@@ -1,7 +1,8 @@
 import {instance} from "./todolists-api";
 import axios from "axios";
+import {ServerResponseStatusType} from "../redux/appReducer";
 
-export type UpdateTaskType = Omit<TaskType, 'id' | 'todolistId' | 'order' | 'addedDate' | 'completed'>
+export type UpdateTaskType = Omit<TaskType, 'id' | 'todolistId' | 'order' | 'addedDate'>
 
 export type GetTasksResponse = {
   items: Array<TaskType>,
@@ -18,11 +19,11 @@ type ResponseType<D = {}> = {
 export type TaskType = {
   id: string
   todolistId: string
-  description: string
   order: number
+  addedDate: string
+  description: string
   startDate: string
   deadline: string
-  addedDate: string
   title: string
   status: TasksStatuses
   priority: TaskPriorities
@@ -61,6 +62,6 @@ export const tasksApi = {
   },
   // updateTask(todolistId: string, taskId: string, title: string){
   updateTask(todolistId: string, taskId: string, model: UpdateTaskType){
-    return instance.put<UpdateTaskType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
+    return instance.put<ResponseType<UpdateTaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
   }
 }

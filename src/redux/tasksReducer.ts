@@ -4,6 +4,8 @@ import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from 
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
 import {addAppTaskStatusAC, AddAppTaskStatusACType, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
+import {errorFunctionMessage} from "../utilities/utilities";
+import {AxiosError} from "axios";
 
 export type TaskStateType = {
   [todolistId: string]: TasksWithEntityStatusType[]
@@ -22,27 +24,7 @@ export type UpdateTaskUtilityType = {
   deadline?: string
 }
 
-const initStateTasks: TaskStateType = {
-  // [todolistId1]: [
-  //   {id: v1(), title: 'Купить молоко', status: TasksStatuses.Completed,
-  //     todolistId: todolistId1, description: '', order: 0,
-  //     startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low},
-  //   {id: v1(), title: 'Сходить побегать', status: TasksStatuses.New,
-  //     todolistId: todolistId1, description: '', order: 0,
-  //     startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low},
-  //   {id: v1(), title: 'Понюхать цветы', status: TasksStatuses.New,
-  //     todolistId: todolistId1, description: '', order: 0,
-  //     startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low},
-  // ],
-  // [todolistId2]: [
-  //   {id: v1(), title: 'Купить молоко', status: TasksStatuses.Completed,
-  //     todolistId: todolistId2, description: '', order: 0,
-  //     startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low},
-  //   {id: v1(), title: 'Понюхать цветы', status: TasksStatuses.New,
-  //     todolistId: todolistId2, description: '', order: 0,
-  //     startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low},
-  // ]
-}
+const initStateTasks: TaskStateType = {}
 export const tasksReducer = (state: TaskStateType = initStateTasks, action: MutualTaskType): TaskStateType => {
   switch (action.type) {
     case 'REMOVE-TASK': {
@@ -58,8 +40,7 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
       let newTask: TasksWithEntityStatusType = {
         id: v1(), title: a.newTaskTitle, status: TasksStatuses.New,
         todolistId: a.todolistId, description: '', order: 0,
-        startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low,
-        entityStatus: 'idle'
+        startDate: '', deadline: '', addedDate: '', priority: TaskPriorities.Low, entityStatus: 'idle'
       }
       return {...state, [a.todolistId]: [newTask, ...state[a.todolistId]]}
     }
@@ -99,7 +80,10 @@ export const tasksReducer = (state: TaskStateType = initStateTasks, action: Mutu
     }
     case "UPDATE-TASK-ENTITY-STATUS": {
       const a = action.payload
-      return {...state, [a.todoId]:state[a.todoId].map(t => t.id === a.taskId ? {...t, entityStatus: a.entityStatus} : t)}
+      return {
+        ...state,
+        [a.todoId]: state[a.todoId].map(t => t.id === a.taskId ? {...t, entityStatus: a.entityStatus} : t)
+      }
     }
     default: {
       return state
@@ -143,7 +127,7 @@ export const addTaskAC = (todolistId: string, newTaskTitle: string) => {
     type: 'ADD-TASK',
     payload: {
       todolistId,
-      newTaskTitle
+      newTaskTitle,
     }
   } as const
 }
@@ -172,9 +156,9 @@ export const updTaskTitleAC = (todolistId: string, taskId: string, updTaskTitle:
   } as const
 }
 
-// ! AC для entityStatus
+// ! AC для ENTITY ЕБАНЫЙ СТАТУС ДЛЯ ТАСКИ ЕБУЧЕЙ
 export type UpdateTaskEntityStatusAC = ReturnType<typeof updateTaskEntityStatusAC>
-export const updateTaskEntityStatusAC = (todoId: string, taskId: string, entityStatus: ServerResponseStatusType) => {
+export const updateTaskEntityStatusAC = (todoId: string, taskId: string | undefined, entityStatus: ServerResponseStatusType) => {
   return {
     type: 'UPDATE-TASK-ENTITY-STATUS',
     payload: {
@@ -197,11 +181,16 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(addAppTaskStatusAC('loading'))
+  // dispatch(addAppTaskStatusAC('loading'))
   tasksApi.getTasks(todoId)
     .then(res => {
-      dispatch(addAppTaskStatusAC('success'))
       dispatch(setTasksAC(todoId, res.data.items))
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
+      dispatch(addAppTaskStatusAC('success'))
     })
 }
 
@@ -213,6 +202,9 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
       dispatch(removeTaskAC(todoId, taskId))
       dispatch(addAppTaskStatusAC('success'))
       dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
     })
 }
 
@@ -231,15 +223,12 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
         dispatch(addTaskAC(todoId, newTaskTitle))
         dispatch(addAppTaskStatusAC('success'))
       } else {
-        if (res.data.messages.length) {
-          dispatch(setAppErrorAC(res.data.messages[0]))
-        } else {
-          dispatch(setAppErrorAC('Oops! Something gone wrong. Length should be less 100 symbols'))
-        }
+        errorFunctionMessage(res.data, dispatch)
       }
+      return res
     })
-    .finally(() => {
-      dispatch(addAppTaskStatusAC('success'))
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
     })
 }
 export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
@@ -264,8 +253,21 @@ export const updateTaskTC = (todolistId: string, taskId: string, utilityModel: U
   }
   tasksApi.updateTask(todolistId, taskId, apiModel)
     .then(res => {
-      dispatch(updateTaskAC(todolistId, taskId, apiModel))
+      console.log(res)
+      console.log(res.data.resultCode)
+      if (res.data.resultCode === 0) {
+        dispatch(updateTaskAC(todolistId, taskId, apiModel))
+        dispatch(addAppTaskStatusAC('success'))
+        dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'success'))
+      } else {
+        errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch)
+      }
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
       dispatch(addAppTaskStatusAC('success'))
-      dispatch(updateTaskEntityStatusAC(todolistId, taskId, 'success'))
     })
 }
+

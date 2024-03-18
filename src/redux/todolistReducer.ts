@@ -152,8 +152,8 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
         dispatch(addTodoAC(res.data.data.item))
         dispatch(addAppStatusAC('success'))
       } else {
-        errorFunctionMessage(res.data, dispatch)
-        // errorFunctionMessage<{item: TodolistType}>(res.data, dispatch)
+        // errorFunctionMessage(res.data, dispatch)
+        errorFunctionMessage<{item: TodolistType}>(res.data, dispatch)
       }
     }).catch((e: AxiosError) => setAppErrorAC(e.message))
     .finally(() => {

@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Skeleton from '@mui/material/Skeleton';
 import {RootReducerType, useAppDispatch} from '../../../store/store';
-import {TasksStatuses, TaskType} from "../../../api/tasks-api";
+import {TasksStatuses} from "../../../api/tasks-api";
 import {ServerResponseStatusType} from "../../../redux/appReducer";
 
 type TodolistProps = {
@@ -92,9 +92,10 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
         : <ul>
           {
             allTodoTasks.map(t => {
+
               return (
                 props.entityStatus === 'loading'
-                ? <Skeleton><Task key={t.id}
+                ? <Skeleton key={t.id}><Task key={t.id}
                         taskId={t.id}
                         tIsDone={t.status}
                         oldTitle={t.title}
