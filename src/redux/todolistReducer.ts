@@ -1,7 +1,12 @@
 import {v1} from "uuid";
 import {todolistsAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
-import {addAppStatusAC, addAppTodoStatusAC, AddAppTodoStatusACType, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
+import {
+  addAppStatusAC,
+  addAppTodoStatusAC,
+  ServerResponseStatusType,
+  setAppErrorAC
+} from "./appReducer";
 import {AxiosError} from "axios";
 import {errorFunctionMessage} from "../utilities/utilities";
 
@@ -12,13 +17,7 @@ export type TodoUIType = TodolistType & {
   entityStatus: ServerResponseStatusType
 }
 
-// export const todoListId1 = v1()
-// export const todoListId2 = v1()
-
-const initState: TodoUIType[] = [
-  // {id: todoListId1, title: 'Оп-оп', filter: 'all', addedDate: '', order: 0},
-  // {id: todoListId2, title: 'Вот те нате', filter: 'all', addedDate: '', order: 0},
-]
+const initState: TodoUIType[] = []
 
 export const todolistReducer = (state: TodoUIType[] = initState, action: MutualTodoType): Array<TodoUIType> => {
   switch (action.type) {
@@ -111,14 +110,8 @@ export const updateEntityStatusTodoAC = (todoId: string, entityStatus: ServerRes
 }
 
 //! ActionCreator для сета тудулистов с сервера
-// export type SetTodosActionType = {
-//   type: 'SET-TODO',
-//   todolists: TodolistType[]
-// }
-// или так
 export type SetTodosActionType = ReturnType<typeof setTodosAC>
 
-// export const setTodosAC = (todolists: TodolistType[]): SetTodosActionType => {
 export const setTodosAC = (todolists: TodolistType[]) => {
   return {
     type: "SET-TODO",
@@ -128,18 +121,35 @@ export const setTodosAC = (todolists: TodolistType[]) => {
 
 //! Thunk
 export const setTodolistsTC = () => (dispatch: Dispatch) => {
+  dispatch(addAppTodoStatusAC('loading'))
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
       dispatch(addAppTodoStatusAC('success'))
     })
 }
 
 export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
+  dispatch(addAppTodoStatusAC('loading'))
   dispatch(updateEntityStatusTodoAC(todoListId, 'loading')) // перед запросом поставим в loading
   todolistsAPI.deleteTodolist(todoListId)
-    .then(() => {
-      dispatch(removeTodoAC(todoListId))
+    .then((res) => {
+      if(res.data.resultCode === 0){
+        dispatch(removeTodoAC(todoListId))
+      } else {
+        errorFunctionMessage(res.data, dispatch, 'Something wrong, try later')
+      }
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
+      dispatch(addAppTodoStatusAC('success'))
       dispatch(updateEntityStatusTodoAC(todoListId, 'success')) // если все удачно, то в success
     })
 }
@@ -153,18 +163,32 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
         dispatch(addAppStatusAC('success'))
       } else {
         // errorFunctionMessage(res.data, dispatch)
-        errorFunctionMessage<{item: TodolistType}>(res.data, dispatch)
+        errorFunctionMessage<{ item: TodolistType }>(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }
-    }).catch((e: AxiosError) => setAppErrorAC(e.message))
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
     .finally(() => {
       dispatch(addAppStatusAC('success'))
     })
 }
 
 export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (dispatch: Dispatch) => {
+  dispatch(addAppStatusAC('loading'))
   todolistsAPI.updateTodolist(todoListId, newTodotitle)
     .then((res) => {
-      dispatch(updateTodoTitleAC(todoListId, newTodotitle))
+      if(res.data.resultCode === 0){
+        dispatch(updateTodoTitleAC(todoListId, newTodotitle))
+      } else {
+        errorFunctionMessage(res.data, dispatch, 'Length should be less than 100 symbols')
+      }
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
+      dispatch(addAppStatusAC('success'))
     })
 }
 

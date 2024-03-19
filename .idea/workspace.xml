@@ -6,15 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build-storybook.log" beforeDir="false" afterPath="$PROJECT_DIR$/build-storybook.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/tasksReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksReducer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/todolistReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistReducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/Decorator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Decorator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/tasks-api.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/tasks-api.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/todolists-api.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/todolists-api.stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utilities/utilities.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utilities/utilities.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +199,8 @@
       <workItem from="1710669714779" duration="10470000" />
       <workItem from="1710745717711" duration="7894000" />
       <workItem from="1710769559358" duration="26000" />
-      <workItem from="1710769595173" duration="17145000" />
+      <workItem from="1710769595173" duration="17321000" />
+      <workItem from="1710831771385" duration="3071000" />
     </task>
     <servers />
   </component>

@@ -3,7 +3,7 @@ import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistRed
 import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
-import {addAppTaskStatusAC, AddAppTaskStatusACType, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
+import {addAppTaskStatusAC, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
 import {errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
 
@@ -159,6 +159,7 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
+  dispatch(addAppTaskStatusAC('loading'))
   tasksApi.getTasks(todoId)
     .then(res => {
       dispatch(setTasksAC(todoId, res.data.items))
@@ -176,12 +177,18 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
   dispatch(updateTaskEntityStatusAC(todoId, taskId, 'loading'))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
-      dispatch(removeTaskAC(todoId, taskId))
-      dispatch(addAppTaskStatusAC('success'))
-      dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
+      if (res.data.resultCode === 0) {
+        dispatch(removeTaskAC(todoId, taskId))
+      } else {
+        errorFunctionMessage(res.data, dispatch, 'Something wrong, try later')
+      }
     })
     .catch((e: AxiosError) => {
       setAppErrorAC(e.message)
+    })
+    .finally(() => {
+      dispatch(addAppTaskStatusAC('success'))
+      dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
     })
 }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
@@ -189,15 +196,17 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       if (res.data.resultCode === 0) {
-        console.log(res.data.data.item)
-        console.log(res.data.data.item.todoListId)
         const taskToServer: TasksWithEntityStatusType = {...res.data.data.item, entityStatus: 'idle'}
-        console.log('197ifhsogfih', taskToServer)
         dispatch(addTaskAC(taskToServer))
-        dispatch(addAppTaskStatusAC('success'))
       } else {
-        errorFunctionMessage(res.data, dispatch)
+        errorFunctionMessage(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }
+    })
+    .catch((e: AxiosError) => {
+      setAppErrorAC(e.message)
+    })
+    .finally(() => {
+      dispatch(addAppTaskStatusAC('success'))
     })
 }
 export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
@@ -226,10 +235,8 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
       console.log(res.data.resultCode)
       if (res.data.resultCode === 0) {
         dispatch(updateTaskAC(todoListId, taskId, apiModel))
-        dispatch(addAppTaskStatusAC('success'))
-        dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'success'))
       } else {
-        errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch)
+        errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch, 'Length should be less than 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
@@ -237,6 +244,7 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
     })
     .finally(() => {
       dispatch(addAppTaskStatusAC('success'))
+      dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'success'))
     })
 }
 
