@@ -2,7 +2,7 @@ import {Meta, StoryObj} from "@storybook/react";
 import {action} from '@storybook/addon-actions'
 import {Task} from "../features/TodolistsBunch/Todolist/Task/Task";
 import {useState} from "react";
-import {TasksStatuses} from "../api/tasks-api";
+import {TaskStatuses} from "../api/tasks-api";
 
 const meta: Meta<typeof Task> = {
   title: 'TODOLIST/Task',
@@ -12,7 +12,7 @@ const meta: Meta<typeof Task> = {
     layout: 'centered'
   },
   args: {
-    tIsDone: TasksStatuses.New, // Состояние по умолчанию
+    tIsDone: TaskStatuses.New, // Состояние по умолчанию
     oldTitle: 'Title',
     taskId: 'taskId', // Это слово я увижу в toolbar в control
     onChange: action('Change task status'), // Меняю статус - показывает этот текст в actions
@@ -45,16 +45,16 @@ export const TaskExampleNoCheck: Story = {}
 export const TaskCheck: Story = {
   args: {
     oldTitle: 'Алиллуйя', // Это слово я увижу в toolbar в control
-    tIsDone: TasksStatuses.Completed,
+    tIsDone: TaskStatuses.Completed,
   },
 }
 
 // Чек таски
 export const TaskToDelete = () => {
-  const [tIsDone, setTIsDone] = useState<TasksStatuses>(TasksStatuses.New)
+  const [tIsDone, setTIsDone] = useState<TaskStatuses>(TaskStatuses.New)
 
   const onChange = () => {
-    setTIsDone(tIsDone ? TasksStatuses.Completed : TasksStatuses.New)
+    setTIsDone(tIsDone ? TaskStatuses.Completed : TaskStatuses.New)
   }
 
   return <Task

@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Skeleton from '@mui/material/Skeleton';
 import {RootReducerType, useAppDispatch} from '../../../store/store';
-import {TasksStatuses} from "../../../api/tasks-api";
+import {TaskStatuses} from "../../../api/tasks-api";
 import {ServerResponseStatusType} from "../../../redux/appReducer";
 
 type TodolistProps = {
@@ -49,7 +49,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
     dispatch(addTaskTC(props.todoListId, newTaskTitle))
   }, [dispatch, props.todoListId])
 
-  const changeTaskStatus = useCallback((taskId: string, checked: TasksStatuses) => {
+  const changeTaskStatus = useCallback((taskId: string, checked: TaskStatuses) => {
     // dispatch(changeTaskStatusAC(props.todoListId, taskId, checked))
     dispatch(updateTaskTC(props.todoListId, taskId, {status: checked}))
   }, [dispatch, props.todoListId])
@@ -60,10 +60,10 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, [dispatch, props.todoListId])
 
   if (props.tasksFilter === 'completed') {
-    allTodoTasks = allTodoTasks.filter(t => t.status === TasksStatuses.Completed)
+    allTodoTasks = allTodoTasks.filter(t => t.status === TaskStatuses.Completed)
   }
   if (props.tasksFilter === 'active') {
-    allTodoTasks = allTodoTasks.filter(t => t.status === TasksStatuses.New)
+    allTodoTasks = allTodoTasks.filter(t => t.status === TaskStatuses.New)
   }
 
   const onAllClickHandler = useCallback(() => { changeFilter(props.todoListId, 'all') }, [changeFilter, props.todoListId])

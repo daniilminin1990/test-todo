@@ -25,11 +25,11 @@ export type TaskType = {
   startDate: string
   deadline: string
   title: string
-  status: TasksStatuses
+  status: TaskStatuses
   priority: TaskPriorities
 }
 
-export enum TasksStatuses {
+export enum TaskStatuses {
   New = 0,
   InProgress = 1,
   Completed = 2,

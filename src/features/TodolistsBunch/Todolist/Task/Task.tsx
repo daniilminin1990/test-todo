@@ -2,15 +2,15 @@ import React, {ChangeEvent} from 'react';
 import EdiatbleSpan from "../../../../components/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {TasksStatuses} from "../../../../api/tasks-api";
+import {TaskStatuses} from "../../../../api/tasks-api";
 import {ServerResponseStatusType} from "../../../../redux/appReducer";
 
 export type TaskProps = {
   taskId: string,
-  tIsDone: TasksStatuses,
+  tIsDone: TaskStatuses,
   oldTitle: string,
   entityStatus?: ServerResponseStatusType
-  onChange: (taskId: string, checked: TasksStatuses) => void
+  onChange: (taskId: string, checked: TaskStatuses) => void
   onClick: (taskId: string) => void
   updTaskTitle: (taskId: string, updTaskTitle: string) => void
 }
@@ -18,7 +18,7 @@ export type TaskProps = {
 export const Task = React.memo((props: TaskProps) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    let checkToGo = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New
+    let checkToGo = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
     // let checked = () => {
     //   if (checkedEvent === true) {
     //     return TasksStatuses.Completed
@@ -38,7 +38,7 @@ export const Task = React.memo((props: TaskProps) => {
     props.updTaskTitle(props.taskId, updTaskTitle)
   }
 
-  const taskCompleted = props.tIsDone === TasksStatuses.Completed
+  const taskCompleted = props.tIsDone === TaskStatuses.Completed
   return (
     <li className={taskCompleted ? 'is-done' : ''}>
       <input type="checkbox" checked={taskCompleted} onChange={onChangeHandler} disabled={props.entityStatus === 'loading'}/>

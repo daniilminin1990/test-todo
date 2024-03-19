@@ -1,10 +1,10 @@
 import {v1} from "uuid";
 import {AddTodoACType, RemoveTodoACType, SetTodosActionType} from "./todolistReducer";
-import {TaskPriorities, tasksApi, TasksStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
+import {TaskPriorities, tasksApi, TaskStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
 import {addAppTaskStatusAC, ServerResponseStatusType, setAppErrorAC} from "./appReducer";
-import {errorFunctionMessage} from "../utilities/utilities";
+import {createModelTask, errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
 
 export type TaskStateType = {
@@ -18,7 +18,7 @@ export type TasksWithEntityStatusType = TaskType & {
 export type UpdateTaskUtilityType = {
   title?: string,
   description?: string,
-  status?: TasksStatuses,
+  status?: TaskStatuses,
   priority?: TaskPriorities,
   startDate?: string,
   deadline?: string
@@ -217,24 +217,12 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
 
   if (!task) {
     throw new Error('Task not found in the state')
-    console.warn('Task not found in the state')
-    return
   }
-  const apiModel: UpdateTaskType = {
-    status: task.status,
-    startDate: task.deadline,
-    title: task.title,
-    priority: task.priority,
-    description: task.description,
-    deadline: task.deadline,
-    ...utilityModel
-  }
-  tasksApi.updateTask(todoListId, taskId, apiModel)
+  const elementToUpdate: UpdateTaskType = createModelTask(task, utilityModel)
+  tasksApi.updateTask(todoListId, taskId, elementToUpdate)
     .then(res => {
-      console.log(res)
-      console.log(res.data.resultCode)
       if (res.data.resultCode === 0) {
-        dispatch(updateTaskAC(todoListId, taskId, apiModel))
+        dispatch(updateTaskAC(todoListId, taskId, elementToUpdate))
       } else {
         errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch, 'Length should be less than 100 symbols')
       }
