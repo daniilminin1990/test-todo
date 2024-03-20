@@ -5,7 +5,7 @@ import {CircularProgress, Container} from '@mui/material';
 import {TodolistsBunch} from "../features/TodolistsBunch/TodolistsBunch";
 import {useAppSelector} from "../store/store";
 import LinearProgress from '@mui/material/LinearProgress';
-import CustomizedSnackbars from "../components/CustomizedSnackbars";
+import ErrorSnackbar from "../components/ErrorSnackbar";
 
 
 const App = React.memo(() => {
@@ -14,7 +14,7 @@ const App = React.memo(() => {
   return (
     <div className="App">
       <ButtonAppBar/>
-      <CustomizedSnackbars />
+      <ErrorSnackbar />
       {statusTask==='loading' && <LinearProgress color="secondary"/>}
       <Container fixed>
         {statusTodo==='loading' && <CircularProgress color='info' style={{
