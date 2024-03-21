@@ -224,7 +224,7 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
       if (res.data.resultCode === 0) {
         dispatch(updateTaskAC(todoListId, taskId, elementToUpdate))
       } else {
-        errorFunctionMessage<UpdateTaskUtilityType>(res.data, dispatch, 'Length should be less than 100 symbols')
+        errorFunctionMessage(res.data, dispatch, 'Length should be less than 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
