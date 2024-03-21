@@ -1,5 +1,5 @@
 import {instance} from "./todolists-api";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {ServerResponseStatusType} from "../redux/appReducer";
 
 export type UpdateTaskType = Omit<TaskType, 'id' | 'todoListId' | 'order' | 'addedDate'>
@@ -52,7 +52,8 @@ export const tasksApi = {
   //   return instance.post<ResponseType<TaskType>>(`todo-lists/${todoListId}/tasks`, {newTask})
   // },
   createTask(todoListId: string, title: string){
-    return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks`, {title})
+    // ! ЗАЧЕМ AxiosResponse???
+    return instance.post<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType>, {title: string}>(`todo-lists/${todoListId}/tasks`, {title})
   },
   // createTask(todoListId: string, title: string){
   //   return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`, {title})
@@ -62,6 +63,7 @@ export const tasksApi = {
   },
   // updateTask(todoListId: string, taskId: string, title: string){
   updateTask(todoListId: string, taskId: string, model: UpdateTaskType){
-    return instance.put<ResponseType<UpdateTaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+    // ! ЗАЧЕМ AxiosResponse???
+    return instance.put<ResponseType<UpdateTaskType>, AxiosResponse<ResponseType>, UpdateTaskType>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
   }
 }

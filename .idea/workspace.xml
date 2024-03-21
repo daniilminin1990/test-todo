@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/CustomizedSnackbars.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CustomizedSnackbars.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +200,9 @@
       <workItem from="1710769559358" duration="26000" />
       <workItem from="1710769595173" duration="17321000" />
       <workItem from="1710831771385" duration="12293000" />
-      <workItem from="1710945789773" duration="100000" />
+      <workItem from="1710945789773" duration="1979000" />
+      <workItem from="1711012072027" duration="3751000" />
+      <workItem from="1711027484709" duration="3277000" />
     </task>
     <servers />
   </component>
