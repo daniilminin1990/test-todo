@@ -6,6 +6,8 @@ import {UpdateTaskUtilityType} from "../redux/tasksReducer";
 
 // export const errorFunctionMessage = (data: ResponseType, dispatch: Dispatch) => {
 // export const errorFunctionMessage = (data: ResponseType, dispatch: Dispatch) => {
+
+// Функция для обработки ошибок от ответов от сервера. НУЖЕН ДЖЕНЕРИК, потому что у наса ResponseType от сервера дженериковый
 export const errorFunctionMessage = <T>(data: ResponseType<T>, dispatch: Dispatch, errorText: string) => {
   if (data.messages.length) { // Если придет текст ошибки с сервера (МЫ НЕ ПРОВЕРЯЕМ НА 100 символов, это делает сервер)
     dispatch(setAppErrorAC(data.messages[0]))

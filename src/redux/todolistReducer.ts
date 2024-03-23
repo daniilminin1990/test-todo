@@ -125,12 +125,12 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
+      dispatch(addAppTodoStatusAC('success'))
     })
     .catch((e: AxiosError) => {
       setAppErrorAC(e.message)
     })
     .finally(() => {
-      dispatch(addAppTodoStatusAC('success'))
     })
 }
 
@@ -160,7 +160,7 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(addTodoAC(res.data.data.item))
-        dispatch(addAppStatusAC('success'))
+        // dispatch(addAppStatusAC('success'))
       } else {
         // errorFunctionMessage(res.data, dispatch)
         errorFunctionMessage<{ item: TodolistType }>(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')

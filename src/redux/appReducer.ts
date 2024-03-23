@@ -1,3 +1,7 @@
+import {Dispatch} from "redux";
+import {loginAPI} from "../api/login-api";
+import {setIsLoggedIn} from "../features/Login/loginReducer";
+
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
 type InitialStateType = {
@@ -5,14 +9,31 @@ type InitialStateType = {
   statusTask: ServerResponseStatusType
   addStatus: ServerResponseStatusType,
   error: null | string
+  isInitialized: boolean
 }
 
 const initialState: InitialStateType = {
-  statusTodo: 'loading' as const,
+  statusTodo: 'idle' as const,
   statusTask: 'idle' as const,
   addStatus: 'idle' as const,
-  error: null
+  error: null,
+  isInitialized: false
 }
+
+export const initialiseMeTC = () => (dispatch: Dispatch) => {
+  loginAPI.initialiseMe()
+    .then((res) => {
+      if(res.data.resultCode === 0){
+        dispatch(changeInitializedAC(true))
+      } else {
+
+      }
+    })
+    .finally(() => {
+      dispatch(setIsLoggedIn(true))
+    })
+}
+
 export const appReducer = (state = initialState, action: AppReducerType) => {
   switch (action.type) {
     case "SET-TODO-STATUS": {
@@ -27,13 +48,16 @@ export const appReducer = (state = initialState, action: AppReducerType) => {
     case "SET-ERROR": {
       return {...state, error: action.payload.error}
     }
+    case "CHANGE-INITIALIZED":{
+      return {...state, isInitialized: action.payload.value}
+    }
     default: {
       return  state
     }
   }
 }
 
-type AppReducerType = AddAppTodoStatusACType | AddAppTaskStatusACType | AddAppStatusACType | SetAppErrorACType
+type AppReducerType = AddAppTodoStatusACType | AddAppTaskStatusACType | AddAppStatusACType | SetAppErrorACType | ChangeInitializedAC
 
 export type AddAppTodoStatusACType = ReturnType<typeof addAppTodoStatusAC>
 export const addAppTodoStatusAC = (status: ServerResponseStatusType) => {
@@ -71,6 +95,16 @@ export const setAppErrorAC = (error: null|string) => {
     type: 'SET-ERROR',
     payload: {
       error
+    }
+  } as const
+}
+
+export type ChangeInitializedAC = ReturnType<typeof changeInitializedAC>
+export const changeInitializedAC = (value: boolean) => {
+  return {
+    type: 'CHANGE-INITIALIZED',
+    payload: {
+      value
     }
   } as const
 }
