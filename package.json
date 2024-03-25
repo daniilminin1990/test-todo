@@ -2,7 +2,7 @@
   "name": "test-todo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://daniilminin1990.github.io/test-todo",
+  "homepage": "https://daniilminin1990.github.io/test-todo/#/",
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
@@ -11,6 +11,7 @@
     "@material-ui/styled-engine-sc": "^5.0.0-beta.5",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
+    "@reduxjs/toolkit": "^2.2.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
