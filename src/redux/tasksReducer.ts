@@ -158,21 +158,21 @@ export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({value: 'loading'}))
+  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
   tasksApi.getTasks(todoId)
     .then(res => {
       dispatch(setTasksAC(todoId, res.data.items))
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({value: 'success'}))
+      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
     })
 }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({value: 'loading'}))
+  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
   dispatch(updateTaskEntityStatusAC(todoId, taskId, 'loading'))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
@@ -183,15 +183,15 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({value: 'success'}))
+      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
       dispatch(updateTaskEntityStatusAC(todoId, taskId, 'success'))
     })
 }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({value: 'loading'}))
+  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       if (res.data.resultCode === 0) {
@@ -202,14 +202,14 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({value: 'success'}))
+      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
     })
 }
 export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
-  dispatch(setAppStatusTaskAC({value: 'loading'}))
+  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
   dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'loading'))
   const state = getState()
   const task = state.tasksReducer[todoListId].find(tl => tl.id === taskId)
@@ -227,10 +227,10 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({value: 'success'}))
+      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
       dispatch(updateTaskEntityStatusAC(todoListId, taskId, 'success'))
     })
 }

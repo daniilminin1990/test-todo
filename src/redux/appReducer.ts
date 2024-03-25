@@ -25,17 +25,17 @@ const slice = createSlice({
   name: 'app',
   initialState: initialState,
   reducers: {
-    setAppTodoStatusAC(state, action: PayloadAction<{ value: ServerResponseStatusType }>) {
-      state.statusTodo = action.payload.value
+    setAppTodoStatusAC(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
+      state.statusTodo = action.payload.statusTodo
     },
-    setAppStatusTaskAC(state, action: PayloadAction<{ value: ServerResponseStatusType }>){
-      state.statusTask = action.payload.value
+    setAppStatusTaskAC(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>){
+      state.statusTask = action.payload.statusTask
     },
-    setAppStatusAC(state, action: PayloadAction<{ value: ServerResponseStatusType }>) {
-      state.addStatus = action.payload.value
+    setAppStatusAC(state, action: PayloadAction<{ appStatus: ServerResponseStatusType }>) {
+      state.addStatus = action.payload.appStatus
     },
-    setAppErrorAC(state,action: PayloadAction<{value: null | string}>){
-      state.error = action.payload.value
+    setAppErrorAC(state,action: PayloadAction<{error: null | string}>){
+      state.error = action.payload.error
     },
     changeInitializedAC(state, action: PayloadAction<{value: boolean}>){
       state.isInitialized = action.payload.value

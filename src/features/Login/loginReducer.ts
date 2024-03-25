@@ -28,7 +28,7 @@ export const {setIsLoggedInAC} = slice.actions
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({value: 'loading'}))
+  dispatch(setAppStatusAC({appStatus: 'loading'}))
   loginAPI.login(data)
     .then((res) => {
       if(res.data.resultCode === 0){
@@ -38,15 +38,15 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusAC({value: 'success'}))
+      dispatch(setAppStatusAC({appStatus: 'success'}))
     })
 }
 
 export const logoutTC = () => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({value: 'loading'}))
+  dispatch(setAppStatusAC({appStatus: 'loading'}))
   loginAPI.logout()
     .then((res) => {
       if(res.data.resultCode === 0){
@@ -56,9 +56,9 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({value: e.message})
+      setAppErrorAC({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusAC({value: 'success'}))
+      dispatch(setAppStatusAC({appStatus: 'success'}))
     })
 }
