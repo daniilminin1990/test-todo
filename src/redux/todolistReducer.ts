@@ -2,8 +2,8 @@ import {v1} from "uuid";
 import {todolistsAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {
-  addAppStatusAC,
-  addAppTodoStatusAC,
+  setAppStatusAC,
+  setAppTodoStatusAC,
   ServerResponseStatusType,
   setAppErrorAC
 } from "./appReducer";
@@ -121,21 +121,21 @@ export const setTodosAC = (todolists: TodolistType[]) => {
 
 //! Thunk
 export const setTodolistsTC = () => (dispatch: Dispatch) => {
-  dispatch(addAppTodoStatusAC('loading'))
+  dispatch(setAppTodoStatusAC({value: 'loading'}))
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(setTodosAC(res.data))
-      dispatch(addAppTodoStatusAC('success'))
+      dispatch(setAppTodoStatusAC({value: 'success'}))
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
     })
 }
 
 export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
-  dispatch(addAppTodoStatusAC('loading'))
+  dispatch(setAppTodoStatusAC({value: 'loading'}))
   dispatch(updateEntityStatusTodoAC(todoListId, 'loading')) // перед запросом поставим в loading
   todolistsAPI.deleteTodolist(todoListId)
     .then((res) => {
@@ -146,16 +146,16 @@ export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
-      dispatch(addAppTodoStatusAC('success'))
+      dispatch(setAppTodoStatusAC({value: 'success'}))
       dispatch(updateEntityStatusTodoAC(todoListId, 'success')) // если все удачно, то в success
     })
 }
 
 export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
-  dispatch(addAppStatusAC('loading'))
+  dispatch(setAppStatusAC({value: 'loading'}))
   todolistsAPI.createTodolist(newTodotitle)
     .then((res) => {
       if (res.data.resultCode === 0) {
@@ -167,15 +167,15 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
-      dispatch(addAppStatusAC('success'))
+      dispatch(setAppStatusAC({value: 'success'}))
     })
 }
 
 export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (dispatch: Dispatch) => {
-  dispatch(addAppStatusAC('loading'))
+  dispatch(setAppStatusAC({value: 'loading'}))
   todolistsAPI.updateTodolist(todoListId, newTodotitle)
     .then((res) => {
       if(res.data.resultCode === 0){
@@ -185,10 +185,10 @@ export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
-      dispatch(addAppStatusAC('success'))
+      dispatch(setAppStatusAC({value: 'success'}))
     })
 }
 

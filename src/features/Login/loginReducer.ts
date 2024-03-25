@@ -1,17 +1,17 @@
 import {Dispatch} from "redux";
-import {addAppStatusAC, AddAppStatusACType, setAppErrorAC, SetAppErrorACType} from "../../redux/appReducer";
+import {setAppErrorAC, setAppStatusAC} from "../../redux/appReducer";
 import {loginAPI, LoginParamsType} from "../../api/login-api";
 import {errorFunctionMessage} from "../../utilities/utilities";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState: InitialStateType = {
+const initialState = {
   isLoggedIn: false
 }
 
-type InitialStateType = {
-  isLoggedIn: boolean
-}
+// type InitialStateType = {
+//   isLoggedIn: boolean
+// }
 
 const slice = createSlice({
   name: 'login',
@@ -28,7 +28,7 @@ export const {setIsLoggedInAC} = slice.actions
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
-  dispatch(addAppStatusAC('loading'))
+  dispatch(setAppStatusAC({value: 'loading'}))
   loginAPI.login(data)
     .then((res) => {
       if(res.data.resultCode === 0){
@@ -38,15 +38,15 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
-      dispatch(addAppStatusAC('success'))
+      dispatch(setAppStatusAC({value: 'success'}))
     })
 }
 
 export const logoutTC = () => (dispatch: Dispatch) => {
-  dispatch(addAppStatusAC('loading'))
+  dispatch(setAppStatusAC({value: 'loading'}))
   loginAPI.logout()
     .then((res) => {
       if(res.data.resultCode === 0){
@@ -56,9 +56,9 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC(e.message)
+      setAppErrorAC({value: e.message})
     })
     .finally(() => {
-      dispatch(addAppStatusAC('success'))
+      dispatch(setAppStatusAC({value: 'success'}))
     })
 }

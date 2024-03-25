@@ -10,7 +10,7 @@ import Button from '@mui/material/Button'
 import {useFormik} from "formik";
 import {loginTC} from "./loginReducer";
 import {useAppDispatch, useAppSelector} from "../../store/store";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {LoginParamsType} from "../../api/login-api";
 
 export const Login = () => {
@@ -48,8 +48,8 @@ export const Login = () => {
   });
 
   if(isLoggedIn){
-    // return <Navigate to={'/'}/>
-    navigate('/')
+    return <Navigate to={'/'}/>
+    // navigate('/')
   }
 
   return (

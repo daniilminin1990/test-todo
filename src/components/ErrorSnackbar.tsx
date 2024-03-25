@@ -11,7 +11,7 @@ export default function ErrorSnackbar() {
     if(reason === 'clickaway'){
       return
     }
-    dispatch(setAppErrorAC(null))
+    dispatch(setAppErrorAC({value: null}))
   };
 
   return (
