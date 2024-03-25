@@ -3,32 +3,28 @@ import {addAppStatusAC, AddAppStatusACType, setAppErrorAC, SetAppErrorACType} fr
 import {loginAPI, LoginParamsType} from "../../api/login-api";
 import {errorFunctionMessage} from "../../utilities/utilities";
 import {AxiosError} from "axios";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState: InitialStateType = {
   isLoggedIn: false
 }
 
-type InitialStateType = typeof initialState
-
-export const loginReducer = (state: InitialStateType = initialState, action: MutualLoginType): InitialStateType => {
-  switch(action.type){
-    case 'login/SET-IS-LOGGED-IN': {
-      return {...state, isLoggedIn: action.payload.value}
-    }
-    default : {
-      return state
-    }
-  }
+type InitialStateType = {
+  isLoggedIn: boolean
 }
 
-// actions
-type SetIsLoggedInACType = ReturnType<typeof setIsLoggedIn>
-export const setIsLoggedIn = (value: boolean) => {
-  return {
-    type: 'login/SET-IS-LOGGED-IN',
-    payload: {value}
+const slice = createSlice({
+  name: 'login',
+  initialState: initialState,
+  reducers: {
+    setIsLoggedInAC(state, action: PayloadAction<{value: boolean}>){
+      state.isLoggedIn = action.payload.value
+    }
   }
-}
+})
+
+export const loginReducer = slice.reducer
+export const {setIsLoggedInAC} = slice.actions
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
@@ -36,7 +32,7 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
   loginAPI.login(data)
     .then((res) => {
       if(res.data.resultCode === 0){
-        dispatch(setIsLoggedIn(true))
+        dispatch(setIsLoggedInAC({value: true}))
       } else {
         errorFunctionMessage<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
       }
@@ -54,7 +50,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
   loginAPI.logout()
     .then((res) => {
       if(res.data.resultCode === 0){
-        dispatch(setIsLoggedIn(false))
+        dispatch(setIsLoggedInAC({value: false}))
       } else {
         errorFunctionMessage<{}>(res.data, dispatch, 'Oops! Something gone wrong')
       }
@@ -66,5 +62,3 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       dispatch(addAppStatusAC('success'))
     })
 }
-
-type MutualLoginType = SetIsLoggedInACType | AddAppStatusACType | SetAppErrorACType

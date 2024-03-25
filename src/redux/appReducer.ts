@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {loginAPI} from "../api/login-api";
-import {setIsLoggedIn} from "../features/Login/loginReducer";
+import {setIsLoggedInAC} from "../features/Login/loginReducer";
 
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
@@ -30,7 +30,7 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
       }
     })
     .finally(() => {
-      dispatch(setIsLoggedIn(true))
+      dispatch(setIsLoggedInAC({value: true}))
     })
 }
 
