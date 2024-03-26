@@ -1,11 +1,10 @@
 import {combineReducers} from "redux";
 import {todolistReducer} from "../redux/todolistReducer";
 import {tasksReducer} from "../redux/tasksReducer";
-import {thunk} from "redux-thunk";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "../redux/appReducer";
 import {loginReducer} from "../features/Login/loginReducer";
-import {configureStore, Tuple} from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 
 
 const rootReducer = combineReducers({
@@ -27,7 +26,7 @@ export type RootReducerType = ReturnType<typeof rootReducer>
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: () => new Tuple(thunk),
+  // middleware: () => new Tuple(thunk),
 })
 // ВОТ ЭТОТ НОРМ, НЕ РУГАЕТСЯ!
 

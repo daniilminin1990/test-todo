@@ -30,7 +30,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }, []);
 
   const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
-    dispatch(changeFilterAC(todoListId, newFilterValue))
+    dispatch(changeFilterAC({todoListId:todoListId, newFilterValue: newFilterValue}))
   }, [dispatch])
 
   const addTodo = useCallback((newTodoTitle: string) => {
