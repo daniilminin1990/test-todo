@@ -3,4 +3,7 @@ module.exports = {
   testRegex: "./*.test.js$",
   setupFilesAfterEnv: ["./setupTests.js"],
   testTimeout: 100000, //
+  // transformIgnorePatterns: [
+  //   "node_modules/(?!axios)"
+  // ]
 };

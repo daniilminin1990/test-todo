@@ -22,6 +22,7 @@ const App = React.memo(() => {
   const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
 
   useEffect(() => {
+    console.log(isInitialized)
     dispatch(initialiseMeTC())
   }, []);
 

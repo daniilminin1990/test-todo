@@ -42,8 +42,8 @@ const slice = createSlice({
       const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
       if (id > -1) state[action.payload.todoListId].splice(id, 1)
     },
-    addTaskAC(state, action: PayloadAction<{ task: TasksWithEntityStatusType }>) {
-      state[action.payload.task.todoListId].unshift(action.payload.task)
+    addTaskAC(state, action: PayloadAction< TasksWithEntityStatusType >) {
+      state[action.payload.todoListId].unshift(action.payload)
     },
     updateTaskAC(state, action: PayloadAction<{ todoListId: string, taskId: string, model: UpdateTaskUtilityType }>) {
       const tasks = state[action.payload.todoListId]
@@ -268,7 +268,7 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
     .then(res => {
       if (res.data.resultCode === 0) {
         const taskToServer: TasksWithEntityStatusType = {...res.data.data.item, entityStatus: 'idle'}
-        dispatch(addTaskAC({task: taskToServer}))
+        dispatch(addTaskAC(taskToServer))
       } else {
         errorFunctionMessage(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }

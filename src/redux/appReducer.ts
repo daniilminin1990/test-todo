@@ -5,15 +5,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
-// type InitialStateType = {
-//   statusTodo: ServerResponseStatusType
-//   statusTask: ServerResponseStatusType
-//   addStatus: ServerResponseStatusType,
-//   error: null | string
-//   isInitialized: boolean
-// }
-
-const initialState= {
+export const initialState= {
   statusTodo: 'idle' as ServerResponseStatusType,
   statusTask: 'idle' as ServerResponseStatusType,
   addStatus: 'idle' as ServerResponseStatusType,
@@ -57,12 +49,13 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
     .then((res) => {
       if(res.data.resultCode === 0){
         dispatch(changeInitializedAC({value: true}))
+        dispatch(setIsLoggedInAC({value: true}))
       } else {
 
       }
     })
     .finally(() => {
-      dispatch(setIsLoggedInAC({value: true}))
+      dispatch(changeInitializedAC({value: true}))
     })
 }
 //
