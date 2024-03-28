@@ -1,11 +1,4 @@
-import {
-  addTodoAC,
-  AddTodoACType, FilterValuesType,
-  removeTodoAC,
-  RemoveTodoACType,
-  setTodosAC,
-  SetTodosActionType
-} from "./todolistReducer";
+import {addTodoAC, removeTodoAC, setTodosAC} from "./todolistReducer";
 import {TaskPriorities, tasksApi, TaskStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
@@ -13,7 +6,7 @@ import {ServerResponseStatusType, setAppErrorAC, setAppStatusTaskAC} from "./app
 import {createModelTask, errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {TodolistType} from "../api/todolists-api";
+import {clearTasksAndTodos} from "../common/actions/common.actions";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[]
@@ -66,7 +59,7 @@ const slice = createSlice({
       if (id > -1) {
         tasks[id] = {...tasks[id], entityStatus: action.payload.entityStatus}
       }
-    }
+    },
   },
   extraReducers: builder => {
     builder.addCase(addTodoAC, (state, action) => {
@@ -79,6 +72,9 @@ const slice = createSlice({
       action.payload.todolists.forEach(tl => {
         state[tl.id] = []
       })
+    });
+    builder.addCase(clearTasksAndTodos, () => {
+      return {}
     })
   }
 })
@@ -88,7 +84,7 @@ export const {
   addTaskAC,
   updateTaskAC,
   setTasksAC,
-  updateTaskEntityStatusAC
+  updateTaskEntityStatusAC,
 } = slice.actions
 
 export const tasksReducer = slice.reducer

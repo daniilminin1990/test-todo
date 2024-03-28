@@ -4,6 +4,7 @@ import {loginAPI, LoginParamsType} from "../../api/login-api";
 import {errorFunctionMessage} from "../../utilities/utilities";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {clearTasksAndTodos} from "../../common/actions/common.actions";
 
 const initialState = {
   isLoggedIn: false
@@ -51,6 +52,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
     .then((res) => {
       if(res.data.resultCode === 0){
         dispatch(setIsLoggedInAC({value: false}))
+        dispatch(clearTasksAndTodos())
       } else {
         errorFunctionMessage<{}>(res.data, dispatch, 'Oops! Something gone wrong')
       }

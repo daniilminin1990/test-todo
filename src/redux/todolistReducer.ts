@@ -4,6 +4,7 @@ import {ServerResponseStatusType, setAppErrorAC, setAppTodoStatusAC} from "./app
 import {AxiosError} from "axios";
 import {errorFunctionMessage} from "../utilities/utilities";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {clearTasksAndTodos} from "../common/actions/common.actions";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -40,7 +41,12 @@ const slice = createSlice({
     },
     setTodosAC(state, action: PayloadAction<{todolists: TodolistType[]}>) {
       return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
-    }
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase(clearTasksAndTodos, () => {
+      return []
+    })
   }
 })
 
@@ -51,7 +57,7 @@ export const {
   changeFilterAC,
   updateTodoTitleAC,
   updateEntityStatusTodoAC,
-  setTodosAC
+  setTodosAC,
 } = slice.actions
 
 // export const todolistReducer = (state: TodoUIType[] = initState, action: MutualTodoType): Array<TodoUIType> => {
