@@ -56,7 +56,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       <Grid container spacing={3}>
         {
           todolists.map(tl => {
-            // let allTodoTasks = tasks[tl.id]
             return (
               <Grid item key={tl.id}>
                 <Paper elevation={6} style={{padding: '30px'}}>
@@ -64,7 +63,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                     key={tl.id}
                     todoListId={tl.id}
                     todoTitle={tl.title}
-                    // tasks={allTodoTasks}
                     tasksFilter={tl.filter}
                     changeFilter={changeFilter}
                     updTodoTitle={updTodoTitle}
