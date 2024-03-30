@@ -3,7 +3,7 @@ import EdiatbleSpan from "../../../../components/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {TaskStatuses} from "../../../../api/tasks-api";
-import {ServerResponseStatusType} from "../../../../redux/appReducer";
+import {ServerResponseStatusType} from "../../../../redux/appSlice";
 
 export type TaskProps = {
   taskId: string,

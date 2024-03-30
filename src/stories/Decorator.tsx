@@ -1,14 +1,14 @@
 import {combineReducers, legacy_createStore} from "redux";
-import {tasksReducer} from "../redux/tasksReducer";
-import {todolistReducer} from "../redux/todolistReducer";
+import {tasksSlice} from "../redux/tasksSlice";
+import {todolistsSlice} from "../redux/todolistsSlice";
 import {v1} from "uuid";
 import {Provider} from "react-redux";
 import React from "react";
 import {RootReducerType} from "../store/store";
 
 const rootReducer = combineReducers({
-  todolistReducer: todolistReducer,
-  tasksReducer: tasksReducer,
+  todolistReducer: todolistsSlice,
+  tasksReducer: tasksSlice,
 })
 
 const initialGlobalState = {

@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import {RootReducerType, useAppDispatch, useAppSelector} from "../../store/store";
 import {useSelector} from "react-redux";
 import {
   addTodoTC,
-  changeFilterAC,
   changeTodoTitleTC,
   FilterValuesType,
   setTodolistsTC,
+  todolistsActions,
   TodoUIType
-} from "../../redux/todolistReducer";
+} from "../../redux/todolistsSlice";
 import {CircularProgress, Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 type TodolistsBunchProps = {}
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
@@ -20,7 +20,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
   const statusAddTodo = useAppSelector(state => state.appReducer.addStatus)
   const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
-  const navigate = useNavigate();
+  // const todolists = useSelector(todolistsSelectors.todolists)
+  // const isLoggedIn = useSelector(loginSelectors.isLoggedIn)
+  // const statusAddTodo = useSelector(appSelectors.addStatus)
 
   useEffect(() => {
     if(!isLoggedIn){
@@ -30,7 +32,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }, []);
 
   const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
-    dispatch(changeFilterAC({todoListId:todoListId, newFilterValue: newFilterValue}))
+    dispatch(todolistsActions.changeTodoFilter({todoListId:todoListId, newFilterValue: newFilterValue}))
   }, [dispatch])
 
   const addTodo = useCallback((newTodoTitle: string) => {

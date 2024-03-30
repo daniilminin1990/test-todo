@@ -1,6 +1,6 @@
 import {createAction, nanoid} from "@reduxjs/toolkit";
-import {TaskStateType} from "../../redux/tasksReducer";
-import {TodoUIType} from "../../redux/todolistReducer";
+import {TaskStateType} from "../../redux/tasksSlice";
+import {TodoUIType} from "../../redux/todolistsSlice";
 
 export type ClearTasksAndTodosType = {
   tasks: TaskStateType,

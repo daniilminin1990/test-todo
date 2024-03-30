@@ -8,16 +8,16 @@ import {
   deleteTaskTC,
   setTasksTC,
   TasksWithEntityStatusType
-} from "../../../redux/tasksReducer";
+} from "../../../redux/tasksSlice";
 import {Task} from "./Task/Task";
-import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistReducer";
+import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistsSlice";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Skeleton from '@mui/material/Skeleton';
-import {RootReducerType, useAppDispatch} from '../../../store/store';
+import {RootReducerType, useAppDispatch, useAppSelector} from '../../../store/store';
 import {TaskStatuses} from "../../../api/tasks-api";
-import {ServerResponseStatusType} from "../../../redux/appReducer";
+import {ServerResponseStatusType} from "../../../redux/appSlice";
 
 type TodolistProps = {
   todoTitle: string,
@@ -33,6 +33,8 @@ type TodolistProps = {
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   console.log('Todolist')
   let allTodoTasks = useSelector<RootReducerType, TasksWithEntityStatusType[]>((state) => state.tasksReducer[props.todoListId])
+  // let allTodoTasks = useSelector(tasksSelectors.tasksState[props.todoListId])
+  // ПОЧЕМУ НЕ ПОЛУЧАЕТСЯ????
   // let allTodoTasks = tasks[props.todoListId]
   const dispatch = useAppDispatch()
 
@@ -42,7 +44,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
 
   const removeTask = useCallback((taskId: string) => {
     dispatch(deleteTaskTC(props.todoListId, taskId))
-    // dispatch(removeTaskAC(props.todoListId, taskId))
+    // dispatch(removeTask(props.todoListId, taskId))
   }, [dispatch, props.todoListId])
 
   const addTask = useCallback((newTaskTitle: string) => {

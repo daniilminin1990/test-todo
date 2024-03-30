@@ -8,7 +8,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import ErrorSnackbar from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {BrowserRouter, HashRouter, Navigate, Route, Routes} from "react-router-dom";
-import { initialiseMeTC} from "../redux/appReducer";
+import { initialiseMeTC} from "../redux/appSlice";
+import {useSelector} from "react-redux";
 
 // For githubpages use this stroke in package.json
 // "homepage": "https://daniilminin1990.github.io/test-todo",
@@ -18,8 +19,11 @@ import { initialiseMeTC} from "../redux/appReducer";
 const App = React.memo(() => {
   const statusTodo = useAppSelector(state => state.appReducer.statusTodo)
   const statusTask = useAppSelector(state => state.appReducer.statusTask)
-  const dispatch = useAppDispatch()
   const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
+  // const statusTodo = useSelector(appSelectors.statusTodo)
+  // const statusTask = useSelector(appSelectors.statusTask)
+  // const isInitialized = useSelector(appSelectors.isInitialized)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     console.log(isInitialized)

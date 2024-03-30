@@ -1,12 +1,12 @@
-import {addTodoAC, removeTodoAC, setTodosAC} from "./todolistReducer";
 import {TaskPriorities, tasksApi, TaskStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
 import {RootReducerType} from "../store/store";
-import {ServerResponseStatusType, setAppErrorAC, setAppStatusTaskAC} from "./appReducer";
+import {appActions, ServerResponseStatusType} from "./appSlice";
 import {createModelTask, errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
+import {todolistsActions} from "./todolistsSlice";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[]
@@ -25,31 +25,29 @@ export type UpdateTaskUtilityType = {
   deadline?: string
 }
 
-const initStateTasks: TaskStateType = {}
-
 const slice = createSlice({
   name: 'tasks',
-  initialState: initStateTasks,
+  initialState: {} as TaskStateType,
   reducers: {
-    removeTaskAC(state, action: PayloadAction<{ todoListId: string, taskId: string }>) {
+    removeTask(state, action: PayloadAction<{ todoListId: string, taskId: string }>) {
       const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
       if (id > -1) state[action.payload.todoListId].splice(id, 1)
     },
-    addTaskAC(state, action: PayloadAction< TasksWithEntityStatusType >) {
+    addTask(state, action: PayloadAction<TasksWithEntityStatusType>) {
       state[action.payload.todoListId].unshift(action.payload)
     },
-    updateTaskAC(state, action: PayloadAction<{ todoListId: string, taskId: string, model: UpdateTaskUtilityType }>) {
+    updateTask(state, action: PayloadAction<{ todoListId: string, taskId: string, model: UpdateTaskUtilityType }>) {
       const tasks = state[action.payload.todoListId]
       const id = tasks.findIndex(t => t.id === action.payload.taskId)
       if (id > -1) {
         tasks[id] = {...tasks[id], ...action.payload.model}
       }
     },
-    setTasksAC(state, action: PayloadAction<{ todoId: string, tasks: TaskType[] }>) {
+    setTasks(state, action: PayloadAction<{ todoId: string, tasks: TaskType[] }>) {
       const {todoId, tasks} = action.payload
       state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
     },
-    updateTaskEntityStatusAC(state, action: PayloadAction<{
+    updateTaskEntityStatus(state, action: PayloadAction<{
       todoId: string,
       taskId: string | undefined,
       entityStatus: ServerResponseStatusType
@@ -62,32 +60,31 @@ const slice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(addTodoAC, (state, action) => {
-      state[action.payload.newTodolist.id] = []
-    });
-    builder.addCase(removeTodoAC, (state, action) => {
-      delete state[action.payload.todoListId]
-    });
-    builder.addCase(setTodosAC, (state, action) => {
-      action.payload.todolists.forEach(tl => {
-        state[tl.id] = []
+    builder
+      .addCase(todolistsActions.addTodo, (state, action) => {
+        state[action.payload.newTodolist.id] = []
       })
-    });
-    builder.addCase(clearTasksAndTodos, () => {
-      return {}
-    })
-  }
+      .addCase(todolistsActions.removeTodo, (state, action) => {
+        delete state[action.payload.todoListId]
+      })
+      .addCase(todolistsActions.setTodos, (state, action) => {
+        action.payload.todolists.forEach(tl => {
+          state[tl.id] = []
+        })
+      })
+      .addCase(clearTasksAndTodos, () => {
+        return {}
+      })
+  },
+  // selectors: {
+  //   tasksState: sliceState => sliceState as TaskStateType
+  // }
 })
 
-export const {
-  removeTaskAC,
-  addTaskAC,
-  updateTaskAC,
-  setTasksAC,
-  updateTaskEntityStatusAC,
-} = slice.actions
+export const tasksActions = slice.actions
 
-export const tasksReducer = slice.reducer
+export const tasksSlice = slice.reducer
+// export const tasksSelectors = slice.selectors
 
 // export const tasksReducer = (state: TaskStateType = initStateTasks, action: MutualTaskType): TaskStateType => {
 //   switch (action.type) {
@@ -112,19 +109,19 @@ export const tasksReducer = slice.reducer
 //       }
 //     }
 //     // case "ADD-TODO": {
-//     case addTodoAC.type: {
+//     case addTodo.type: {
 //       const a = action.payload
 //       // return {...state, [a.todoListId]: []}
 //       return {...state, [a.newTodolist.id]: []}
 //     }
 //     // case 'REMOVE-TODO': {
-//     case removeTodoAC.type: {
+//     case removeTodo.type: {
 //       const a = action.payload
 //       const {[a.todoListId]: rrr, ...rest} = state
 //       return rest
 //     }
 //     // case 'SET-TODOS': {
-//     case setTodosAC.type: {
+//     case setTodos.type: {
 //       const copyState = {...state}
 //       action.payload.todolists.forEach(tl => {
 //         copyState[tl.id] = []
@@ -146,19 +143,19 @@ export const tasksReducer = slice.reducer
 //     }
 //   }
 // }
-// export type MutualTaskType = RemoveTaskAC
-//   | AddTaskAC
+// export type MutualTaskType = removeTask
+//   | addTask
 //   | ChangeTaskStatusAC
 //   | UpdTaskTitleAC
-//   | AddTodoACType
-//   | RemoveTodoACType
-//   | SetTodosActionType
-//   | SetTasksACType
-//   | UpdateTaskEntityStatusAC
+//   | addTodoType
+//   | removeTodoType
+//   | setTodostionType
+//   | setTasksType
+//   | updateTaskEntityStatus
 //
-// export type RemoveTaskAC = ReturnType<typeof removeTaskAC>
+// export type removeTask = ReturnType<typeof removeTask>
 //
-// export const removeTaskAC = (todoListId: string, taskId: string) => {
+// export const removeTask = (todoListId: string, taskId: string) => {
 //   return {
 //     type: 'REMOVE-TASK',
 //     payload: {
@@ -168,8 +165,8 @@ export const tasksReducer = slice.reducer
 //   } as const
 // }
 //
-// export type AddTaskAC = ReturnType<typeof addTaskAC>
-// export const addTaskAC = (task: TasksWithEntityStatusType) => {
+// export type addTask = ReturnType<typeof addTask>
+// export const addTask = (task: TasksWithEntityStatusType) => {
 //   console.log('TASK', task.todoListId)
 //   return {
 //     type: 'ADD-TASK',
@@ -177,8 +174,8 @@ export const tasksReducer = slice.reducer
 //   } as const
 // }
 //
-// export type ChangeTaskStatusAC = ReturnType<typeof updateTaskAC>
-// export const updateTaskAC = (todoListId: string, taskId: string, model: UpdateTaskUtilityType) => {
+// export type ChangeTaskStatusAC = ReturnType<typeof updateTask>
+// export const updateTask = (todoListId: string, taskId: string, model: UpdateTaskUtilityType) => {
 //   return {
 //     type: 'UPDATE-TASK',
 //     payload: {
@@ -202,8 +199,8 @@ export const tasksReducer = slice.reducer
 // }
 //
 // // ! AC для ENTITY ЕБАНЫЙ СТАТУС ДЛЯ ТАСКИ ЕБУЧЕЙ
-// export type UpdateTaskEntityStatusAC = ReturnType<typeof updateTaskEntityStatusAC>
-// export const updateTaskEntityStatusAC = (todoId: string, taskId: string | undefined, entityStatus: ServerResponseStatusType) => {
+// export type updateTaskEntityStatus = ReturnType<typeof updateTaskEntityStatus>
+// export const updateTaskEntityStatus = (todoId: string, taskId: string | undefined, entityStatus: ServerResponseStatusType) => {
 //   return {
 //     type: 'UPDATE-TASK-ENTITY-STATUS',
 //     payload: {
@@ -215,8 +212,8 @@ export const tasksReducer = slice.reducer
 // }
 //
 // //! ActionCreator для сета тасок с сервера
-// export type SetTasksACType = ReturnType<typeof setTasksAC>
-// export const setTasksAC = (todoId: string, tasks: TaskType[]) => {
+// export type setTasksType = ReturnType<typeof setTasks>
+// export const setTasks = (todoId: string, tasks: TaskType[]) => {
 //   return {
 //     type: "SET-TASKS",
 //     todoId,
@@ -226,59 +223,59 @@ export const tasksReducer = slice.reducer
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
+  dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
   tasksApi.getTasks(todoId)
     .then(res => {
-      dispatch(setTasksAC({todoId, tasks: res.data.items}))
+      dispatch(tasksActions.setTasks({todoId, tasks: res.data.items}))
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({error: e.message})
+      appActions.setAppError({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
     })
 }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
-  dispatch(updateTaskEntityStatusAC({todoId, taskId, entityStatus: 'loading'}))
+  dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+  dispatch(tasksActions.updateTaskEntityStatus({todoId, taskId, entityStatus: 'loading'}))
   tasksApi.deleteTask(todoId, taskId)
     .then(res => {
       if (res.data.resultCode === 0) {
-        dispatch(removeTaskAC({todoListId: todoId, taskId}))
+        dispatch(tasksActions.removeTask({todoListId: todoId, taskId}))
       } else {
         errorFunctionMessage(res.data, dispatch, 'Something wrong, try later')
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({error: e.message})
+      appActions.setAppError({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
-      dispatch(updateTaskEntityStatusAC({todoId, taskId, entityStatus: 'success'}))
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+      dispatch(tasksActions.updateTaskEntityStatus({todoId, taskId, entityStatus: 'success'}))
     })
 }
 export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
+  dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
   tasksApi.createTask(todoId, newTaskTitle)
     .then(res => {
       if (res.data.resultCode === 0) {
         const taskToServer: TasksWithEntityStatusType = {...res.data.data.item, entityStatus: 'idle'}
-        dispatch(addTaskAC(taskToServer))
+        dispatch(tasksActions.addTask(taskToServer))
       } else {
         errorFunctionMessage(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({error: e.message})
+      appActions.setAppError({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
     })
 }
 export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
-  dispatch(setAppStatusTaskAC({statusTask: 'loading'}))
-  dispatch(updateTaskEntityStatusAC({todoId: todoListId, taskId, entityStatus: 'loading'}))
+  dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+  dispatch(tasksActions.updateTaskEntityStatus({todoId: todoListId, taskId, entityStatus: 'loading'}))
   const state = getState()
   const task = state.tasksReducer[todoListId].find(tl => tl.id === taskId)
 
@@ -289,17 +286,17 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
   tasksApi.updateTask(todoListId, taskId, elementToUpdate)
     .then(res => {
       if (res.data.resultCode === 0) {
-        dispatch(updateTaskAC({ todoListId, taskId,model: elementToUpdate}))
+        dispatch(tasksActions.updateTask({todoListId, taskId, model: elementToUpdate}))
       } else {
         errorFunctionMessage(res.data, dispatch, 'Length should be less than 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
-      setAppErrorAC({error: e.message})
+      appActions.setAppError({error: e.message})
     })
     .finally(() => {
-      dispatch(setAppStatusTaskAC({statusTask: 'success'}))
-      dispatch(updateTaskEntityStatusAC({todoId: todoListId, taskId, entityStatus:'success'}))
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+      dispatch(tasksActions.updateTaskEntityStatus({todoId: todoListId, taskId, entityStatus: 'success'}))
     })
 }
 

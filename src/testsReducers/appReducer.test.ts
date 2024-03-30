@@ -1,16 +1,5 @@
-import {appReducer, initialState, ServerResponseStatusType, setAppErrorAC, setAppStatusAC} from "../redux/appReducer";
-
-
-type InitialStateType = {
-  statusTodo: ServerResponseStatusType
-  statusTask: ServerResponseStatusType
-  addStatus: ServerResponseStatusType,
-  error: null | string
-  isInitialized: boolean
-}
-
-let startState: InitialStateType;
-
+import {appActions, AppInitialState, appSlice, ServerResponseStatusType} from "../redux/appSlice";
+let startState: AppInitialState;
 beforeEach(() => {
   startState = {
     statusTodo: 'idle',
@@ -22,11 +11,11 @@ beforeEach(() => {
 })
 
 test('correct error should be set', () => {
-  const endState = appReducer(startState, setAppErrorAC({error: 'test error'}))
+  const endState = appSlice(startState, appActions.setAppError({error: 'test error'}))
   expect(endState.error).toBe ('test error')
 })
 
 test('correct status should be set', () => {
-  const endState = appReducer(startState, setAppStatusAC({appStatus: 'loading'}))
+  const endState = appSlice(startState, appActions.setAppStatus({appStatus: 'loading'}))
   expect(endState.addStatus).toBe ('loading')
 })

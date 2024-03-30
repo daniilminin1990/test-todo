@@ -63,6 +63,6 @@ export const TaskToDelete = () => {
     taskId={'asdasd'}
     onChange={onChange}
     onClick={action('onclickAction')}
-    updTaskTitle={action('updateTaskAction')}
+    updTaskTitle={action('updateTasktion')}
   />
 }

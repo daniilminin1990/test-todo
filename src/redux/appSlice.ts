@@ -1,61 +1,64 @@
 import {Dispatch} from "redux";
 import {loginAPI} from "../api/login-api";
-import {setIsLoggedInAC} from "../features/Login/loginReducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {loginActions} from "../features/Login/loginSlice";
 
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
-export const initialState= {
-  statusTodo: 'idle' as ServerResponseStatusType,
-  statusTask: 'idle' as ServerResponseStatusType,
-  addStatus: 'idle' as ServerResponseStatusType,
-  error: null as null | string,
-  isInitialized: false
-}
 
 const slice = createSlice({
   name: 'app',
-  initialState: initialState,
+  initialState: {
+    statusTodo: 'idle' as ServerResponseStatusType,
+    statusTask: 'idle' as ServerResponseStatusType,
+    addStatus: 'idle' as ServerResponseStatusType,
+    error: null as null | string,
+    isInitialized: false
+  },
   reducers: {
-    setAppTodoStatusAC(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
+    setAppTodoStatus(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
       state.statusTodo = action.payload.statusTodo
     },
-    setAppStatusTaskAC(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>){
+    setAppStatusTask(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>){
       state.statusTask = action.payload.statusTask
     },
-    setAppStatusAC(state, action: PayloadAction<{ appStatus: ServerResponseStatusType }>) {
+    setAppStatus(state, action: PayloadAction<{ appStatus: ServerResponseStatusType }>) {
       state.addStatus = action.payload.appStatus
     },
-    setAppErrorAC(state,action: PayloadAction<{error: null | string}>){
+    setAppError(state,action: PayloadAction<{error: null | string}>){
       state.error = action.payload.error
     },
-    changeInitializedAC(state, action: PayloadAction<{value: boolean}>){
+    changeInitialized(state, action: PayloadAction<{value: boolean}>){
       state.isInitialized = action.payload.value
     }
-  }
+  },
+  // selectors: {
+    // selectAddStatus: sliceState=> sliceState.addStatus,
+  //   statusTodo: (sliceState) => sliceState.statusTodo,
+  //   statusTask: (sliceState) => sliceState.statusTask,
+  //   isInitialized: (sliceState) => sliceState.isInitialized,
+  //   error: (sliceState) => sliceState.error
+  // }
 })
 
-export const appReducer = slice.reducer
+export const appSlice = slice.reducer
 
-export const {setAppTodoStatusAC,
-  setAppStatusTaskAC,
-  setAppStatusAC,
-  setAppErrorAC,
-  changeInitializedAC
-} = slice.actions
+export const appActions = slice.actions
+// export const appSelectors = slice.selectors
+export type AppInitialState = ReturnType<typeof slice.getInitialState>
 
 export const initialiseMeTC = () => (dispatch: Dispatch) => {
   loginAPI.initialiseMe()
     .then((res) => {
       if(res.data.resultCode === 0){
-        dispatch(changeInitializedAC({value: true}))
-        dispatch(setIsLoggedInAC({value: true}))
+        dispatch(appActions.changeInitialized({value: true}))
+        dispatch(loginActions.setIsLoggedInAC({value: true}))
       } else {
 
       }
     })
     .finally(() => {
-      dispatch(changeInitializedAC({value: true}))
+      dispatch(appActions.changeInitialized({value: true}))
     })
 }
 //
@@ -82,10 +85,10 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
 //   }
 // }
 //
-// type AppReducerType = SetAppTodoStatusACType | SetAppTaskStatusACType | SetAppStatusACType | SetAppErrorACType | ChangeInitializedAC
+// type AppReducerType = setAppTodoStatusType | SetAppTaskStatusACType | setAppStatusType | setAppErrorType | changeInitialized
 //
-// export type SetAppTodoStatusACType = ReturnType<typeof setAppTodoStatusAC>
-// export const setAppTodoStatusAC = (status: ServerResponseStatusType) => {
+// export type setAppTodoStatusType = ReturnType<typeof setAppTodoStatus>
+// export const setAppTodoStatus = (status: ServerResponseStatusType) => {
 //   return {
 //     type: 'SET-TODO-STATUS',
 //     payload: {
@@ -104,8 +107,8 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
 //   } as const
 // }
 //
-// export type SetAppStatusACType = ReturnType<typeof setAppStatusAC>
-// export const setAppStatusAC = (status: ServerResponseStatusType) => {
+// export type setAppStatusType = ReturnType<typeof setAppStatus>
+// export const setAppStatus = (status: ServerResponseStatusType) => {
 //   return {
 //     type: 'ADD-STATUS',
 //     payload: {
@@ -114,8 +117,8 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
 //   } as const
 // }
 //
-// export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>
-// export const setAppErrorAC = (error: null|string) => {
+// export type setAppErrorType = ReturnType<typeof setAppError>
+// export const setAppError = (error: null|string) => {
 //   return {
 //     type: 'SET-ERROR',
 //     payload: {
@@ -124,8 +127,8 @@ export const initialiseMeTC = () => (dispatch: Dispatch) => {
 //   } as const
 // }
 //
-// export type ChangeInitializedAC = ReturnType<typeof changeInitializedAC>
-// export const changeInitializedAC = (value: boolean) => {
+// export type changeInitialized = ReturnType<typeof changeInitialized>
+// export const changeInitialized = (value: boolean) => {
 //   return {
 //     type: 'CHANGE-INITIALIZED',
 //     payload: {

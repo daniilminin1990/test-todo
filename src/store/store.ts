@@ -1,19 +1,18 @@
 import {combineReducers} from "redux";
-import {todolistReducer} from "../redux/todolistReducer";
-import {tasksReducer} from "../redux/tasksReducer";
+import {todolistsSlice} from "../redux/todolistsSlice";
+import {tasksSlice} from "../redux/tasksSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {appReducer} from "../redux/appReducer";
-import {loginReducer} from "../features/Login/loginReducer";
+import {appSlice} from "../redux/appSlice";
+import {loginSlice} from "../features/Login/loginSlice";
 import {configureStore} from '@reduxjs/toolkit'
 
 
-const rootReducer = combineReducers({
-  todolistReducer: todolistReducer,
-  tasksReducer: tasksReducer,
-  appReducer: appReducer,
-  loginReducer: loginReducer
-})
-export type RootReducerType = ReturnType<typeof rootReducer>
+// const rootReducer = combineReducers({
+//   todolistReducer: todolistsSlice,
+//   tasksReducer: tasksSlice,
+//   appReducer: appSlice,
+//   loginReducer: loginSlice
+// })
 // @ts-ignore
 // export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
 
@@ -25,10 +24,16 @@ export type RootReducerType = ReturnType<typeof rootReducer>
 // })
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    todolistReducer: todolistsSlice,
+    tasksReducer: tasksSlice,
+    appReducer: appSlice,
+    loginReducer: loginSlice
+  },
   // middleware: () => new Tuple(thunk),
 })
 // ВОТ ЭТОТ НОРМ, НЕ РУГАЕТСЯ!
+export type RootReducerType = ReturnType<typeof store.getState>
 
 // export type AppDispatch = ThunkDispatch<RootReducerType, unknown, AnyAction>
 export type AppDispatch = typeof store.dispatch

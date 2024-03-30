@@ -1,8 +1,7 @@
-import {setAppErrorAC} from "../redux/appReducer";
 import {Dispatch} from "redux";
 import {ResponseType} from "../api/todolists-api";
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/tasks-api";
-import {UpdateTaskUtilityType} from "../redux/tasksReducer";
+import {appActions} from "../redux/appSlice";
 
 // export const errorFunctionMessage = (data: ResponseType, dispatch: Dispatch) => {
 // export const errorFunctionMessage = (data: ResponseType, dispatch: Dispatch) => {
@@ -10,9 +9,9 @@ import {UpdateTaskUtilityType} from "../redux/tasksReducer";
 // Функция для обработки ошибок от ответов от сервера. НУЖЕН ДЖЕНЕРИК, потому что у наса ResponseType от сервера дженериковый
 export const errorFunctionMessage = <T>(data: ResponseType<T>, dispatch: Dispatch, errorText: string) => {
   if (data.messages.length) { // Если придет текст ошибки с сервера (МЫ НЕ ПРОВЕРЯЕМ НА 100 символов, это делает сервер)
-    dispatch(setAppErrorAC({error: data.messages[0]}))
+    dispatch(appActions.setAppError({error: data.messages[0]}))
   } else { // Если не придет текст ошибки с сервера, то откинем свой текст
-    dispatch(setAppErrorAC({error: errorText}))
+    dispatch(appActions.setAppError({error: errorText}))
   }
 }
 

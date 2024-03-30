@@ -1,6 +1,6 @@
 import {instance} from "./todolists-api";
 import axios, {AxiosResponse} from "axios";
-import {ServerResponseStatusType} from "../redux/appReducer";
+import {ServerResponseStatusType} from "../redux/appSlice";
 
 export type UpdateTaskType = Omit<TaskType, 'id' | 'todoListId' | 'order' | 'addedDate'>
 

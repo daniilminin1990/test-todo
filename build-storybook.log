@@ -365,9 +365,9 @@ WARN   Line 1:17:  'memo' is defined but never used  @typescript-eslint/no-unuse
 WARN 
 WARN src\Task.tsx
 WARN   Line 1:30:  'useCallback' is defined but never used         @typescript-eslint/no-unused-vars
-WARN   Line 3:10:  'addTaskAC' is defined but never used           @typescript-eslint/no-unused-vars
+WARN   Line 3:10:  'addTask' is defined but never used           @typescript-eslint/no-unused-vars
 WARN   Line 3:21:  'changeTaskStatusAC' is defined but never used  @typescript-eslint/no-unused-vars
-WARN   Line 3:41:  'removeTaskAC' is defined but never used        @typescript-eslint/no-unused-vars
+WARN   Line 3:41:  'removeTask' is defined but never used        @typescript-eslint/no-unused-vars
 WARN   Line 3:55:  'updTaskTitleAC' is defined but never used      @typescript-eslint/no-unused-vars
 WARN 
 WARN src\Todolist.tsx

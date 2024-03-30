@@ -1,5 +1,5 @@
-import {addTodoAC, todolistReducer, TodoUIType} from "../redux/todolistReducer";
-import {tasksReducer, TaskStateType} from "../redux/tasksReducer";
+import {todolistsSlice, todolistsActions, TodoUIType} from "../redux/todolistsSlice";
+import {tasksSlice, TaskStateType} from "../redux/tasksSlice";
 import {TodolistType} from "../api/todolists-api";
 
 test('All id should be equals', () => {
@@ -13,10 +13,10 @@ test('All id should be equals', () => {
     order: 0
   }
 
-  const action = addTodoAC({ newTodolist: todolist, filter: 'all', entityStatus: 'idle' })
+  const action = todolistsActions.addTodo({ newTodolist: todolist, filter: 'all', entityStatus: 'idle' })
 
-  const endTasksState = tasksReducer(startTasksState, action)
-  const endTodolistsState = todolistReducer(startTodolistsState, action)
+  const endTasksState = tasksSlice(startTasksState, action)
+  const endTodolistsState = todolistsSlice(startTodolistsState, action)
 
   const keys = Object.keys(endTasksState);
   const idFromTasks = keys[0];
