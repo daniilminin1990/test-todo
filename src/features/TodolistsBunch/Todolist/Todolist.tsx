@@ -1,6 +1,7 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {AddItemForm} from "../../../components/AddItemForm";
 import EdiatbleSpan from "../../../components/EdiatbleSpan";
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import {useSelector} from "react-redux";
 import {
   addTaskTC,
@@ -36,10 +37,12 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   // let allTodoTasks = useSelector(tasksSelectors.tasksState[props.todoListId])
   // ПОЧЕМУ НЕ ПОЛУЧАЕТСЯ????
   // let allTodoTasks = tasks[props.todoListId]
+  const [showT, setShowT] = useState(false)
   const dispatch = useAppDispatch()
 
+
   useEffect(() => {
-    dispatch(setTasksTC(props.todoListId))
+    dispatch(setTasksTC(props.todoListId)).then(() => setShowT(true))
   }, []);
 
   const removeTask = useCallback((taskId: string) => {
@@ -83,45 +86,52 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   return (
     <div>
       <h3>
-        <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler} disabled={props.disabled === 'loading'}/>
+        <EdiatbleSpan oldTitle={props.todoTitle} callback={updTodoTitleHandler}
+                      disabled={props.disabled === 'loading'}/>
         <IconButton aria-label="delete" onClick={removeTodo} disabled={props.entityStatus === 'loading'}>
-          <DeleteIcon />
+          <DeleteIcon/>
         </IconButton>
       </h3>
       <AddItemForm callback={addTask} disabled={props.entityStatus === 'loading'}/>
-      {allTodoTasks.length === 0
-        ? <p>Nothing to show</p>
-        : <ul>
+      {allTodoTasks.length !== 0
+        ? <ul>
           {
             allTodoTasks.map(t => {
 
               return (
                 props.entityStatus === 'loading'
-                ? <Skeleton key={t.id}><Task key={t.id}
-                        taskId={t.id}
-                        tIsDone={t.status}
-                        oldTitle={t.title}
-                        onChange={changeTaskStatus}
-                        onClick={removeTask}
-                        updTaskTitle={updTaskTitle}
-                    />
+                  ? <Skeleton key={t.id}><Task key={t.id}
+                                               taskId={t.id}
+                                               tIsDone={t.status}
+                                               oldTitle={t.title}
+                                               onChange={changeTaskStatus}
+                                               onClick={removeTask}
+                                               updTaskTitle={updTaskTitle}
+                  />
                   </Skeleton>
-                : <Task key={t.id}
-                        taskId={t.id}
-                        tIsDone={t.status}
-                        oldTitle={t.title}
-                        entityStatus = {t.entityStatus}
-                        onChange={changeTaskStatus}
-                        onClick={removeTask}
-                        updTaskTitle={updTaskTitle}
+                  : <Task key={t.id}
+                          taskId={t.id}
+                          tIsDone={t.status}
+                          oldTitle={t.title}
+                          entityStatus={t.entityStatus}
+                          onChange={changeTaskStatus}
+                          onClick={removeTask}
+                          updTaskTitle={updTaskTitle}
                   />
               )
             })
           }
-        </ul>}
-      <Button variant={props.tasksFilter === 'all' ? "contained" : 'outlined'} color='primary' onClick={onAllClickHandler}>All</Button>
-      <Button variant={props.tasksFilter === 'active' ? "contained" : 'outlined'} color='error' onClick={onActiveClickHandler}>Active</Button>
-      <Button variant={props.tasksFilter === 'completed' ? "contained" : 'outlined'} color='success' onClick={onCompletedClickHandler}>Completed</Button>
+        </ul>
+      : showT
+        ? <p>Nothing to show</p>
+        : <Typography variant="h3"><Skeleton /></Typography>
+      }
+      <Button variant={props.tasksFilter === 'all' ? "contained" : 'outlined'} color='primary'
+              onClick={onAllClickHandler}>All</Button>
+      <Button variant={props.tasksFilter === 'active' ? "contained" : 'outlined'} color='error'
+              onClick={onActiveClickHandler}>Active</Button>
+      <Button variant={props.tasksFilter === 'completed' ? "contained" : 'outlined'} color='success'
+              onClick={onCompletedClickHandler}>Completed</Button>
     </div>
   )
 })

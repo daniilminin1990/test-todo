@@ -19,7 +19,6 @@ export const Login = () => {
   const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
   // const isLoggedIn = useSelector(loginSelectors.isLoggedIn)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {

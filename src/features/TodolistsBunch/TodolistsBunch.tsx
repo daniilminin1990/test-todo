@@ -25,9 +25,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // const statusAddTodo = useSelector(appSelectors.addStatus)
 
   useEffect(() => {
-    if(!isLoggedIn){
-      return
-    }
+    // if(!isLoggedIn){
+    //   return
+    // }
     dispatch(setTodolistsTC())
   }, []);
 

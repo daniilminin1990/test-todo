@@ -88,17 +88,21 @@ export const tasksSlice = slice.reducer
 
 //! Thunk
 export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-  tasksApi.getTasks(todoId)
-    .then(res => {
-      dispatch(tasksActions.setTasks({todoId, tasks: res.data.items}))
-    })
-    .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
-    })
-    .finally(() => {
-      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
-    })
+  return new Promise((resolve, reject) => {
+    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+    tasksApi.getTasks(todoId)
+      .then(res => {
+        dispatch(tasksActions.setTasks({todoId, tasks: res.data.items}))
+        resolve(res)
+      })
+      .catch((e: AxiosError) => {
+        appActions.setAppError({error: e.message})
+        reject(e)
+      })
+      .finally(() => {
+        dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+      })
+  })
 }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
