@@ -6,23 +6,24 @@ import {
   changeTodoTitleTC,
   FilterValuesType,
   setTodolistsTC,
-  todolistsActions,
+  todolistsActions, todolistsSelectors,
   TodoUIType
 } from "../../redux/todolistsSlice";
 import {CircularProgress, Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {Navigate} from "react-router-dom";
+import {appSelectors, ServerResponseStatusType} from "../../redux/appSlice";
+import {loginSelectors} from "../Login/loginSlice";
 
 type TodolistsBunchProps = {}
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const dispatch = useAppDispatch()
-  const todolists = useSelector<RootReducerType, TodoUIType[]>((state) => state.todolistReducer)
-  const statusAddTodo = useAppSelector(state => state.appReducer.addStatus)
-  const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
-  // const todolists = useSelector(todolistsSelectors.todolists)
-  // const isLoggedIn = useSelector(loginSelectors.isLoggedIn)
-  // const statusAddTodo = useSelector(appSelectors.addStatus)
+  // const todolists = useSelector<RootReducerType, TodoUIType[]>(state => state.todolist)
+  // const todolists = useAppSelector(state => state.todolists)
+  const todolists = useAppSelector((state) => todolistsSelectors.todolists(state))
+  const statusAddTodo = useAppSelector(state => appSelectors.statusTodo(state))
+  const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
 
   useEffect(() => {
     // if(!isLoggedIn){

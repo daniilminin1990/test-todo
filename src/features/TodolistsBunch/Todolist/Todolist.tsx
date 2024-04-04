@@ -7,8 +7,7 @@ import {
   addTaskTC,
   updateTaskTC,
   deleteTaskTC,
-  setTasksTC,
-  TasksWithEntityStatusType
+  TasksWithEntityStatusType, tasksThunks, tasksSelectors, tasksSlice, TaskStateType
 } from "../../../redux/tasksSlice";
 import {Task} from "./Task/Task";
 import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistsSlice";
@@ -32,17 +31,14 @@ type TodolistProps = {
 }
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
-  console.log('Todolist')
-  let allTodoTasks = useSelector<RootReducerType, TasksWithEntityStatusType[]>((state) => state.tasksReducer[props.todoListId])
-  // let allTodoTasks = useSelector(tasksSelectors.tasksState[props.todoListId])
-  // ПОЧЕМУ НЕ ПОЛУЧАЕТСЯ????
-  // let allTodoTasks = tasks[props.todoListId]
+  let allTodoTasks = useAppSelector(state => tasksSelectors.tasksById(state, props.todoListId))
+
   const [showT, setShowT] = useState(false)
   const dispatch = useAppDispatch()
 
 
   useEffect(() => {
-    dispatch(setTasksTC(props.todoListId)).then(() => setShowT(true))
+    dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
   }, []);
 
   const removeTask = useCallback((taskId: string) => {

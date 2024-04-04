@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {useFormik} from "formik";
-import {loginTC} from "./loginSlice";
+import {loginSelectors, loginTC} from "./loginSlice";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {Navigate, useNavigate} from "react-router-dom";
 import {LoginParamsType} from "../../api/login-api";
@@ -16,7 +16,7 @@ import {useSelector} from "react-redux";
 
 export const Login = () => {
 
-  const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
   // const isLoggedIn = useSelector(loginSelectors.isLoggedIn)
   const dispatch = useAppDispatch()
 

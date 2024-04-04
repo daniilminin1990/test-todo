@@ -25,10 +25,10 @@ import {configureStore} from '@reduxjs/toolkit'
 
 export const store = configureStore({
   reducer: {
-    todolistReducer: todolistsSlice,
-    tasksReducer: tasksSlice,
-    appReducer: appSlice,
-    loginReducer: loginSlice
+    todolists: todolistsSlice,
+    tasks: tasksSlice,
+    app: appSlice,
+    login: loginSlice
   },
   // middleware: () => new Tuple(thunk),
 })

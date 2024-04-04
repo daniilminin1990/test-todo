@@ -4,7 +4,7 @@ import {RootReducerType} from "../store/store";
 import {appActions, ServerResponseStatusType} from "./appSlice";
 import {createModelTask, errorFunctionMessage} from "../utilities/utilities";
 import {AxiosError} from "axios";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {todolistsActions} from "./todolistsSlice";
 
@@ -43,10 +43,10 @@ const slice = createSlice({
         tasks[id] = {...tasks[id], ...action.payload.model}
       }
     },
-    setTasks(state, action: PayloadAction<{ todoId: string, tasks: TaskType[] }>) {
-      const {todoId, tasks} = action.payload
-      state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
-    },
+    // setTasks(state, action: PayloadAction<{ todoId: string, tasks: TaskType[] }>) {
+    //   const {todoId, tasks} = action.payload
+    //   state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
+    // },
     updateTaskEntityStatus(state, action: PayloadAction<{
       todoId: string,
       taskId: string | undefined,
@@ -75,35 +75,53 @@ const slice = createSlice({
       .addCase(clearTasksAndTodos, () => {
         return {}
       })
+      .addCase(fetchTasksTC.fulfilled, (state,action)=> {
+        const {todoId, tasks} = action.payload
+        state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
+      })
   },
-  // selectors: {
-  //   tasksState: sliceState => sliceState as TaskStateType
-  // }
+  selectors: {
+    tasksState: sliceState => sliceState as TaskStateType,
+    tasksById: (sliceState, todoId: string) => sliceState[todoId] as TasksWithEntityStatusType[],
+  }
 })
 
 export const tasksActions = slice.actions
 
 export const tasksSlice = slice.reducer
-// export const tasksSelectors = slice.selectors
+export const tasksSelectors = slice.selectors
 
 //! Thunk
-export const setTasksTC = (todoId: string) => (dispatch: Dispatch) => {
-  return new Promise((resolve, reject) => {
+const fetchTasksTC = createAsyncThunk(
+  `${slice.name}/fetchTasks`,
+  async(todolistId: string, thunkAPI) => {
+    const {dispatch} = thunkAPI
     dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-    tasksApi.getTasks(todoId)
-      .then(res => {
-        dispatch(tasksActions.setTasks({todoId, tasks: res.data.items}))
-        resolve(res)
-      })
-      .catch((e: AxiosError) => {
-        appActions.setAppError({error: e.message})
-        reject(e)
-      })
-      .finally(() => {
-        dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
-      })
-  })
-}
+    const res = await tasksApi.getTasks(todolistId)
+    const tasks = res.data.items
+    dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+    return {todoId: todolistId, tasks}
+  }
+)
+export const tasksThunks = {fetchTasksTC}
+
+// export const _fetchTasksTC = (todoId: string) => (dispatch: Dispatch) => {
+//   return new Promise((resolve, reject) => {
+//     dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+//     tasksApi.getTasks(todoId)
+//       .then(res => {
+//         dispatch(tasksActions.setTasks({todoId, tasks: res.data.items}))
+//         resolve(res)
+//       })
+//       .catch((e: AxiosError) => {
+//         appActions.setAppError({error: e.message})
+//         reject(e)
+//       })
+//       .finally(() => {
+//         dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+//       })
+//   })
+// }
 
 export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
@@ -146,7 +164,7 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
   dispatch(tasksActions.updateTaskEntityStatus({todoId: todoListId, taskId, entityStatus: 'loading'}))
   const state = getState()
-  const task = state.tasksReducer[todoListId].find(tl => tl.id === taskId)
+  const task = state.tasks[todoListId].find(tl => tl.id === taskId)
 
   if (!task) {
     throw new Error('Task not found in the state')

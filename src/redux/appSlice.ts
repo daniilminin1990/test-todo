@@ -32,19 +32,19 @@ const slice = createSlice({
       state.isInitialized = action.payload.value
     }
   },
-  // selectors: {
-    // selectAddStatus: sliceState=> sliceState.addStatus,
-  //   statusTodo: (sliceState) => sliceState.statusTodo,
-  //   statusTask: (sliceState) => sliceState.statusTask,
-  //   isInitialized: (sliceState) => sliceState.isInitialized,
-  //   error: (sliceState) => sliceState.error
-  // }
+  selectors: {
+    selectAddStatus: sliceState=> sliceState.addStatus,
+    statusTodo: (sliceState) => sliceState.statusTodo,
+    statusTask: (sliceState) => sliceState.statusTask,
+    isInitialized: (sliceState) => sliceState.isInitialized,
+    error: (sliceState) => sliceState.error
+  }
 })
 
 export const appSlice = slice.reducer
 
 export const appActions = slice.actions
-// export const appSelectors = slice.selectors
+export const appSelectors = slice.selectors
 export type AppInitialState = ReturnType<typeof slice.getInitialState>
 
 export const initialiseMeTC = () => (dispatch: Dispatch) => {

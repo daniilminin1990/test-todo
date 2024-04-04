@@ -3,12 +3,12 @@ import './App.css';
 import ButtonAppBar from '../components/ButtonAppBar';
 import {CircularProgress, Container} from '@mui/material';
 import {TodolistsBunch} from "../features/TodolistsBunch/TodolistsBunch";
-import {useAppDispatch, useAppSelector} from "../store/store";
+import {RootReducerType, useAppDispatch, useAppSelector} from "../store/store";
 import LinearProgress from '@mui/material/LinearProgress';
 import ErrorSnackbar from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {BrowserRouter, HashRouter, Navigate, Route, Routes} from "react-router-dom";
-import { initialiseMeTC} from "../redux/appSlice";
+import {appSelectors, initialiseMeTC, ServerResponseStatusType} from "../redux/appSlice";
 import {useSelector} from "react-redux";
 
 // For githubpages use this stroke in package.json
@@ -17,12 +17,23 @@ import {useSelector} from "react-redux";
 
 
 const App = React.memo(() => {
-  const statusTodo = useAppSelector(state => state.appReducer.statusTodo)
-  const statusTask = useAppSelector(state => state.appReducer.statusTask)
-  const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
-  // const statusTodo = useSelector(appSelectors.statusTodo)
+  // const statusTodo = useAppSelector(state => state.appReducer.statusTodo)
+  // const statusTask = useAppSelector(state => state.appReducer.statusTask)
+  // const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
+
+
+  // const statusTodo = useAppSelector(state =>  appSelectors.statusTodo(state))
+
+  // const statusTodo = useAppSelector(appSelectors.statusTodo)
+
   // const statusTask = useSelector(appSelectors.statusTask)
+
+  // const statusTask = useAppSelector(state => state.appReducer.statusTask)
   // const isInitialized = useSelector(appSelectors.isInitialized)
+
+  const statusTodo = useAppSelector(state => appSelectors.statusTodo(state))
+  const statusTask = useAppSelector(state => appSelectors.statusTask(state))
+  const isInitialized = useAppSelector(state => appSelectors.isInitialized(state))
   const dispatch = useAppDispatch()
 
   useEffect(() => {

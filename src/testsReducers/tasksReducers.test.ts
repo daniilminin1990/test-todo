@@ -1,7 +1,7 @@
 import {
   tasksActions,
   tasksSlice,
-  TaskStateType,
+  TaskStateType, tasksThunks,
   TasksWithEntityStatusType,
 } from "../redux/tasksSlice";
 
@@ -139,7 +139,11 @@ test('empty arrays should be added when we set todolists', () => {
 })
 
 test('tasks should be added for todolist', () => {
-  const action = tasksActions.setTasks({tasks: startState['todolistId1'], todoId: "todolistId1"});
+type FetchTasksActionType = Omit<ReturnType<typeof tasksThunks.fetchTasksTC.fulfilled>, 'meta'>
+  const action: FetchTasksActionType = {
+    type: tasksThunks.fetchTasksTC.fulfilled.type,
+    payload:{tasks: startState['todolistId1'], todoId: "todolistId1"}
+  }
   const endState = tasksSlice({
     'todolistId2': [],
     'todolistId1': [],

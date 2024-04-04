@@ -46,14 +46,14 @@ const slice = createSlice({
       return []
     })
   },
-  // selectors: {
-  //   todolists: sliceState => sliceState
-  // }
+  selectors: {
+    todolists: sliceState => sliceState
+  }
 })
 
 export const todolistsSlice = slice.reducer
 export const todolistsActions = slice.actions
-// export const todolistsSelectors = slice.selectors
+export const todolistsSelectors = slice.selectors
 
 //! Thunk
 export const setTodolistsTC = () => (dispatch: Dispatch) => {
@@ -61,12 +61,13 @@ export const setTodolistsTC = () => (dispatch: Dispatch) => {
   todolistsAPI.getTodolists()
     .then(res => {
       dispatch(todolistsActions.setTodos({todolists: res.data}))
-      dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
     })
     .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
+      dispatch(appActions.setAppError({error: e.message}))
+      dispatch(appActions.setAppStatus({appStatus: 'failed'}))
     })
     .finally(() => {
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
     })
 }
 
@@ -82,7 +83,8 @@ export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
+      dispatch(appActions.setAppError({error: e.message}))
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'failed'}))
     })
     .finally(() => {
       dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
@@ -103,7 +105,8 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
       }
     })
     .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
+      dispatch(appActions.setAppError({error: e.message}))
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'failed'}))
     })
     .finally(() => {
       dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
@@ -121,7 +124,8 @@ export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (
       }
     })
     .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
+      dispatch(appActions.setAppError({error: e.message}))
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'failed'}))
     })
     .finally(() => {
       dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))

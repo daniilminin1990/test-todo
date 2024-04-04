@@ -2,11 +2,11 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {appActions} from "../redux/appSlice";
+import {appActions, appSelectors} from "../redux/appSlice";
 import {useSelector} from "react-redux";
 
 export default function ErrorSnackbar() {
-  const errorToApp = useAppSelector(state => state.appReducer.error)
+  const errorToApp = useAppSelector(state => appSelectors.error(state))
   // const errorToApp = useSelector(appSelectors.error)
   const dispatch = useAppDispatch()
   const handleClose = (event?: React.SyntheticEvent | Event, reason? : string) => {
