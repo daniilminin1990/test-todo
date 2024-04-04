@@ -51,9 +51,8 @@ export const tasksApi = {
   // createTask(todoListId: string, newTask: TaskType){
   //   return instance.post<ResponseType<TaskType>>(`todo-lists/${todoListId}/tasks`, {newTask})
   // },
-  createTask(todoListId: string, title: string){
-    // ! ЗАЧЕМ AxiosResponse???
-    return instance.post<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType<{item: TaskType}>>, {title: string}>(`todo-lists/${todoListId}/tasks`, {title})
+  createTask(arg: CreateTaskArgs){
+    return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${arg.todoListId}/tasks`, {title: arg.title})
   },
   // createTask(todoListId: string, title: string){
   //   return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`, {title})
@@ -63,7 +62,8 @@ export const tasksApi = {
   },
   // updateTask(todoListId: string, taskId: string, title: string){
   updateTask(todoListId: string, taskId: string, model: UpdateTaskType){
-    // ! ЗАЧЕМ AxiosResponse??? ПОДОЗРЕВАЮ ЧТО ТОЛЬКО ДЛЯ ТОГО, ЧТОБЫ НЕ НУЖНО БЫЛО ТИПИЗИРОВАТЬ В REDUCERS
-    return instance.put<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType<{item: TaskType}>>, UpdateTaskType>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+    return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
   }
 }
+
+export type CreateTaskArgs = {todoListId: string, title: string}

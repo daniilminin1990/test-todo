@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {tasksApi} from "../api/tasks-api";
+import {tasksApi, UpdateTaskArgs} from "../api/tasks-api";
 
 export default {
   title: 'API',
@@ -45,7 +45,7 @@ export const CreateTask = () => {
 
   const createTask = () => {
     // tasksApi.createTask(todoListId, createdTaskTitle)
-    tasksApi.createTask(todoListId, createdTaskTitle)
+    tasksApi.createTask({todoListId, title: createdTaskTitle})
       .then((res) => {
         setState(res.data)
       })
@@ -115,14 +115,16 @@ export const UpdateTask = () => {
     setNewTaskTitle(e.currentTarget.value)
   }
   const updateTitle = () => {
-    tasksApi.updateTask(todoListId, taskId, {
+    const model = {
       deadline: '',
       description: taskDescription,
       priority: priority,
       startDate: '',
       status: status,
       title: newTaskTitle
-    })
+    }
+    const args = {todoListId, taskId, model}
+    tasksApi.updateTask(args)
       .then((res) => {
         setState(res.data)
       })
