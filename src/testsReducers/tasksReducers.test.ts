@@ -1,12 +1,14 @@
 import {
+  addTaskTC,
   tasksActions,
   tasksSlice,
   TaskStateType, tasksThunks,
-  TasksWithEntityStatusType,
+  TasksWithEntityStatusType, updateTaskTC,
 } from "../redux/tasksSlice";
 
 import {TaskStatuses} from "../api/tasks-api";
 import {todolistsActions} from "../redux/todolistsSlice";
+import {UnknownAction} from "redux";
 
 
 let startState: TaskStateType = {}
@@ -54,21 +56,26 @@ test('correct task should be deleted from correct array', () => {
 })
 
 test('correct task should be added to correct array', () => {
+
+  type AddTaskActionType = Omit<ReturnType<typeof tasksThunks.addTaskTC.fulfilled>, 'meta'>
   //const action = addTask('juice', 'todolistId2');
-  let task: TasksWithEntityStatusType = {
-    todoListId: 'todolistId2',
-    title: 'juice',
-    status: TaskStatuses.New,
-    addedDate: '',
-    deadline: '',
-    description: '',
-    order: 0,
-    priority: 0,
-    startDate: '',
-    id: 'id exists',
-    entityStatus: 'idle'
-  };
-  const action = tasksActions.addTask(task);
+  const action: AddTaskActionType = {
+    type: tasksThunks.addTaskTC.fulfilled.type,
+    payload: {
+      task: {
+        todoListId: 'todolistId2',
+        title: 'juice',
+        status: TaskStatuses.New,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        order: 0,
+        priority: 0,
+        startDate: '',
+        id: 'id exists',
+      }
+    }
+  }
 
   const endState = tasksSlice(startState, action)
 
@@ -80,18 +87,29 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-  const action = tasksActions.updateTask({todoListId: 'todolistId2', taskId: '2', model: {status: TaskStatuses.Completed}});
 
-  const endState = tasksSlice(startState, action)
+  type UpdateTaskActionType = Omit<ReturnType<typeof updateTaskTC>, 'meta'>
+
+  const action: UpdateTaskActionType = {
+    type: tasksThunks.updateTaskTC.fulfilled.type,
+    payload: {todoListId: 'todolistId2', taskId: '2', updateModel: {status: TaskStatuses.Completed}}
+  };
+
+  const endState = tasksSlice(startState, <UnknownAction>action)
 
   expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
   expect(endState['todolistId2'][1].status).toBe(TaskStatuses.Completed)
 })
 
 test('title of specified task should be changed', () => {
-  const action = tasksActions.updateTask({todoListId: 'todolistId2', taskId: '2', model: {title: 'YOGURT'}});
 
-  const endState = tasksSlice(startState, action)
+  type UpdateTaskActionType = Omit<ReturnType<typeof updateTaskTC>, 'meta'>
+  const action: UpdateTaskActionType = {
+    type: tasksThunks.updateTaskTC.fulfilled.type,
+    payload: { taskId: "2", model: { title: "YOGURT" }, todolistId: "todolistId2" },
+  };
+  const endState = tasksSlice(startState, <UnknownAction>action);
+
 
   expect(endState['todolistId1'][1].title).toBe('JS');
   expect(endState['todolistId2'][1].title).toBe('YOGURT')
@@ -139,10 +157,10 @@ test('empty arrays should be added when we set todolists', () => {
 })
 
 test('tasks should be added for todolist', () => {
-type FetchTasksActionType = Omit<ReturnType<typeof tasksThunks.fetchTasksTC.fulfilled>, 'meta'>
+  type FetchTasksActionType = Omit<ReturnType<typeof tasksThunks.fetchTasksTC.fulfilled>, 'meta'>
   const action: FetchTasksActionType = {
     type: tasksThunks.fetchTasksTC.fulfilled.type,
-    payload:{tasks: startState['todolistId1'], todolistId: "todolistId1"}
+    payload: {tasks: startState['todolistId1'], todolistId: "todolistId1"}
   }
   const endState = tasksSlice({
     'todolistId2': [],

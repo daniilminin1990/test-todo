@@ -88,6 +88,7 @@ const slice = createSlice({
       .addCase(fetchTasksTC.fulfilled, (state,action)=> {
         const {todolistId, tasks} = action.payload
         state[todolistId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
+        return state
       })
       // Таски с сервера с ошибками
       // .addCase(fetchTasksTC.rejected, (state, action) => {
@@ -100,7 +101,7 @@ const slice = createSlice({
         const tasks = state[action.payload.todoListId]
         const id = tasks.findIndex(t => t.id === action.payload.taskId)
         if (id > -1) {
-          tasks[id] = {...tasks[id], ...action.payload.utilityModel}
+          tasks[id] = {...tasks[id], ...action.payload.model}
         }
       })
   },
@@ -221,8 +222,8 @@ export const addTaskTC = createAppAsyncThunk<
 //     })
 // }
 export const updateTaskTC = createAppAsyncThunk<
-  { todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType },
-  {todoListId: string, taskId: string, model: UpdateTaskType}
+  { todoListId: string, taskId: string, model:  UpdateTaskType},
+  { todoListId: string, taskId: string, model: Partial<UpdateTaskType>}
 >(
   `${slice.name}/updateTask`,
   async(args, thunkAPI) => {
@@ -235,11 +236,16 @@ export const updateTaskTC = createAppAsyncThunk<
     if (!task) {
       throw new Error('Task not found in the state')
     }
-    const elementToUpdate: UpdateTaskType = createModelTask(task, args.model)
+
+    const apiModel: UpdateTaskType = {
+      ...task,
+      ...args.model,
+    };
+
     try {
-      const res = await tasksApi.updateTask(args.todoListId, args.taskId, elementToUpdate)
+      const res = await tasksApi.updateTask(args.todoListId, args.taskId, apiModel)
       if(res.data.resultCode === 0){
-        return {todoListId: args.todoListId, taskId: args.taskId, utilityModel: elementToUpdate}
+        return {todoListId: args.todoListId, taskId: args.taskId, model: apiModel}
       } else {
         handleServerAppError(res.data, dispatch, 'Oops! Something gone wrong. Length should be less than 100 symbols')
         return rejectWithValue(null)
