@@ -1,12 +1,13 @@
 import {TaskPriorities, tasksApi, TaskStatuses, TaskType, UpdateTaskType} from "../api/tasks-api";
 import {Dispatch} from "redux";
-import {RootReducerType} from "../store/store";
+import {AppDispatch, RootReducerType} from "../store/store";
 import {appActions, ServerResponseStatusType} from "./appSlice";
-import {createModelTask, errorFunctionMessage} from "../utilities/utilities";
+import {createModelTask, handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {todolistsActions} from "./todolistsSlice";
+import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[]
@@ -72,12 +73,18 @@ const slice = createSlice({
           state[tl.id] = []
         })
       })
+      // Очистка стейта после разлогинивания
       .addCase(clearTasksAndTodos, () => {
         return {}
       })
+      // Таски с сервера с ошибками
       .addCase(fetchTasksTC.fulfilled, (state,action)=> {
-        const {todoId, tasks} = action.payload
-        state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
+        const {todolistId, tasks} = action.payload
+        state[todolistId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
+      })
+      // Таски с сервера с ошибками
+      .addCase(fetchTasksTC.rejected, (state, action) => {
+
       })
   },
   selectors: {
@@ -92,15 +99,23 @@ export const tasksSlice = slice.reducer
 export const tasksSelectors = slice.selectors
 
 //! Thunk
-const fetchTasksTC = createAsyncThunk(
+const fetchTasksTC = createAppAsyncThunk<
+  {todolistId: string, tasks: TaskType[]},
+  string
+>(
   `${slice.name}/fetchTasks`,
-  async(todolistId: string, thunkAPI) => {
-    const {dispatch} = thunkAPI
-    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-    const res = await tasksApi.getTasks(todolistId)
-    const tasks = res.data.items
-    dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
-    return {todoId: todolistId, tasks}
+  async(todolistId, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    try {
+      dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+      const res = await tasksApi.getTasks(todolistId)
+      const tasks = res.data.items
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+      return {todolistId: todolistId, tasks}
+    } catch (e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    }
   }
 )
 export const tasksThunks = {fetchTasksTC}
@@ -131,7 +146,7 @@ export const deleteTaskTC = (todoId: string, taskId: string) => (dispatch: Dispa
       if (res.data.resultCode === 0) {
         dispatch(tasksActions.removeTask({todoListId: todoId, taskId}))
       } else {
-        errorFunctionMessage(res.data, dispatch, 'Something wrong, try later')
+        handleServerAppError(res.data, dispatch, 'Something wrong, try later')
       }
     })
     .catch((e: AxiosError) => {
@@ -150,7 +165,7 @@ export const addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Di
         const taskToServer: TasksWithEntityStatusType = {...res.data.data.item, entityStatus: 'idle'}
         dispatch(tasksActions.addTask(taskToServer))
       } else {
-        errorFunctionMessage(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
+        handleServerAppError(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
@@ -175,7 +190,7 @@ export const updateTaskTC = (todoListId: string, taskId: string, utilityModel: U
       if (res.data.resultCode === 0) {
         dispatch(tasksActions.updateTask({todoListId, taskId, model: elementToUpdate}))
       } else {
-        errorFunctionMessage(res.data, dispatch, 'Length should be less than 100 symbols')
+        handleServerAppError(res.data, dispatch, 'Length should be less than 100 symbols')
       }
     })
     .catch((e: AxiosError) => {

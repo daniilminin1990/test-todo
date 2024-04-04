@@ -1,10 +1,10 @@
-import {combineReducers} from "redux";
+import {AnyAction, combineReducers} from "redux";
 import {todolistsSlice} from "../redux/todolistsSlice";
 import {tasksSlice} from "../redux/tasksSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appSlice} from "../redux/appSlice";
 import {loginSlice} from "../features/Login/loginSlice";
-import {configureStore} from '@reduxjs/toolkit'
+import {configureStore, ThunkDispatch} from '@reduxjs/toolkit'
 
 
 // const rootReducer = combineReducers({

@@ -7,7 +7,7 @@ export type UpdateTaskType = Omit<TaskType, 'id' | 'todoListId' | 'order' | 'add
 export type GetTasksResponse = {
   items: Array<TaskType>,
   totalCount: number,
-  error: string
+  error: string | null
 }
 
 type ResponseType<D = {}> = {

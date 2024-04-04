@@ -1,10 +1,10 @@
 import {Dispatch} from "redux";
 import {loginAPI, LoginParamsType} from "../../api/login-api";
-import {errorFunctionMessage} from "../../utilities/utilities";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../../common/actions/common.actions";
 import {appActions} from "../../redux/appSlice";
+import {handleServerAppError} from "../../utilities/utilities";
 
 // type InitialStateType = {
 //   isLoggedIn: boolean
@@ -37,7 +37,7 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
       if(res.data.resultCode === 0){
         dispatch(loginActions.setIsLoggedInAC({value: true}))
       } else {
-        errorFunctionMessage<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
+        handleServerAppError<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
       }
     })
     .catch((e: AxiosError) => {
@@ -56,7 +56,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
         dispatch(loginActions.setIsLoggedInAC({value: false}))
         dispatch(clearTasksAndTodos())
       } else {
-        errorFunctionMessage<{}>(res.data, dispatch, 'Oops! Something gone wrong')
+        handleServerAppError<{}>(res.data, dispatch, 'Oops! Something gone wrong')
       }
     })
     .catch((e: AxiosError) => {

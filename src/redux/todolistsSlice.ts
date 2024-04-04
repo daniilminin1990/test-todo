@@ -2,9 +2,9 @@ import {todolistsAPI, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {appActions, ServerResponseStatusType} from "./appSlice";
 import {AxiosError} from "axios";
-import {errorFunctionMessage} from "../utilities/utilities";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
+import {handleServerAppError} from "../utilities/utilities";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -79,7 +79,7 @@ export const deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
       if(res.data.resultCode === 0){
         dispatch(todolistsActions.removeTodo({todoListId: todoListId}))
       } else {
-        errorFunctionMessage(res.data, dispatch, 'Something wrong, try later')
+        handleServerAppError(res.data, dispatch, 'Something wrong, try later')
       }
     })
     .catch((e: AxiosError) => {
@@ -100,8 +100,8 @@ export const addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
         dispatch(todolistsActions.addTodo({newTodolist: res.data.data.item, filter: 'all', entityStatus: 'idle'}))
         // dispatch(addAppStatusAC('success'))
       } else {
-        // errorFunctionMessage(res.data, dispatch)
-        errorFunctionMessage<{ item: TodolistType }>(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
+        // handleServerAppError(res.data, dispatch)
+        handleServerAppError<{ item: TodolistType }>(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
       }
     })
     .catch((e: AxiosError) => {
@@ -120,7 +120,7 @@ export const changeTodoTitleTC = (todoListId: string, newTodotitle: string) => (
       if(res.data.resultCode === 0){
         dispatch(todolistsActions.updateTodoTitle({todoListId: todoListId, newTodoTitle: newTodotitle}))
       } else {
-        errorFunctionMessage(res.data, dispatch, 'Length should be less than 100 symbols')
+        handleServerAppError(res.data, dispatch, 'Length should be less than 100 symbols')
       }
     })
     .catch((e: AxiosError) => {

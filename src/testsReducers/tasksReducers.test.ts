@@ -142,7 +142,7 @@ test('tasks should be added for todolist', () => {
 type FetchTasksActionType = Omit<ReturnType<typeof tasksThunks.fetchTasksTC.fulfilled>, 'meta'>
   const action: FetchTasksActionType = {
     type: tasksThunks.fetchTasksTC.fulfilled.type,
-    payload:{tasks: startState['todolistId1'], todoId: "todolistId1"}
+    payload:{tasks: startState['todolistId1'], todolistId: "todolistId1"}
   }
   const endState = tasksSlice({
     'todolistId2': [],
