@@ -21,31 +21,32 @@ beforeEach(()=> {
 })
 
 test('correct todolist should be removed', () => {
-  type DeleteTodoType = Omit<ReturnType<typeof todolistsThunks.deleteTodoTC>, 'fulfilled'>
+  type DeleteTodoType = Omit<ReturnType<typeof todolistsThunks.deleteTodoTC.fulfilled>, 'meta'>
   const action: DeleteTodoType = {
     type: todolistsThunks.deleteTodoTC.fulfilled.type,
     payload: {
-      todoListId: 'todolistId1'
+      todoListId: todolistId1
     }
   }
-  const endState = todolistsSlice(startState, <UnknownAction>action)
+  const endState = todolistsSlice(startState, action)
   expect(endState.length).toBe(1)
   expect(endState[0].id).toBe(todolistId2)
 })
 
 test('correct todolist should be added', () => {
 
-  type AddTodoType = Omit<ReturnType<typeof todolistsThunks.addTodoTC>, 'meta'>
+  type AddTodoType = Omit<ReturnType<typeof todolistsThunks.addTodoTC.fulfilled>, 'meta'>
   let newTodolist = {id: 'asdasdffdagwhfhdfh', title: 'new todolist', addedDate: '', order: 0};
   const action: AddTodoType ={
     type: todolistsThunks.addTodoTC.fulfilled.type,
     payload: {
       newTodolist: newTodolist,
       filter: 'all',
-      entityStatus: 'idle'
+      entityStatus: 'idle',
+      showTasks: true
     }
   }
-  const endState = todolistsSlice(startState, <UnknownAction>action)
+  const endState = todolistsSlice(startState, action)
 
   expect(endState.length).toBe(3)
   expect(endState[0].title).toBe(newTodolist.title)
@@ -54,16 +55,16 @@ test('correct todolist should be added', () => {
 
 test('correct todolist should change its name', () => {
 
-  type UpdateTodoTitleType = Omit<ReturnType<typeof todolistsThunks.updateTodoTitleTC>, 'meta'>
+  type UpdateTodoTitleType = Omit<ReturnType<typeof todolistsThunks.updateTodoTitleTC.fulfilled>, 'meta'>
   let newTodolistTitle = 'new Todolist'
   const action: UpdateTodoTitleType = {
     type: todolistsThunks.updateTodoTitleTC.fulfilled.type,
     payload: {
-      todoListId: 'todolistId2',
+      todoListId: todolistId2,
       title: newTodolistTitle
     }
   }
-  const endState = todolistsSlice(startState, <UnknownAction>action)
+  const endState = todolistsSlice(startState, action)
 
   expect(endState[0].title).toBe('What to learn')
   expect(endState[1].title).toBe(newTodolistTitle)

@@ -2,7 +2,14 @@ import {instance} from "./todolists-api";
 import axios, {AxiosResponse} from "axios";
 import {ServerResponseStatusType} from "../redux/appSlice";
 
-export type UpdateTaskType = Omit<TaskType, 'id' | 'todoListId' | 'order' | 'addedDate'>
+export type UpdateTaskType = {
+  description: string
+  startDate: string
+  deadline: string
+  title: string
+  status: TaskStatuses
+  priority: TaskPriorities
+}
 
 export type GetTasksResponse = {
   items: Array<TaskType>,

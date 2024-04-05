@@ -242,7 +242,7 @@ export const addTaskTC = createAppAsyncThunk<
 //     })
 // }
 export const updateTaskTC = createAppAsyncThunk<
-  { todoListId: string, taskId: string, model:  UpdateTaskType},
+  { todoListId: string, taskId: string, model:  Partial<UpdateTaskType>},
   { todoListId: string, taskId: string, model: Partial<UpdateTaskType>}
 >(
   `${slice.name}/updateTask`,
