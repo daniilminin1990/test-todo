@@ -2,8 +2,8 @@ import {AnyAction, combineReducers} from "redux";
 import {todolistsSlice} from "../redux/todolistsSlice";
 import {tasksSlice} from "../redux/tasksSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {appSlice} from "../redux/appSlice";
-import {loginSlice} from "../features/Login/loginSlice";
+import {appSlice, appThunks} from "../redux/appSlice";
+import {loginSelectors, loginSlice} from "../features/Login/loginSlice";
 import {configureStore, ThunkDispatch} from '@reduxjs/toolkit'
 
 
@@ -41,4 +41,5 @@ export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatch>() // Export a hook that can be reused to resolve types
 export const useAppSelector: TypedUseSelectorHook<RootReducerType> = useSelector
 
+store.dispatch(appThunks.initialiseMeTC())
 export default store

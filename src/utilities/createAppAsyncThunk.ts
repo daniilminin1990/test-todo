@@ -4,6 +4,6 @@ import {Dispatch} from "redux";
 
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: RootReducerType
-  dispatch: Dispatch
+  dispatch: AppDispatch
   rejectValue: null
 }>()

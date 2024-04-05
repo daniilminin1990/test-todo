@@ -8,7 +8,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import ErrorSnackbar from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {BrowserRouter, HashRouter, Navigate, Route, Routes} from "react-router-dom";
-import {appSelectors, initialiseMeTC, ServerResponseStatusType} from "../redux/appSlice";
+import {appSelectors, appThunks,  ServerResponseStatusType} from "../redux/appSlice";
 import {useSelector} from "react-redux";
 import {styleCircular} from "../utilities/utilities";
 
@@ -37,10 +37,10 @@ const App = React.memo(() => {
   const isInitialized = useAppSelector(state => appSelectors.isInitialized(state))
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    console.log(isInitialized)
-    dispatch(initialiseMeTC())
-  }, []);
+  // useEffect(() => {
+  //   console.log(isInitialized)
+  //   dispatch(appThunks.initialiseMeTC())
+  // }, []);
 
   if(!isInitialized){
     return <div style={styleCircular}>

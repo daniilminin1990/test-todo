@@ -7,14 +7,14 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {loginSelectors, logoutTC} from "../features/Login/loginSlice";
+import {loginSelectors, loginThunks} from "../features/Login/loginSlice";
 
 export default function ButtonAppBar() {
   // const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
   const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
   const dispatch = useAppDispatch()
   const logoutHandler = () => {
-    dispatch(logoutTC())
+    dispatch(loginThunks.logoutTC())
   }
 
   return (

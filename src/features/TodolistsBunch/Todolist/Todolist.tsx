@@ -10,7 +10,7 @@ import {
   TasksWithEntityStatusType, tasksThunks, tasksSelectors, tasksSlice, TaskStateType
 } from "../../../redux/tasksSlice";
 import {Task} from "./Task/Task";
-import {deleteTodoTC, FilterValuesType, todolistsActions, todolistsSelectors} from "../../../redux/todolistsSlice";
+import {FilterValuesType, todolistsActions, todolistsSelectors, todolistsThunks} from "../../../redux/todolistsSlice";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -38,10 +38,10 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   const dispatch = useAppDispatch()
   console.log('SHOWTASKS',props.showTasks)
 
-  useEffect(() => {
-    // dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
-    dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => dispatch(todolistsActions.showTasks({todoListId: props.todoListId})))
-  }, []);
+  // useEffect(() => {
+  //   // dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
+  //   dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => dispatch(todolistsActions.showTasks({todoListId: props.todoListId})))
+  // }, []);
 
   const removeTask = useCallback((taskId: string) => {
     dispatch(tasksThunks.deleteTaskTC({todoListId: props.todoListId, taskId}))
@@ -73,7 +73,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   const onCompletedClickHandler = useCallback(() => { changeFilter(props.todoListId, 'completed') }, [changeFilter, props.todoListId])
 
   const removeTodo = useCallback(() => {
-    dispatch(deleteTodoTC(props.todoListId))
+    dispatch(todolistsThunks.deleteTodoTC(props.todoListId))
   }, [dispatch])
 
   const updTodoTitleHandler = useCallback((updTlTitle: string) => {

@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {useFormik} from "formik";
-import {loginSelectors, loginTC} from "./loginSlice";
+import {loginSelectors, loginThunks} from "./loginSlice";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {Navigate, useNavigate} from "react-router-dom";
 import {LoginParamsType} from "../../api/login-api";
@@ -43,7 +43,7 @@ export const Login = () => {
       return errors
     },
     onSubmit: values => {
-      dispatch(loginTC(formik.values))
+      dispatch(loginThunks.loginTC(formik.values))
       formik.resetForm()
     },
   });

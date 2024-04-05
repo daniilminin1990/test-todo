@@ -2,11 +2,8 @@ import React, {useCallback, useEffect} from "react";
 import {RootReducerType, useAppDispatch, useAppSelector} from "../../store/store";
 import {useSelector} from "react-redux";
 import {
-  addTodoTC,
-  updateTodoTitleTC,
   FilterValuesType,
-  fetchTodolistsTC,
-  todolistsActions, todolistsSelectors,
+  todolistsActions, todolistsSelectors, todolistsThunks,
   TodoUIType
 } from "../../redux/todolistsSlice";
 import {CircularProgress, Grid, Paper} from "@mui/material";
@@ -25,23 +22,23 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const statusAddTodo = useAppSelector(state => appSelectors.statusTodo(state))
   const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
 
-  useEffect(() => {
-    if(!isLoggedIn){
-      return
-    }
-    dispatch(fetchTodolistsTC())
-  }, []);
+  // useEffect(() => {
+  //   if(!isLoggedIn){
+  //     return
+  //   }
+  //   dispatch(fetchTodolistsTC())
+  // }, []);
 
   const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
     dispatch(todolistsActions.changeTodoFilter({todoListId:todoListId, newFilterValue: newFilterValue}))
   }, [dispatch])
 
   const addTodo = useCallback((newTodoTitle: string) => {
-    dispatch(addTodoTC(newTodoTitle))
+    dispatch(todolistsThunks.addTodoTC(newTodoTitle))
   }, [dispatch])
 
   const updTodoTitle = useCallback((todoListId: string, updTodoTitle: string) => {
-    dispatch(updateTodoTitleTC({todoListId: todoListId, title: updTodoTitle}))
+    dispatch(todolistsThunks.updateTodoTitleTC({todoListId: todoListId, title: updTodoTitle}))
   }, [dispatch])
 
   if(!isLoggedIn){

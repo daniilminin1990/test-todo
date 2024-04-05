@@ -2,6 +2,9 @@ import {Dispatch} from "redux";
 import {loginAPI} from "../api/login-api";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {loginActions} from "../features/Login/loginSlice";
+import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
+import {handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
+import {todolistsThunks} from "./todolistsSlice";
 
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
@@ -19,21 +22,31 @@ const slice = createSlice({
     setAppTodoStatus(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
       state.statusTodo = action.payload.statusTodo
     },
-    setAppStatusTask(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>){
+    setAppStatusTask(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>) {
       state.statusTask = action.payload.statusTask
     },
     setAppStatus(state, action: PayloadAction<{ appStatus: ServerResponseStatusType }>) {
       state.addStatus = action.payload.appStatus
     },
-    setAppError(state,action: PayloadAction<{error: null | string}>){
+    setAppError(state, action: PayloadAction<{ error: null | string }>) {
       state.error = action.payload.error
     },
-    changeInitialized(state, action: PayloadAction<{value: boolean}>){
-      state.isInitialized = action.payload.value
-    }
+    // changeInitialized(state, action: PayloadAction<{value: boolean}>){
+    //   state.isInitialized = action.payload.value
+    // }
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(initialiseMeTC.fulfilled, (state, action) => {
+        state.isInitialized = true
+      })
+      // НУЖНО ЧТОБЫ ПРИЛОЖЕНИЕ НЕ МОРГАЛО, ЕСЛИ ЗАЛОГИНЕН И ПЕРЕЗАГРУЖАЕШЬ СТРАНИЦУ
+      .addCase(initialiseMeTC.rejected, (state, action) => {
+        state.isInitialized = false
+      })
   },
   selectors: {
-    selectAddStatus: sliceState=> sliceState.addStatus,
+    selectAddStatus: sliceState => sliceState.addStatus,
     statusTodo: (sliceState) => sliceState.statusTodo,
     statusTask: (sliceState) => sliceState.statusTask,
     isInitialized: (sliceState) => sliceState.isInitialized,
@@ -47,17 +60,44 @@ export const appActions = slice.actions
 export const appSelectors = slice.selectors
 export type AppInitialState = ReturnType<typeof slice.getInitialState>
 
-export const initialiseMeTC = () => (dispatch: Dispatch) => {
-  loginAPI.initialiseMe()
-    .then((res) => {
-      if(res.data.resultCode === 0){
-        dispatch(appActions.changeInitialized({value: true}))
+const initialiseMeTC = createAppAsyncThunk<
+  { value: boolean },
+  void
+>(
+  `${slice.name}/initialiseMe`,
+  async (_, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    try {
+      const res = await loginAPI.initialiseMe()
+      if (res.data.resultCode === 0) {
         dispatch(loginActions.setIsLoggedInAC({value: true}))
+        dispatch(todolistsThunks.fetchTodolistsTC())
+        return {value: true}
       } else {
-
+        handleServerAppError(res.data, dispatch, 'It seems that something wrong')
+        return rejectWithValue(null)
       }
-    })
-    .finally(() => {
-      dispatch(appActions.changeInitialized({value: true}))
-    })
-}
+    } catch (e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    } finally {
+      // dispatch(appActions.setAppStatus({appStatus: 'success'}))
+    }
+  }
+)
+// export const _initialiseMeTC = () => (dispatch: Dispatch) => {
+//   loginAPI.initialiseMe()
+//     .then((res) => {
+//       if(res.data.resultCode === 0){
+//         dispatch(appActions.changeInitialized({value: true}))
+//         dispatch(loginActions.setIsLoggedInAC({value: true}))
+//       } else {
+//
+//       }
+//     })
+//     .finally(() => {
+//       dispatch(appActions.changeInitialized({value: true}))
+//     })
+// }
+
+export const appThunks = {initialiseMeTC}

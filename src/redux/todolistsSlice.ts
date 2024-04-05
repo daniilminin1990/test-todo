@@ -6,6 +6,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
 import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
+import {tasksThunks} from "./tasksSlice";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -91,7 +92,7 @@ export const todolistsActions = slice.actions
 export const todolistsSelectors = slice.selectors
 
 //! Thunk
-export const fetchTodolistsTC = createAppAsyncThunk<
+const fetchTodolistsTC = createAppAsyncThunk<
   { todolists: TodolistType[] },
   void
 >(
@@ -101,9 +102,16 @@ export const fetchTodolistsTC = createAppAsyncThunk<
     dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
     try {
       const res = await todolistsAPI.getTodolists()
+      res.data.forEach(tl => {
+        dispatch(tasksThunks.fetchTasksTC(tl.id)).then(() => {
+          // dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
+          dispatch(todolistsActions.showTasks({todoListId: tl.id}))
+        })
+      })
       return {todolists: res.data}
     } catch (e) {
       handleServerNetworkError(e, dispatch)
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'failed'}))
       return rejectWithValue(null)
     } finally {
       dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
@@ -125,7 +133,7 @@ export const fetchTodolistsTC = createAppAsyncThunk<
 //     })
 // }
 
-export const deleteTodoTC = createAppAsyncThunk <
+const deleteTodoTC = createAppAsyncThunk <
   {todoListId: string},
   string
 >
@@ -173,7 +181,7 @@ export const deleteTodoTC = createAppAsyncThunk <
 //     })
 // }
 
-export const addTodoTC = createAppAsyncThunk<
+const addTodoTC = createAppAsyncThunk<
   {newTodolist: TodolistType, filter: FilterValuesType, entityStatus: ServerResponseStatusType, showTasks: boolean},
   string
 >(
@@ -222,7 +230,7 @@ export const addTodoTC = createAppAsyncThunk<
 //     })
 // }
 
-export const updateTodoTitleTC = createAppAsyncThunk<
+const updateTodoTitleTC = createAppAsyncThunk<
   UpdateTodoArgs,
   UpdateTodoArgs
 >(

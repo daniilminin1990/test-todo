@@ -4,7 +4,8 @@ import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../../common/actions/common.actions";
 import {appActions} from "../../redux/appSlice";
-import {handleServerAppError} from "../../utilities/utilities";
+import {handleServerAppError, handleServerNetworkError} from "../../utilities/utilities";
+import {createAppAsyncThunk} from "../../utilities/createAppAsyncThunk";
 
 // type InitialStateType = {
 //   isLoggedIn: boolean
@@ -20,6 +21,12 @@ const slice = createSlice({
       state.isLoggedIn = action.payload.value
     }
   },
+  extraReducers: builder => {
+    builder
+      .addCase(loginTC.fulfilled, (state, action) => {
+        state.isLoggedIn = action.payload.value
+      })
+  },
   selectors: {
     isLoggedIn: (sliceState) => sliceState.isLoggedIn,
   }
@@ -30,39 +37,90 @@ export const loginActions = slice.actions
 export const loginSelectors = slice.selectors
 
 // thunks
-export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatus({appStatus: 'loading'}))
-  loginAPI.login(data)
-    .then((res) => {
+const loginTC = createAppAsyncThunk<
+  {value: boolean},
+  LoginParamsType
+>(
+  `${slice.name}/login`,
+  async(data, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    dispatch(appActions.setAppStatus({appStatus: 'loading'}))
+    try{
+      const res = await loginAPI.login(data)
       if(res.data.resultCode === 0){
-        dispatch(loginActions.setIsLoggedInAC({value: true}))
+        return {value: true}
       } else {
         handleServerAppError<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
+        return rejectWithValue(null)
       }
-    })
-    .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
-    })
-    .finally(() => {
+    } catch(e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    } finally {
       dispatch(appActions.setAppStatus({appStatus: 'success'}))
-    })
-}
+    }
+  }
+)
+// export const _loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
+//   dispatch(appActions.setAppStatus({appStatus: 'loading'}))
+//   loginAPI.login(data)
+//     .then((res) => {
+//       if(res.data.resultCode === 0){
+//         dispatch(loginActions.setIsLoggedInAC({value: true}))
+//       } else {
+//         handleServerAppError<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
+//       }
+//     })
+//     .catch((e: AxiosError) => {
+//       appActions.setAppError({error: e.message})
+//     })
+//     .finally(() => {
+//       dispatch(appActions.setAppStatus({appStatus: 'success'}))
+//     })
+// }
 
-export const logoutTC = () => (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatus({appStatus: 'loading'}))
-  loginAPI.logout()
-    .then((res) => {
+const logoutTC = createAppAsyncThunk<
+  {value: boolean},
+  void
+>(
+  `${slice.name}/logout`,
+  async(_, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    dispatch(appActions.setAppStatus({appStatus: 'loading'}))
+    try{
+      const res = await loginAPI.logout()
       if(res.data.resultCode === 0){
         dispatch(loginActions.setIsLoggedInAC({value: false}))
-        dispatch(clearTasksAndTodos())
+        return {value: true}
       } else {
         handleServerAppError<{}>(res.data, dispatch, 'Oops! Something gone wrong')
+        return rejectWithValue(null)
       }
-    })
-    .catch((e: AxiosError) => {
-      appActions.setAppError({error: e.message})
-    })
-    .finally(() => {
+    } catch(e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    } finally {
       dispatch(appActions.setAppStatus({appStatus: 'success'}))
-    })
-}
+    }
+  }
+)
+// export const _logoutTC = () => (dispatch: Dispatch) => {
+//   dispatch(appActions.setAppStatus({appStatus: 'loading'}))
+//   loginAPI.logout()
+//     .then((res) => {
+//       if(res.data.resultCode === 0){
+//         dispatch(loginActions.setIsLoggedInAC({value: false}))
+//         dispatch(clearTasksAndTodos())
+//       } else {
+//         handleServerAppError<{}>(res.data, dispatch, 'Oops! Something gone wrong')
+//       }
+//     })
+//     .catch((e: AxiosError) => {
+//       appActions.setAppError({error: e.message})
+//     })
+//     .finally(() => {
+//       dispatch(appActions.setAppStatus({appStatus: 'success'}))
+//     })
+// }
+
+export const loginThunks = {loginTC, logoutTC}
