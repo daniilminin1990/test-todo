@@ -10,7 +10,7 @@ import {
   TasksWithEntityStatusType, tasksThunks, tasksSelectors, tasksSlice, TaskStateType
 } from "../../../redux/tasksSlice";
 import {Task} from "./Task/Task";
-import {deleteTodoTC, FilterValuesType} from "../../../redux/todolistsSlice";
+import {deleteTodoTC, FilterValuesType, todolistsActions, todolistsSelectors} from "../../../redux/todolistsSlice";
 import Button from "@material-ui/core/Button";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -28,18 +28,19 @@ type TodolistProps = {
   updTodoTitle: (todoListId: string, updTodoTitle: string) => void
   entityStatus: ServerResponseStatusType
   disabled: ServerResponseStatusType
+  showTasks: boolean
 }
 
 export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
   let allTodoTasks = useAppSelector(state => tasksSelectors.tasksById(state, props.todoListId))
 
-  const [showT, setShowT] = useState(false)
+  // const [showT, setShowT] = useState(false)
   const dispatch = useAppDispatch()
-
+  console.log('SHOWTASKS',props.showTasks)
 
   useEffect(() => {
     // dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
-    dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
+    dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => dispatch(todolistsActions.showTasks({todoListId: props.todoListId})))
   }, []);
 
   const removeTask = useCallback((taskId: string) => {
@@ -118,7 +119,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
             })
           }
         </ul>
-      : showT
+      : props.showTasks
         ? <p>Nothing to show</p>
         : <Typography variant="h3"><Skeleton /></Typography>
       }

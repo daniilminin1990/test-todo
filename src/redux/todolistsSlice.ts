@@ -12,7 +12,7 @@ export type FilterValuesType = 'all' | 'active' | 'completed'
 export type TodoUIType = TodolistType & {
   filter: FilterValuesType
   entityStatus: ServerResponseStatusType
-  // showTask: boolean
+  showTasks: boolean
 }
 
 const slice = createSlice({
@@ -37,7 +37,7 @@ const slice = createSlice({
     // },
     changeTodoFilter(state, action: PayloadAction<{ todoListId: string, newFilterValue: FilterValuesType }>) {
       const id = state.findIndex(tl => tl.id === action.payload.todoListId)
-      state[id] = {...state[id], filter: action.payload.newFilterValue}
+      if (id > -1) state[id] = {...state[id], filter: action.payload.newFilterValue}
     },
     // updateTodoTitle(state, action: PayloadAction<{ todoListId: string, newTodoTitle: string }>) {
     //   const id = state.findIndex(tl => tl.id === action.payload.todoListId)
@@ -45,11 +45,15 @@ const slice = createSlice({
     // },
     updateEntityStatusTodo(state, action: PayloadAction<{ todoId: string, entityStatus: ServerResponseStatusType }>) {
       const id = state.findIndex(tl => tl.id === action.payload.todoId)
-      state[id] = {...state[id], entityStatus: action.payload.entityStatus}
+      if(id > -1) state[id] = {...state[id], entityStatus: action.payload.entityStatus}
     },
     // fetchTodos(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
     //   return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     // },
+    showTasks(state, action: PayloadAction<{todoListId: string}>){
+      const id = state.findIndex(tl => tl.id === action.payload.todoListId)
+      if (id > -1) state[id].showTasks = true
+    }
   },
   extraReducers: builder => {
     builder
@@ -57,7 +61,7 @@ const slice = createSlice({
         return []
       })
       .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-        return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
+        return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle', showTasks: false}))
       })
       .addCase(deleteTodoTC.fulfilled, (state, action) => {
         const id = state.findIndex(tl => tl.id === action.payload.todoListId)
@@ -68,7 +72,8 @@ const slice = createSlice({
         state.unshift({
           ...action.payload.newTodolist,
           filter: action.payload.filter,
-          entityStatus: action.payload.entityStatus
+          entityStatus: action.payload.entityStatus,
+          showTasks: action.payload.showTasks
         })
       })
       .addCase(updateTodoTitleTC.fulfilled, (state, action) => {
@@ -77,7 +82,7 @@ const slice = createSlice({
       })
   },
   selectors: {
-    todolists: sliceState => sliceState
+    todolists: sliceState => sliceState,
   }
 })
 
@@ -169,7 +174,7 @@ export const deleteTodoTC = createAppAsyncThunk <
 // }
 
 export const addTodoTC = createAppAsyncThunk<
-  {newTodolist: TodolistType, filter: FilterValuesType, entityStatus: ServerResponseStatusType},
+  {newTodolist: TodolistType, filter: FilterValuesType, entityStatus: ServerResponseStatusType, showTasks: boolean},
   string
 >(
   `${slice.name}/addTodo`,
@@ -179,7 +184,7 @@ export const addTodoTC = createAppAsyncThunk<
     try{
       const res = await todolistsAPI.createTodolist(newTodolistTitle)
       if (res.data.resultCode === 0) {
-        return {newTodolist: res.data.data.item, filter: 'all', entityStatus: 'idle'}
+        return {newTodolist: res.data.data.item, filter: 'all', entityStatus: 'idle', showTasks: true}
         // dispatch(addAppStatusAC('success'))
       } else {
         // handleServerAppError(res.data, dispatch)
