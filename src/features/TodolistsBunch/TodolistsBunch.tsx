@@ -3,9 +3,9 @@ import {RootReducerType, useAppDispatch, useAppSelector} from "../../store/store
 import {useSelector} from "react-redux";
 import {
   addTodoTC,
-  changeTodoTitleTC,
+  updateTodoTitleTC,
   FilterValuesType,
-  setTodolistsTC,
+  fetchTodolistsTC,
   todolistsActions, todolistsSelectors,
   TodoUIType
 } from "../../redux/todolistsSlice";
@@ -26,10 +26,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
 
   useEffect(() => {
-    // if(!isLoggedIn){
-    //   return
-    // }
-    dispatch(setTodolistsTC())
+    if(!isLoggedIn){
+      return
+    }
+    dispatch(fetchTodolistsTC())
   }, []);
 
   const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
@@ -41,7 +41,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }, [dispatch])
 
   const updTodoTitle = useCallback((todoListId: string, updTodoTitle: string) => {
-    dispatch(changeTodoTitleTC(todoListId, updTodoTitle))
+    dispatch(updateTodoTitleTC({todoListId: todoListId, title: updTodoTitle}))
   }, [dispatch])
 
   if(!isLoggedIn){

@@ -1,10 +1,11 @@
 
 import {
   FilterValuesType,
-  todolistsSlice, todolistsActions, TodoUIType,
+  todolistsSlice, todolistsActions, TodoUIType, todolistsThunks,
 } from "../redux/todolistsSlice";
 import {v1} from "uuid";
 import {ServerResponseStatusType} from "../redux/appSlice";
+import {UnknownAction} from "redux";
 
 let todolistId1: string
 let todolistId2: string
@@ -20,14 +21,31 @@ beforeEach(()=> {
 })
 
 test('correct todolist should be removed', () => {
-  const endState = todolistsSlice(startState, todolistsActions.removeTodo({todoListId: todolistId1}))
+  type DeleteTodoType = Omit<ReturnType<typeof todolistsThunks.deleteTodoTC>, 'fulfilled'>
+  const action: DeleteTodoType = {
+    type: todolistsThunks.deleteTodoTC.fulfilled.type,
+    payload: {
+      todoListId: 'todolistId1'
+    }
+  }
+  const endState = todolistsSlice(startState, <UnknownAction>action)
   expect(endState.length).toBe(1)
   expect(endState[0].id).toBe(todolistId2)
 })
 
 test('correct todolist should be added', () => {
+
+  type AddTodoType = Omit<ReturnType<typeof todolistsThunks.addTodoTC>, 'meta'>
   let newTodolist = {id: 'asdasdffdagwhfhdfh', title: 'new todolist', addedDate: '', order: 0};
-  const endState = todolistsSlice(startState, todolistsActions.addTodo({newTodolist: newTodolist, filter: 'all', entityStatus: 'idle'}))
+  const action: AddTodoType ={
+    type: todolistsThunks.addTodoTC.fulfilled.type,
+    payload: {
+      newTodolist: newTodolist,
+      filter: 'all',
+      entityStatus: 'idle'
+    }
+  }
+  const endState = todolistsSlice(startState, <UnknownAction>action)
 
   expect(endState.length).toBe(3)
   expect(endState[0].title).toBe(newTodolist.title)
@@ -35,9 +53,17 @@ test('correct todolist should be added', () => {
 })
 
 test('correct todolist should change its name', () => {
+
+  type UpdateTodoTitleType = Omit<ReturnType<typeof todolistsThunks.updateTodoTitleTC>, 'meta'>
   let newTodolistTitle = 'new Todolist'
-  const action = todolistsActions.updateTodoTitle({todoListId: todolistId2, newTodoTitle: newTodolistTitle})
-  const endState = todolistsSlice(startState, action)
+  const action: UpdateTodoTitleType = {
+    type: todolistsThunks.updateTodoTitleTC.fulfilled.type,
+    payload: {
+      todoListId: 'todolistId2',
+      title: newTodolistTitle
+    }
+  }
+  const endState = todolistsSlice(startState, <UnknownAction>action)
 
   expect(endState[0].title).toBe('What to learn')
   expect(endState[1].title).toBe(newTodolistTitle)
@@ -53,7 +79,13 @@ test('correct filter of todolist should be changed', () => {
 })
 
 test('todolist should be added', () => {
-  const action = todolistsActions.setTodos({todolists: startState})
+
+  type FetchTodosType = Omit<ReturnType<typeof todolistsThunks.fetchTodolistsTC.fulfilled>, 'meta'>
+
+  const action: FetchTodosType = {
+    type: todolistsThunks.fetchTodolistsTC.fulfilled.type,
+    payload: {todolists: startState}
+  }
   const endState = todolistsSlice([], action)
   expect(endState.length).toBe(2)
 })

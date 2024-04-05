@@ -13,7 +13,7 @@ import {createModelTask, handleServerAppError, handleServerNetworkError} from ".
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
-import {todolistsActions} from "./todolistsSlice";
+import {todolistsActions, todolistsThunks} from "./todolistsSlice";
 import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
 
 export type TaskStateType = {
@@ -60,13 +60,13 @@ const slice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(todolistsActions.addTodo, (state, action) => {
+      .addCase(todolistsThunks.addTodoTC.fulfilled, (state, action) => {
         state[action.payload.newTodolist.id] = []
       })
-      .addCase(todolistsActions.removeTodo, (state, action) => {
+      .addCase(todolistsThunks.deleteTodoTC.fulfilled, (state, action) => {
         delete state[action.payload.todoListId]
       })
-      .addCase(todolistsActions.setTodos, (state, action) => {
+      .addCase(todolistsThunks.fetchTodolistsTC.fulfilled, (state, action) => {
         action.payload.todolists.forEach(tl => {
           state[tl.id] = []
         })

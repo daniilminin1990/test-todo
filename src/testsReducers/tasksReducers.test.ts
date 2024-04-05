@@ -7,8 +7,9 @@ import {
 } from "../redux/tasksSlice";
 
 import {TaskStatuses} from "../api/tasks-api";
-import {todolistsActions} from "../redux/todolistsSlice";
+import {todolistsActions, todolistsThunks} from "../redux/todolistsSlice";
 import {UnknownAction} from "redux";
+import {TodolistType} from "../api/todolists-api";
 
 
 let startState: TaskStateType = {}
@@ -124,10 +125,19 @@ test('title of specified task should be changed', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-  let newTodolist = {id: 'asdasdffdagwhfhdfh', title: 'new todolist', addedDate: '', order: 0};
-  const action = todolistsActions.addTodo({entityStatus: 'idle', filter: 'all', newTodolist: newTodolist});
 
-  const endState = tasksSlice(startState, action)
+  type AddTodoType = Omit<ReturnType<typeof todolistsThunks.addTodoTC>, 'meta'>
+  let newTodolist = {id: 'asdasdffdagwhfhdfh', title: 'new todolist', addedDate: '', order: 0};
+  const action: AddTodoType ={
+    type: todolistsThunks.addTodoTC.fulfilled.type,
+    payload: {
+      newTodolist: newTodolist,
+      filter: 'all',
+      entityStatus: 'idle'
+    }
+  }
+
+  const endState = tasksSlice(startState, <UnknownAction>action)
 
   const keys = Object.keys(endState)
   const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2')
@@ -139,8 +149,14 @@ test('new array should be added when new todolist is added', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-  const action = todolistsActions.removeTodo({todoListId: 'todolistId2'});
-  const endState = tasksSlice(startState, action)
+  type DeleteTodoType = Omit<ReturnType<typeof todolistsThunks.deleteTodoTC>, 'fulfilled'>
+  const action: DeleteTodoType = {
+    type: todolistsThunks.deleteTodoTC.fulfilled.type,
+    payload: {
+      todoListId: 'todolistId2'
+    }
+  }
+  const endState = tasksSlice(startState, <UnknownAction>action)
   const keys = Object.keys(endState)
 
   expect(keys.length).toBe(1)
@@ -148,12 +164,16 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('empty arrays should be added when we set todolists', () => {
-  const action = todolistsActions.setTodos({
-    todolists: [
-      {id: '1', title: 'title 1', order: 0, addedDate: ''},
-      {id: '2', title: 'title 2', order: 0, addedDate: ''}
-    ]
-  })
+
+  type FetchTodosType = Omit<ReturnType<typeof todolistsThunks.fetchTodolistsTC.fulfilled>, 'meta'>
+
+  const action: FetchTodosType = {
+    type: todolistsThunks.fetchTodolistsTC.fulfilled.type,
+    payload: {todolists: [
+        {id: '1', title: 'title 1', order: 0, addedDate: ''},
+        {id: '2', title: 'title 2', order: 0, addedDate: ''}
+      ]}
+  }
 
   const endState = tasksSlice({}, action)
   const keys = Object.keys(endState)

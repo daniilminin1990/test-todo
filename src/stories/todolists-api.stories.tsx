@@ -85,7 +85,7 @@ export const UpdateTodolistTitle = () => {
   }
 
   const updateTodo = () => {
-    todolistsAPI.updateTodolist(todoListId, todoUpdateTitle)
+    todolistsAPI.updateTodolist({todoListId, title: todoUpdateTitle})
       .then((res) => {
         setState(res.data)
       })
