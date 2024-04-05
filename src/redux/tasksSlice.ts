@@ -24,15 +24,6 @@ export type TasksWithEntityStatusType = TaskType & {
   entityStatus: ServerResponseStatusType
 }
 
-export type UpdateTaskUtilityType = {
-  title?: string,
-  description?: string,
-  status?: TaskStatuses,
-  priority?: TaskPriorities,
-  startDate?: string,
-  deadline?: string
-}
-
 const slice = createSlice({
   name: 'tasks',
   initialState: {} as TaskStateType,

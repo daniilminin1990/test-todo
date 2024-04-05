@@ -52,7 +52,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     <>
       <Grid container style={{padding: '20px'}}>
         <AddItemForm callback={addTodo}/>
-        {statusAddTodo === 'loading' && <CircularProgress color='info'/>}
       </Grid>
       <Grid container spacing={3}>
         {

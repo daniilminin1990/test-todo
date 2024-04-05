@@ -4,6 +4,7 @@ import {TaskPriorities, TaskStatuses, TaskType} from "../api/tasks-api";
 import {appActions} from "../redux/appSlice";
 import {AppDispatch} from "../store/store";
 import axios from "axios";
+import {CSSProperties} from "react";
 
 // export const handleServerAppError = (data: ResponseType, dispatch: Dispatch) => {
 // export const handleServerAppError = (data: ResponseType, dispatch: Dispatch) => {
@@ -50,3 +51,5 @@ export const createModelTask = (task: TaskType, utilityModel: ModelForUpdateType
   }
 
 }
+
+export const styleCircular: CSSProperties = {position: "absolute", top: '45%', textAlign: "center", width: '100%', zIndex: '999'}
