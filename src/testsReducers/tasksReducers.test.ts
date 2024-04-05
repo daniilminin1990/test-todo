@@ -1,5 +1,5 @@
 import {
-  addTaskTC,
+  addTaskTC, deleteTaskTC,
   tasksActions,
   tasksSlice,
   TaskStateType, tasksThunks,
@@ -47,7 +47,14 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-  const action = tasksActions.removeTask({todoListId: 'todolistId2', taskId: '2'});
+  type DeleteTaskActionType = Omit<ReturnType<typeof deleteTaskTC.fulfilled>, 'meta'>
+  const action: DeleteTaskActionType = {
+    type: deleteTaskTC.fulfilled.type,
+    payload: {
+      todoListId: 'todolistId2',
+      taskId: '2'
+    }
+  }
   const endState = tasksSlice(startState, action)
 
   expect(endState['todolistId1'].length).toBe(3)

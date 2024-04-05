@@ -43,7 +43,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, []);
 
   const removeTask = useCallback((taskId: string) => {
-    dispatch(deleteTaskTC(props.todoListId, taskId))
+    dispatch(tasksThunks.deleteTaskTC({todoListId: props.todoListId, taskId}))
     // dispatch(removeTask(props.todoListId, taskId))
   }, [dispatch, props.todoListId])
 

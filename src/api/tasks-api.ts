@@ -57,8 +57,8 @@ export const tasksApi = {
   // createTask(todoListId: string, title: string){
   //   return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todoListId}/tasks`, {title})
   // },
-  deleteTask(todoListId: string, taskId: string){
-    return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`)
+  deleteTask(args: DeleteTaskArgs){
+    return instance.delete<ResponseType>(`todo-lists/${args.todoListId}/tasks/${args.taskId}`)
   },
   // updateTask(todoListId: string, taskId: string, title: string){
   updateTask(todoListId: string, taskId: string, model: UpdateTaskType){
@@ -67,3 +67,4 @@ export const tasksApi = {
 }
 
 export type CreateTaskArgs = {todoListId: string, title: string}
+export type DeleteTaskArgs = {todoListId: string, taskId: string}
