@@ -10,7 +10,8 @@ import {Login} from "../features/Login/Login";
 import {BrowserRouter, HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import {appSelectors, appThunks,  ServerResponseStatusType} from "../redux/appSlice";
 import {useSelector} from "react-redux";
-import {styleCircular} from "../utilities/utilities";
+import {styleCircular} from "../utilities";
+
 
 // For githubpages use this stroke in package.json
 // "homepage": "https://daniilminin1990.github.io/test-todo",
@@ -47,6 +48,7 @@ const App = React.memo(() => {
       <CircularProgress color='info'/>
     </div>
   }
+  console.log('isInitialized', isInitialized)
   return (
       <div className="App">
         {statusTodo === 'loading' && <div style={styleCircular}>

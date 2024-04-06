@@ -36,7 +36,6 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
 
   // const [showT, setShowT] = useState(false)
   const dispatch = useAppDispatch()
-  console.log('SHOWTASKS',props.showTasks)
 
   // useEffect(() => {
   //   // dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))

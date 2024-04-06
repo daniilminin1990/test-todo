@@ -4,9 +4,8 @@ import {appActions, ServerResponseStatusType} from "./appSlice";
 import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
-import {handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
-import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
 import {tasksThunks} from "./tasksSlice";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 

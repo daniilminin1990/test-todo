@@ -2,9 +2,8 @@ import {Dispatch} from "redux";
 import {loginAPI} from "../api/login-api";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {loginActions} from "../features/Login/loginSlice";
-import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
-import {handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
 import {todolistsThunks} from "./todolistsSlice";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
 
 export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
 
@@ -38,11 +37,11 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(initialiseMeTC.fulfilled, (state, action) => {
-        state.isInitialized = true
+        state.isInitialized = action.payload.value
       })
       // НУЖНО ЧТОБЫ ПРИЛОЖЕНИЕ НЕ МОРГАЛО, ЕСЛИ ЗАЛОГИНЕН И ПЕРЕЗАГРУЖАЕШЬ СТРАНИЦУ
       .addCase(initialiseMeTC.rejected, (state, action) => {
-        state.isInitialized = false
+        state.isInitialized = true
       })
   },
   selectors: {

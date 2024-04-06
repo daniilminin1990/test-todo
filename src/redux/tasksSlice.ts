@@ -9,12 +9,11 @@ import {
 import {Dispatch} from "redux";
 import {AppDispatch, RootReducerType, useAppSelector} from "../store/store";
 import {appActions, ServerResponseStatusType} from "./appSlice";
-import {createModelTask, handleServerAppError, handleServerNetworkError} from "../utilities/utilities";
 import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {todolistsActions, todolistsThunks} from "./todolistsSlice";
-import {createAppAsyncThunk} from "../utilities/createAppAsyncThunk";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[]

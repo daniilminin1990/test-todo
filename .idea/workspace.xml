@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/utilities/createModelTask.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utilities/handleServerAppError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utilities/handleServerNetworkError.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utilities/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utilities/styleCircular.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/Login/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/Login/loginSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utilities/utilities.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +29,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -33,21 +42,21 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "daniilminin1990"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;daniilminin1990&quot;
   }
-}]]></component>
+}</component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="5" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/daniilminin1990/test-todo.git",
-    "accountId": "b8252bb0-2605-42da-906c-d73d563e04de"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/daniilminin1990/test-todo.git&quot;,
+    &quot;accountId&quot;: &quot;b8252bb0-2605-42da-906c-d73d563e04de&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -91,6 +100,10 @@
 }</component>
   <component name="RecentsManager">
     <key name="es6.move.members.recent.items">
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\handleServerAppError.ts" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\handleServerNetworkError.ts" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\createModelTask.ts" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\styleCircular.ts" />
       <recent name="D:\IT программирование\Работа\Git repos\Обучение IT-incubator\Frontend\Преподавание\test-todo\src\AddItemForm.tsx" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -101,7 +114,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\features\TodolistsBunch" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.test">
+  <component name="RunManager" selected="npm.start">
     <configuration name="All Tests" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -156,8 +169,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.test" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
         <item itemvalue="Jest.All Tests" />
@@ -263,7 +276,8 @@
       <workItem from="1712302017463" duration="21719000" />
       <workItem from="1712327610542" duration="1385000" />
       <workItem from="1712330996272" duration="790000" />
-      <workItem from="1712331866395" duration="6825000" />
+      <workItem from="1712331866395" duration="10642000" />
+      <workItem from="1712427077707" duration="5126000" />
     </task>
     <servers />
   </component>

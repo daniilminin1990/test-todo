@@ -4,8 +4,8 @@ import {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../../common/actions/common.actions";
 import {appActions} from "../../redux/appSlice";
-import {handleServerAppError, handleServerNetworkError} from "../../utilities/utilities";
-import {createAppAsyncThunk} from "../../utilities/createAppAsyncThunk";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../../utilities";
+import {todolistsThunks} from "../../redux/todolistsSlice";
 
 // type InitialStateType = {
 //   isLoggedIn: boolean
@@ -48,6 +48,7 @@ const loginTC = createAppAsyncThunk<
     try{
       const res = await loginAPI.login(data)
       if(res.data.resultCode === 0){
+        dispatch(todolistsThunks.fetchTodolistsTC())
         return {value: true}
       } else {
         handleServerAppError<{ userId: number }>(res.data, dispatch, 'Oops! Something gone wrong')
