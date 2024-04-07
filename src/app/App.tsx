@@ -75,7 +75,7 @@ const App = React.memo(() => {
   }
   return (
 
-      <div className="App">
+      <div className="App" >
         {statusTodo === 'loading' && <div style={styleCircular}>
           <CircularProgress color='info'/>
         </div>

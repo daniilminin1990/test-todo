@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/AppBarWithToggle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ExampleColorToggle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ThemeToggler.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ButtonAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ButtonAppBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AppBarWithToggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AppBarWithToggle.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +104,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\features\TodolistsBunch" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.test">
+  <component name="RunManager" selected="npm.start">
     <configuration name="All Tests" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -171,8 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.test" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
         <item itemvalue="Jest.All Tests" />
@@ -280,7 +268,8 @@
       <workItem from="1712330996272" duration="790000" />
       <workItem from="1712331866395" duration="10642000" />
       <workItem from="1712427077707" duration="5864000" />
-      <workItem from="1712480348595" duration="27312000" />
+      <workItem from="1712480348595" duration="27557000" />
+      <workItem from="1712524831870" duration="1052000" />
     </task>
     <servers />
   </component>

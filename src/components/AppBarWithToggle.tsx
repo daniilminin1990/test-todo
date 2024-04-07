@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -25,9 +25,9 @@ import {loginSelectors, loginThunks} from "../features/Login/loginSlice";
 
 const drawerWidth = 240;
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})<{
   open?: boolean;
-}>(({ theme, open }) => ({
+}>(({theme, open}) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
@@ -50,7 +50,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
+})<AppBarProps>(({theme, open}) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -65,7 +65,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
+const DrawerHeader = styled('div')(({theme}) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
@@ -74,7 +74,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function AppBarWithToggleLeft(props: {children: React.ReactNode}) {
+export default function AppBarWithToggleLeft(props: { children: React.ReactNode }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -94,8 +94,8 @@ export default function AppBarWithToggleLeft(props: {children: React.ReactNode})
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+    <Box sx={{display: 'flex'}}>
+      <CssBaseline/>
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -103,11 +103,11 @@ export default function AppBarWithToggleLeft(props: {children: React.ReactNode})
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{mr: 2, ...(open && {display: 'none'})}}
           >
-            <MenuIcon />
+            <MenuIcon/>
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
             News
           </Typography>
           <ThemeTogglerSlider/>
@@ -129,41 +129,41 @@ export default function AppBarWithToggleLeft(props: {children: React.ReactNode})
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
           </IconButton>
         </DrawerHeader>
-        <Divider />
+        <Divider/>
         <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text}/>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider />
+        <Divider/>
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text}/>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider />
+        <Divider/>
         <ThemeTogglerSlider/>
         {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
 
       </Drawer>
-      <Main open={open}>
+      <Main open={open} sx={{flexGrow: 1, p: 3, pt: `calc(${theme.spacing(8)} + 1px)`, overflow: 'auto',}}>
         {props.children}
       </Main>
     </Box>
