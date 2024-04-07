@@ -1,10 +1,15 @@
 const getStyles = (disabled: boolean | undefined) => ({
   maxWidth: '38px',
-  maxHeight: '38px',
+  maxHeight: '100%',
   minWidth: '38px',
-  minHeight: '38px',
+  minHeight: '100%',
   backgroundColor: disabled ? 'lightgray' : '#3cb37b'
 });
+
+export const taskButton = {
+  maxHeight: '100%',
+  minHeight: '100%',
+}
 
 const styleTextField = {
   maxHeight: '38px',

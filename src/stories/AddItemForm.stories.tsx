@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { AddItemForm, AddItemFormProps, StyledTextField } from "../components/AddItemForm";
+import { AddItemForm, AddItemFormProps} from "../components/AddItemForm";
+import TextField from '@mui/material/TextField';
 import { action } from '@storybook/addon-actions'
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from "@material-ui/core/Button";
@@ -59,7 +60,7 @@ export const AddItemFormError = (props: AddItemFormProps) => {
 
   return (
     <div>
-      <StyledTextField
+      <TextField
         id="outlined-basic"
         error={!!error}
         // label="Type title"

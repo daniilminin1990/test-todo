@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./store/store";
 import {HashRouter} from "react-router-dom";
+import {ThemeTogglerHOC} from "./components/ThemeTogglerHOC";
+import AppBarWithToggleLeft from "./components/AppBarWithToggle";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +16,11 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <HashRouter>
-      <App/>
+      <ThemeTogglerHOC>
+        <AppBarWithToggleLeft>
+          <App/>
+        </AppBarWithToggleLeft>
+      </ThemeTogglerHOC>
     </HashRouter>
   </Provider>
   // {/* </React.StrictMode> */}

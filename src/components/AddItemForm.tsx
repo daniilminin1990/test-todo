@@ -2,7 +2,7 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import {getStyles} from "../styles";
-import { styled } from '@mui/system';
+// import { styled } from '@mui/system';
 
 export type AddItemFormProps = {
   callback: (newTitle: string) => void
@@ -10,19 +10,18 @@ export type AddItemFormProps = {
 }
 
 // Кастомная стилизация TextField от MUI
-export const StyledTextField = styled(TextField, {
-  name: 'StyledTextField'
-})({
-  '& .MuiOutlinedInput-input': {
-    padding: '8px 14px'
-  },
-  '& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root': {
-    transform: 'translate(14px, 10px) scale(1)'
-  },
-})
+// export const StyledTextField = styled(TextField, {
+//   name: 'StyledTextField'
+// })({
+//   '& .MuiOutlinedInput-input': {
+//     padding: '8px 14px'
+//   },
+//   '& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root': {
+//     transform: 'translate(14px, 10px) scale(1)'
+//   },
+// })
 
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
-  console.log('AddItemForm')
   const [newTitle, setNewTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   const onClickAddItemHandler = () => {
@@ -46,7 +45,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
 
   return (
     <div>
-      <StyledTextField
+      <TextField
         id="outlined-basic"
         error={!!error}
         // label="Type title"

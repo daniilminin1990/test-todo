@@ -45,6 +45,7 @@ const slice = createSlice({
     //   const {todoId, tasks} = action.payload
     //   state[todoId] = tasks.map(t => ({...t, entityStatus: 'idle'}))
     // },
+
     updateTaskEntityStatus(state, action: PayloadAction<{
       todoListId: string,
       taskId: string | undefined,
@@ -52,8 +53,10 @@ const slice = createSlice({
     }>) {
       const tasks = state[action.payload.todoListId]
       const id = tasks.findIndex(t => t.id === action.payload.taskId)
+      console.log('BEFORE AC upd entityStatus --- ', tasks[id].entityStatus)
       if (id > -1) {
         tasks[id] = {...tasks[id], entityStatus: action.payload.entityStatus}
+      console.log('AFTER AC upd entityStatus, --- ', tasks[id].entityStatus)
       }
     },
   },
@@ -120,6 +123,7 @@ const fetchTasksTC = createAppAsyncThunk<
   async(todolistId, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+    console.log('FETCHTASKT=TC')
     try {
       const res = await tasksApi.getTasks(todolistId)
       const tasks = res.data.items
@@ -160,6 +164,7 @@ export const deleteTaskTC = createAppAsyncThunk<
     const {dispatch, rejectWithValue} = thunkAPI
       dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.taskId, entityStatus: 'loading'}))
       dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+      console.log('DELETETASKT=TC')
     try{
       const res = await tasksApi.deleteTask(args)
       if(res.data.resultCode === 0){
@@ -241,7 +246,7 @@ export const addTaskTC = createAppAsyncThunk<
 //     })
 // }
 export const updateTaskTC = createAppAsyncThunk<
-  { todoListId: string, taskId: string, model:  Partial<UpdateTaskType>},
+  { todoListId: string, taskId: string, model:  UpdateTaskType},
   { todoListId: string, taskId: string, model: Partial<UpdateTaskType>}
 >(
   `${slice.name}/updateTask`,
@@ -251,6 +256,7 @@ export const updateTaskTC = createAppAsyncThunk<
     dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.taskId, entityStatus: 'loading'}))
     const state = getState()
     const task = state.tasks[args.todoListId].find(tl => tl.id === args.taskId)
+    console.log('UPDATETASK=TC')
 
     if (!task) {
       throw new Error('Task not found in the state')
@@ -260,7 +266,6 @@ export const updateTaskTC = createAppAsyncThunk<
       ...task,
       ...args.model,
     };
-
     try {
       const res = await tasksApi.updateTask(args.todoListId, args.taskId, apiModel)
       if(res.data.resultCode === 0){

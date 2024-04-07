@@ -52,13 +52,14 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }, [dispatch, props.todoListId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TaskStatuses) => {
+    console.log('CHANGE-TASK-STATUS')
     // dispatch(changeTaskStatusAC(props.todoListId, taskId, checked))
-    dispatch(tasksThunks.updateTaskTC({todoListId: props.todoListId, taskId, model: {status: checked}}))
+    dispatch(tasksThunks.updateTaskTC({todoListId: props.todoListId, taskId, model: { status: checked}}))
   }, [dispatch, props.todoListId])
 
   const updTaskTitle = useCallback((taskId: string, updTaskTitle: string) => {
     dispatch(tasksThunks.updateTaskTC({todoListId: props.todoListId, taskId, model: {title: updTaskTitle}}))
-  }, [props.todoListId])
+  }, [dispatch, props.todoListId])
 
   if (props.tasksFilter === 'completed') {
     allTodoTasks = allTodoTasks.filter(t => t.status === TaskStatuses.Completed)

@@ -41,8 +41,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     dispatch(todolistsThunks.updateTodoTitleTC({todoListId: todoListId, title: updTodoTitle}))
   }, [dispatch])
 
-  console.log('isLoggedIn', isLoggedIn)
-
   if(!isLoggedIn){
     return <Navigate to={'/login'}/>
   }

@@ -19,15 +19,6 @@ export const Task = React.memo((props: TaskProps) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
-    // let checked = () => {
-    //   if (checkedEvent === true) {
-    //     return TasksStatuses.Completed
-    //   } else {
-    //     return TasksStatuses.New
-    //   }
-    // }
-    // props.onChange(props.taskId, checked())
-    console.log(checkToGo)
     props.onChange(props.taskId, checkToGo)
   }
   const onClickHandler = () => {
@@ -39,6 +30,7 @@ export const Task = React.memo((props: TaskProps) => {
   }
 
   const taskCompleted = props.tIsDone === TaskStatuses.Completed
+  console.log(props.entityStatus)
   return (
     <li className={taskCompleted ? 'is-done' : ''}>
       <input type="checkbox" checked={taskCompleted} onChange={onChangeHandler} disabled={props.entityStatus === 'loading'}/>

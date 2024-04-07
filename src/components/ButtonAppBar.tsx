@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {loginSelectors, loginThunks} from "../features/Login/loginSlice";
+import {ThemeTogglerSlider} from "./ThemeTogglerSlider";
 
 export default function ButtonAppBar() {
   // const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
@@ -33,6 +34,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
+          <ThemeTogglerSlider/>
           {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Logout</Button>}
         </Toolbar>
       </AppBar>

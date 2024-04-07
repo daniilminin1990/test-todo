@@ -103,6 +103,7 @@ test('status of specified task should be changed', () => {
     payload: {
       todoListId: 'todolistId2', taskId: '2',
       model: {
+        ...startState['todolistId2'][1],
         status: TaskStatuses.Completed
       }
     },
