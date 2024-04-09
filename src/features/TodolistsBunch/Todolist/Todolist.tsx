@@ -43,23 +43,23 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   // }, []);
 
   // Region
-  // const [taskIdToDrag, setTaskIdToDrag] = useState<string>('')
-  // function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
-  //   setTaskIdToDrag(startDragId)
-  //   console.log('DRAGGING-ID', startDragId)
-  // }
-  //
-  // function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {
-  // }
-  //
-  // function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-  //   e.preventDefault()
-  // }
-  //
-  // function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
-  //   e.preventDefault()
-  //   // dispatch(tasksThunks.reorderTasksTC({todoListId: props.todoListId, startDragId: taskIdToDrag, endShiftId: endShiftId}))
-  // }
+  const [taskIdToDrag, setTaskIdToDrag] = useState<string>('')
+  function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
+    setTaskIdToDrag(startDragId)
+    console.log('DRAGGING-ID', startDragId)
+  }
+
+  function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {
+  }
+
+  function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault()
+  }
+
+  function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
+    e.preventDefault()
+    dispatch(tasksThunks.reorderTasksTC({todoListId: props.todoListId, startDragId: taskIdToDrag, endShiftId: endShiftId}))
+  }
   // End
 
   const removeTask = useCallback((taskId: string) => {
@@ -116,7 +116,17 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
             allTodoTasks.map(t => {
 
               return (
-                  props.entityStatus === 'loading'
+                <div
+                  key={t.id}
+                  draggable={true}
+                  onDragStart={(e) => dragStartHandler(e, t.id)}
+                  onDragLeave={(e) => dragEndHandler(e)}
+                  onDragEnd={(e) => dragEndHandler(e)}
+                  onDragOver={(e) => dragOverHandler(e)}
+                  onDrop={(e) => dropHandler(e, t.id)}
+                >
+
+                  {props.entityStatus === 'loading'
                     ? <Skeleton key={t.id}
                     ><Task key={t.id}
                            taskId={t.id}
@@ -136,7 +146,8 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
                             onClick={removeTask}
                             updTaskTitle={updTaskTitle}
 
-                    />
+                    />}
+                </div>
               )
             })
           }
