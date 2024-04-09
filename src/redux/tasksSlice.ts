@@ -262,10 +262,10 @@ const updateTaskTC = createAppAsyncThunk<
   `${slice.name}/updateTask`,
   async(args, thunkAPI) => {
     const {dispatch, rejectWithValue,getState} = thunkAPI
-    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-    dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.taskId, entityStatus: 'loading'}))
     const state = getState()
     const task = state.tasks[args.todoListId].find(tl => tl.id === args.taskId)
+    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+    dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.taskId, entityStatus: 'loading'}))
     console.log('UPDATETASK=TC')
 
     if (!task) {
