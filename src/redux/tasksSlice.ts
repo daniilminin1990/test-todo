@@ -102,15 +102,15 @@ const slice = createSlice({
         const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
         if (id > -1) state[action.payload.todoListId].splice(id, 1)
       })
-      // .addCase(reorderTasksTC.fulfilled, (state, action) => {
-      //   const {todoListId, startDragId, endShiftId} = action.payload
-      //   const dragIndex = state[todoListId].findIndex(t => t.id === startDragId)
-      //   const targetIndex = state[todoListId].findIndex(t => t.id === endShiftId)
-      //   if (dragIndex > -1 && targetIndex > -1) {
-      //     const draggedItem = state[todoListId].splice(dragIndex, 1)[0]
-      //     state[todoListId].splice(targetIndex, 0, draggedItem)
-      //   }
-      // })
+      .addCase(reorderTasksTC.fulfilled, (state, action) => {
+        const {todoListId, startDragId, endShiftId} = action.payload
+        const dragIndex = state[todoListId].findIndex(t => t.id === startDragId)
+        const targetIndex = state[todoListId].findIndex(t => t.id === endShiftId)
+        if (dragIndex > -1 && targetIndex > -1) {
+          const draggedItem = state[todoListId].splice(dragIndex, 1)[0]
+          state[todoListId].splice(targetIndex, 0, draggedItem)
+        }
+      })
   },
   selectors: {
     tasksState: sliceState => sliceState as TaskStateType,
@@ -326,10 +326,10 @@ const reorderTasksTC = createAppAsyncThunk<
   `${slice.name}/reorderTasks`,
   async (args, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
-    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-    dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'loading'}))
     const tasks = getState().tasks[args.todoListId]
     const idToServer = dragAndDropIdChanger(tasks, args)
+    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+    dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'loading'}))
 
     try {
       const res = await tasksApi.reorderTasks({todoListId: args.todoListId, startDragId: args.startDragId, endShiftId: idToServer})

@@ -46,23 +46,7 @@ const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>('')
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
     e.preventDefault()
-    // // Определяем UI index тудулиста, НА который перетаскиваем
-    // const todoUIIndexToDrag = todolists.findIndex((tl, index) => tl.id === startDragId && index >= 0)
-    // const todoUIIndexToShift = todolists.findIndex((tl, index) => tl.id === endShiftId && index >= 0)
-    // // Отнимаем 1 из UI index и определяем его id, если таковой есть, то збс. Если нет, то null
-    // const idToServer = setIdToServer(todoUIIndexToShift)
-    // function setIdToServer(idToShift: number) {
-    //   if (idToShift > 0 && idToShift <= todoUIIndexToDrag) {
-    //     return todolists[idToShift - 1].id;
-    //   } else if (idToShift > todoUIIndexToDrag) {
-    //     return endShiftId;
-    //   } else {
-    //     return null;
-    //   }
-    // }
-    // console.log('ID TO SERVER', idToServer)
-    dispatch(todolistsThunks.reorderTodolistTC({startDragId: todoListIdToDrag, endShiftId: endShiftId}))
-
+    dispatch(todolistsThunks.reorderTodolistTC({endShiftId: endShiftId, startDragId: todoListIdToDrag}))
   }
 
   // End

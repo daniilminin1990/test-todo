@@ -1,8 +1,8 @@
 import {TodoUIType} from "../redux/todolistsSlice";
 import {TaskType} from "../api/tasks-api";
-import {ReorderTodoList} from "../api/todolists-api";
+import {ReorderTodoListArgs} from "../api/todolists-api";
 
-export function dragAndDropChangeId (todolists: TodoUIType[], args: ReorderTodoList, taskId?: string) {
+export function dragAndDropChangeId (todolists: TodoUIType[], args: ReorderTodoListArgs) {
   // ! НА СЕРВЕРЕ ОБРАБОТКА КАК ГАВНО, поэтому танцы с бубном
   // Определяем UI index тудулиста, НА который перетаскиваем
   const startId = todolists.findIndex((tl, index) => tl.id === args.startDragId && index >= 0)
@@ -17,7 +17,6 @@ export function dragAndDropChangeId (todolists: TodoUIType[], args: ReorderTodoL
     return null;
   }
 }
-
 // export function dragAndDropChangeIdTasks (tasks: TaskType[], args: ReorderTasks, taskId?: string) {
 //   // ! НА СЕРВЕРЕ ОБРАБОТКА КАК ГАВНО, поэтому танцы с бубном
 //   // Определяем UI index тудулиста, НА который перетаскиваем
@@ -35,7 +34,7 @@ export function dragAndDropChangeId (todolists: TodoUIType[], args: ReorderTodoL
 // }
 
 // Общая
-export function dragAndDropIdChanger<T extends { id: string }, R extends { startDragId: string, endShiftId: string | null }>(array: T[], args: R, taskId?: string) {
+export function dragAndDropIdChanger<T extends { id: string }, R extends { startDragId: string, endShiftId: string | null }>(array: T[], args: R) {
   // ! ОБРАБОТКА НА СЕРВЕРЕ КАК ГАВНО, поэтому танцы с бубном
   // Определяем UI index элемента, НА который перетаскиваем
   const startId = array.findIndex((item, index) => item.id === args.startDragId && index >= 0)

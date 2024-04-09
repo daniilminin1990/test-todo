@@ -1,4 +1,4 @@
-import {ReorderTodoList, todolistsAPI, TodolistType, UpdateTodoArgs} from "../api/todolists-api";
+import {ReorderTodoListArgs, todolistsAPI, TodolistType, UpdateTodoArgs} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {appActions, ServerResponseStatusType} from "./appSlice";
 import {AxiosError} from "axios";
@@ -82,16 +82,16 @@ const slice = createSlice({
         const id = state.findIndex(tl => tl.id === action.payload.todoListId)
         state[id] = {...state[id], title: action.payload.title}
       })
-      // .addCase(reorderTodolistTC.fulfilled,(state,action)=>{
-      //   const { startDragId, endShiftId } = action.payload;
-      //   const dragIndex = state.findIndex(el => el.id === startDragId);
-      //   const targetIndex = state.findIndex(el => el.id === endShiftId);
-      //
-      //   if (dragIndex > -1 && targetIndex > -1) {
-      //     const draggedItem = state.splice(dragIndex, 1)[0];
-      //     state.splice(targetIndex, 0, draggedItem);
-      //   }
-      // })
+      .addCase(reorderTodolistTC.fulfilled,(state,action)=>{
+        const { startDragId, endShiftId } = action.payload;
+        const dragIndex = state.findIndex(el => el.id === startDragId);
+        const targetIndex = state.findIndex(el => el.id === endShiftId);
+
+        if (dragIndex > -1 && targetIndex > -1) {
+          const draggedItem = state.splice(dragIndex, 1)[0];
+          state.splice(targetIndex, 0, draggedItem);
+        }
+      })
   },
   selectors: {
     todolists: sliceState => sliceState,
@@ -286,19 +286,19 @@ const updateTodoTitleTC = createAppAsyncThunk<
 // }
 
 const reorderTodolistTC = createAppAsyncThunk<
-  ReorderTodoList,
-  ReorderTodoList
+  ReorderTodoListArgs,
+  ReorderTodoListArgs
 >(
   `${slice.name}/reorderTodolist`,
   async(args, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
     const todolists = getState().todolists
-    const idToServer = dragAndDropIdChanger(todolists, args)
     dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
+    const idToServer = dragAndDropChangeId(todolists, args)
     try {
-      const res = await todolistsAPI.reorderTodolist({startDragId:args.startDragId, endShiftId: idToServer} )
+      const res = await todolistsAPI.reorderTodolist({startDragId: args.startDragId, endShiftId: idToServer})
       if (res.data.resultCode === 0) {
-        dispatch(fetchTodolistsTC())
+        // dispatch(fetchTodolistsTC())
         return args
       } else {
         handleServerAppError(res.data, dispatch, 'I can\'t reorder')
