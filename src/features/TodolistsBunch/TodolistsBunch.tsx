@@ -84,7 +84,7 @@ const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>('')
                     onDragOver={(e) => dragOverHandler(e)}
                     onDrop={(e) => dropHandler(e, tl.id)}
               >
-                <Paper elevation={6} style={{padding: '30px'}}>
+                <Paper elevation={6} style={{padding: '30px', borderRadius: '10px'}}>
                   <Todolist
                     key={tl.id}
                     todoListId={tl.id}

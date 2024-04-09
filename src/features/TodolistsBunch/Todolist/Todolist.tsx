@@ -45,6 +45,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   // Region
   const [taskIdToDrag, setTaskIdToDrag] = useState<string>('')
   function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
+    e.stopPropagation()
     setTaskIdToDrag(startDragId)
     console.log('DRAGGING-ID', startDragId)
   }
@@ -53,10 +54,12 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   }
 
   function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    e.stopPropagation()
     e.preventDefault()
   }
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
+    e.stopPropagation()
     e.preventDefault()
     dispatch(tasksThunks.reorderTasksTC({todoListId: props.todoListId, startDragId: taskIdToDrag, endShiftId: endShiftId}))
   }
@@ -118,6 +121,7 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
               return (
                 <div
                   key={t.id}
+                  style={{borderRadius: "5px", marginBottom: "10px", marginTop: "10px", padding: "5px", border: "0.5px solid gray"}}
                   draggable={true}
                   onDragStart={(e) => dragStartHandler(e, t.id)}
                   onDragLeave={(e) => dragEndHandler(e)}
