@@ -72,7 +72,9 @@ export const tasksApi = {
     return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
   },
   reorderTasks(args: ReorderTasksArgs){
-    return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`, args.endShiftId)
+    return instance.put<ResponseType>(`todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`, {
+      putAfterItemId: args.endShiftId
+    })
   }
 }
 

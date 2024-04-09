@@ -1,4 +1,4 @@
-import {todolistsAPI, TodolistType, UpdateTodoArgs} from "../api/todolists-api";
+import {ReorderTodoListArgs, todolistsAPI, TodolistType, UpdateTodoArgs} from "../api/todolists-api";
 import {Dispatch} from "redux";
 import {appActions, ServerResponseStatusType} from "./appSlice";
 import {AxiosError} from "axios";
@@ -7,7 +7,7 @@ import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {tasksThunks} from "./tasksSlice";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
 import {AppDispatch, RootReducerType} from "../store/store";
-import {DragAndDropChangeTodoId} from "../utilities/dragAndDropChangeId";
+import {dragAndDropChangeId, dragAndDropIdChanger} from "../utilities/dragAndDropChangeId";
 
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -47,12 +47,12 @@ const slice = createSlice({
     // },
     updateEntityStatusTodo(state, action: PayloadAction<{ todoId: string, entityStatus: ServerResponseStatusType }>) {
       const id = state.findIndex(tl => tl.id === action.payload.todoId)
-      if (id > -1) state[id] = {...state[id], entityStatus: action.payload.entityStatus}
+      if(id > -1) state[id] = {...state[id], entityStatus: action.payload.entityStatus}
     },
     // fetchTodos(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
     //   return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     // },
-    showTasks(state, action: PayloadAction<{ todoListId: string }>) {
+    showTasks(state, action: PayloadAction<{todoListId: string}>){
       const id = state.findIndex(tl => tl.id === action.payload.todoListId)
       if (id > -1) state[id].showTasks = true
     }
@@ -82,17 +82,16 @@ const slice = createSlice({
         const id = state.findIndex(tl => tl.id === action.payload.todoListId)
         state[id] = {...state[id], title: action.payload.title}
       })
-    // .addCase(reorderTodolistTC.fulfilled,(state,action)=>{
-    //   const { startDragId, endShiftId } = action.payload;
-    //   const dragIndex = state.findIndex(el => el.id === startDragId);
-    //   const targetIndex = state.findIndex(el => el.id === endShiftId);
-    //
-    //   if (dragIndex > -1 && targetIndex > -1) {
-    //     const draggedItem = state.splice(dragIndex, 1)[0];
-    //     state.splice(targetIndex, 0, draggedItem);
-    //   }
-    // })
+      .addCase(reorderTodolistTC.fulfilled,(state,action)=>{
+        const { startDragId, endShiftId } = action.payload;
+        const dragIndex = state.findIndex(el => el.id === startDragId);
+        const targetIndex = state.findIndex(el => el.id === endShiftId);
 
+        if (dragIndex > -1 && targetIndex > -1) {
+          const draggedItem = state.splice(dragIndex, 1)[0];
+          state.splice(targetIndex, 0, draggedItem);
+        }
+      })
   },
   selectors: {
     todolists: sliceState => sliceState,
@@ -145,32 +144,32 @@ const fetchTodolistsTC = createAppAsyncThunk<
 //     })
 // }
 
-const deleteTodoTC = createAppAsyncThunk<
-  { todoListId: string },
+const deleteTodoTC = createAppAsyncThunk <
+  {todoListId: string},
   string
 >
 (
   `${slice.name}/deleteTodo`,
-  async (todoListId, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
-    dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
-    dispatch(todolistsActions.updateEntityStatusTodo({todoId: todoListId, entityStatus: 'loading'})) // перед запросом поставим в loading
-    try {
-      const res = await todolistsAPI.deleteTodolist(todoListId)
-      if (res.data.resultCode === 0) {
-        return {todoListId}
-      } else {
-        handleServerAppError(res.data, dispatch, 'Something wrong, try later')
+    async (todoListId, thunkAPI) => {
+      const {dispatch, rejectWithValue} = thunkAPI
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
+      dispatch(todolistsActions.updateEntityStatusTodo({todoId: todoListId, entityStatus: 'loading'})) // перед запросом поставим в loading
+      try{
+        const res = await todolistsAPI.deleteTodolist(todoListId)
+        if (res.data.resultCode === 0) {
+          return {todoListId}
+        } else {
+          handleServerAppError(res.data, dispatch, 'Something wrong, try later')
+          return rejectWithValue(null)
+        }
+      } catch (e) {
+        handleServerNetworkError(e, dispatch)
         return rejectWithValue(null)
+      } finally {
+        dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
+        dispatch(todolistsActions.updateEntityStatusTodo({todoId: todoListId, entityStatus: 'success'})) // если все удачно, то в success
       }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch)
-      return rejectWithValue(null)
-    } finally {
-      dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
-      dispatch(todolistsActions.updateEntityStatusTodo({todoId: todoListId, entityStatus: 'success'})) // если все удачно, то в success
     }
-  }
 )
 // export const _deleteTodoTC = (todoListId: string) => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
@@ -194,14 +193,14 @@ const deleteTodoTC = createAppAsyncThunk<
 // }
 
 const addTodoTC = createAppAsyncThunk<
-  { newTodolist: TodolistType, filter: FilterValuesType, entityStatus: ServerResponseStatusType, showTasks: boolean },
+  {newTodolist: TodolistType, filter: FilterValuesType, entityStatus: ServerResponseStatusType, showTasks: boolean},
   string
 >(
   `${slice.name}/addTodo`,
-  async (newTodolistTitle, thunkAPI) => {
+  async(newTodolistTitle, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
     dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
-    try {
+    try{
       const res = await todolistsAPI.createTodolist(newTodolistTitle)
       if (res.data.resultCode === 0) {
         return {newTodolist: res.data.data.item, filter: 'all', entityStatus: 'idle', showTasks: true}
@@ -211,7 +210,7 @@ const addTodoTC = createAppAsyncThunk<
         handleServerAppError(res.data, dispatch, 'Oops! Something gone wrong. Length should be less 100 symbols')
         return rejectWithValue(null)
       }
-    } catch (e) {
+    } catch(e) {
       handleServerNetworkError(e, dispatch)
       return rejectWithValue(null)
     } finally {
@@ -258,7 +257,7 @@ const updateTodoTitleTC = createAppAsyncThunk<
         handleServerAppError(res.data, dispatch, 'Length should be less 100 symbols')
         return rejectWithValue(null)
       }
-    } catch (e) {
+    } catch(e) {
       handleServerNetworkError(e, dispatch)
       return rejectWithValue(null)
     } finally {
@@ -286,53 +285,32 @@ const updateTodoTitleTC = createAppAsyncThunk<
 //     })
 // }
 
-// const reorderTodolistTC = createAppAsyncThunk<
-//   ReorderTodoList,
-//   ReorderTodoList
-// >(
-//   `${slice.name}/reorderTodolist`,
-//   async(args, thunkAPI) => {
-//     const {dispatch, rejectWithValue, getState} = thunkAPI
-//     const todolists = getState().todolists
-//
-//     const idToServer = dragAndDropIdChanger(todolists, args)
-//     dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
-//     console.log(todolists)
-//     console.log(args)
-//     try {
-//       const res = await todolistsAPI.reorderTodolist(args )
-//       if (res.data.resultCode === 0) {
-//         dispatch(fetchTodolistsTC())
-//         return args
-//       } else {
-//         handleServerAppError(res.data, dispatch, 'I can\'t reorder')
-//         return rejectWithValue(null)
-//       }
-//     } catch(e) {
-//       handleServerNetworkError(e, dispatch)
-//       return rejectWithValue(null)
-//     } finally {
-//       dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
-//     }
-//   }
-// )
-
 const reorderTodolistTC = createAppAsyncThunk<
-  { todoList: TodoUIType, dragID: string },
-  { todoList: TodoUIType, dragID: string }
+  ReorderTodoListArgs,
+  ReorderTodoListArgs
 >(
   `${slice.name}/reorderTodolist`,
-  async (arg, thunkAPI) => {
+  async(args, thunkAPI) => {
     const {dispatch, rejectWithValue, getState} = thunkAPI
     const todolists = getState().todolists
-    const idToServer = DragAndDropChangeTodoId(todolists, arg)
-
-    const res = await todolistsAPI.reorderTodolist(arg.dragID, idToServer)
-    dispatch(fetchTodolistsTC())
-    return {todoList: arg.todoList, dragID: arg.dragID}
+    dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
+    const idToServer = dragAndDropChangeId(todolists, args)
+    try {
+      const res = await todolistsAPI.reorderTodolist({startDragId: args.startDragId, endShiftId: idToServer})
+      if (res.data.resultCode === 0) {
+        // dispatch(fetchTodolistsTC())
+        return args
+      } else {
+        handleServerAppError(res.data, dispatch, 'I can\'t reorder')
+        return rejectWithValue(null)
+      }
+    } catch(e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    } finally {
+      dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
+    }
   }
 )
-
-export type DragAndDropChangeIdArg = { todoList: TodoUIType, dragID: string | null }
 
 export const todolistsThunks = {fetchTodolistsTC, deleteTodoTC, addTodoTC, updateTodoTitleTC, reorderTodolistTC}

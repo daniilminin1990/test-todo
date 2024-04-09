@@ -1,5 +1,4 @@
 import axios, {AxiosResponse} from "axios";
-import {TodoUIType} from "../redux/todolistsSlice";
 
 // export const settings = {
 //   withCredentials: true,
@@ -43,8 +42,8 @@ export const todolistsAPI = {
   updateTodolist(args: UpdateTodoArgs) {
     return instance.put<ResponseType>(`todo-lists/${args.todoListId}`, {title: args.title})
   },
-  reorderTodolist( todoListId: string, putAfterItemId: string | null ) {
-    return instance.put<ResponseType>(`todo-lists/${todoListId}/reorder`, {putAfterItemId})
+  reorderTodolist(args: ReorderTodoListArgs) {
+    return instance.put<ResponseType>(`todo-lists/${args.startDragId}/reorder`, {putAfterItemId: args.endShiftId})
   }
 }
 
@@ -52,7 +51,7 @@ export type UpdateTodoArgs = {
   todoListId: string, title: string
 }
 
-// export type ReorderTodoList = {
-//   startDragId: string,
-//   endShiftId: string | null
-// }
+export type ReorderTodoListArgs = {
+  startDragId: string,
+  endShiftId: string | null
+}

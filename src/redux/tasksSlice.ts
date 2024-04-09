@@ -14,6 +14,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {clearTasksAndTodos} from "../common/actions/common.actions";
 import {todolistsActions, todolistsThunks} from "./todolistsSlice";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
+import {dragAndDropIdChanger} from "../utilities/dragAndDropChangeId";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[]
@@ -101,15 +102,15 @@ const slice = createSlice({
         const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
         if (id > -1) state[action.payload.todoListId].splice(id, 1)
       })
-      // .addCase(reorderTasksTC.fulfilled, (state, action) => {
-      //   const {todoListId, startDragId, endShiftId} = action.payload
-      //   const dragIndex = state[todoListId].findIndex(t => t.id === startDragId)
-      //   const targetIndex = state[todoListId].findIndex(t => t.id === endShiftId)
-      //   if (dragIndex > -1 && targetIndex > -1) {
-      //     const draggedItem = state[todoListId].splice(dragIndex, 1)[0]
-      //     state[todoListId].splice(targetIndex, 0, draggedItem)
-      //   }
-      // })
+      .addCase(reorderTasksTC.fulfilled, (state, action) => {
+        const {todoListId, startDragId, endShiftId} = action.payload
+        const dragIndex = state[todoListId].findIndex(t => t.id === startDragId)
+        const targetIndex = state[todoListId].findIndex(t => t.id === endShiftId)
+        if (dragIndex > -1 && targetIndex > -1) {
+          const draggedItem = state[todoListId].splice(dragIndex, 1)[0]
+          state[todoListId].splice(targetIndex, 0, draggedItem)
+        }
+      })
   },
   selectors: {
     tasksState: sliceState => sliceState as TaskStateType,
@@ -318,37 +319,37 @@ const updateTaskTC = createAppAsyncThunk<
 //     })
 // }
 
-// const reorderTasksTC = createAppAsyncThunk<
-//   ReorderTasksArgs,
-//   ReorderTasksArgs
-// >(
-//   `${slice.name}/reorderTasks`,
-//   async (args, thunkAPI) => {
-//     const {dispatch, rejectWithValue, getState} = thunkAPI
-//     dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
-//     dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'loading'}))
-//     const tasks = getState().tasks[args.todoListId]
-//     const idToServer = dragAndDropIdChanger(tasks, args)
-//
-//     try {
-//       const res = await tasksApi.reorderTasks({todoListId: args.todoListId, startDragId: args.startDragId, endShiftId: idToServer})
-//       if(res.data.resultCode === 0){
-//         // dispatch(fetchTasksTC(args.todoListId))
-//         return args
-//       } else {
-//         handleServerAppError(res.data, dispatch, 'Oops! Something gone wrong. Length should be less than 100 symbols')
-//         return rejectWithValue(null)
-//       }
-//     } catch(e) {
-//       handleServerNetworkError(e, dispatch)
-//       return rejectWithValue(null)
-//     }
-//     finally {
-//       dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
-//       dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'success'}))
-//     }
-//   }
-// )
+const reorderTasksTC = createAppAsyncThunk<
+  ReorderTasksArgs,
+  ReorderTasksArgs
+>(
+  `${slice.name}/reorderTasks`,
+  async (args, thunkAPI) => {
+    const {dispatch, rejectWithValue, getState} = thunkAPI
+    const tasks = getState().tasks[args.todoListId]
+    const idToServer = dragAndDropIdChanger(tasks, args)
+    dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
+    dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'loading'}))
+
+    try {
+      const res = await tasksApi.reorderTasks({todoListId: args.todoListId, startDragId: args.startDragId, endShiftId: idToServer})
+      if(res.data.resultCode === 0){
+        // dispatch(fetchTasksTC(args.todoListId))
+        return args
+      } else {
+        handleServerAppError(res.data, dispatch, 'Oops! Something gone wrong. Length should be less than 100 symbols')
+        return rejectWithValue(null)
+      }
+    } catch(e) {
+      handleServerNetworkError(e, dispatch)
+      return rejectWithValue(null)
+    }
+    finally {
+      dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
+      dispatch(tasksActions.updateTaskEntityStatus({todoListId: args.todoListId, taskId: args.startDragId, entityStatus: 'success'}))
+    }
+  }
+)
 
 
-export const tasksThunks = {fetchTasksTC, addTaskTC, updateTaskTC, deleteTaskTC}
+export const tasksThunks = {fetchTasksTC, addTaskTC, updateTaskTC, deleteTaskTC, reorderTasksTC}

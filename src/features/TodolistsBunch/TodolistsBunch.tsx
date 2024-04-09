@@ -44,10 +44,9 @@ const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>('')
     e.preventDefault()
   }
 
-  function dropHandler(e: React.DragEvent<HTMLDivElement>, todoList: TodoUIType) {
+  function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
     e.preventDefault()
-    dispatch(todolistsThunks.reorderTodolistTC({todoList, dragID: todoListIdToDrag}))
-
+    dispatch(todolistsThunks.reorderTodolistTC({endShiftId: endShiftId, startDragId: todoListIdToDrag}))
   }
 
   // End
@@ -83,7 +82,7 @@ const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>('')
                     onDragLeave={(e) => dragEndHandler(e)}
                     onDragEnd={(e) => dragEndHandler(e)}
                     onDragOver={(e) => dragOverHandler(e)}
-                    onDrop={(e) => dropHandler(e, tl)}
+                    onDrop={(e) => dropHandler(e, tl.id)}
               >
                 <Paper elevation={6} style={{padding: '30px'}}>
                   <Todolist
