@@ -41,9 +41,17 @@ export const todolistsAPI = {
   },
   updateTodolist(args: UpdateTodoArgs) {
     return instance.put<ResponseType>(`todo-lists/${args.todoListId}`, {title: args.title})
+  },
+  reorderTodolist(args: ReorderTodoList) {
+    return instance.put<ResponseType>(`todo-lists/${args.startDragId}/reorder`, args.endShiftId)
   }
 }
 
 export type UpdateTodoArgs = {
   todoListId: string, title: string
+}
+
+export type ReorderTodoList = {
+  startDragId: string,
+  endShiftId: string | null
 }

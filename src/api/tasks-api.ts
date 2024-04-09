@@ -70,8 +70,12 @@ export const tasksApi = {
   // updateTask(todoListId: string, taskId: string, title: string){
   updateTask(todoListId: string, taskId: string, model: UpdateTaskType){
     return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+  },
+  reorderTasks(args: ReorderTasksArgs){
+    return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`, args.endShiftId)
   }
 }
 
 export type CreateTaskArgs = {todoListId: string, title: string}
 export type DeleteTaskArgs = {todoListId: string, taskId: string}
+export type ReorderTasksArgs = { todoListId: string, startDragId: string, endShiftId: string | null }

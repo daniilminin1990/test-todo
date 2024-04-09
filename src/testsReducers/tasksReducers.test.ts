@@ -1,9 +1,8 @@
 import {
-  addTaskTC, deleteTaskTC,
   tasksActions,
   tasksSlice,
   TaskStateType, tasksThunks,
-  TasksWithEntityStatusType, updateTaskTC,
+  TasksWithEntityStatusType
 } from "../redux/tasksSlice";
 
 import {TaskStatuses} from "../api/tasks-api";
@@ -50,9 +49,9 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-  type DeleteTaskActionType = Omit<ReturnType<typeof deleteTaskTC.fulfilled>, 'meta'>
+  type DeleteTaskActionType = Omit<ReturnType<typeof tasksThunks.deleteTaskTC.fulfilled>, 'meta'>
   const action: DeleteTaskActionType = {
-    type: deleteTaskTC.fulfilled.type,
+    type: tasksThunks.deleteTaskTC.fulfilled.type,
     payload: {
       todoListId: 'todolistId2',
       taskId: '2'
@@ -96,7 +95,7 @@ test('correct task should be added to correct array', () => {
 
 test('status of specified task should be changed', () => {
 
-  type UpdateTaskActionType = Omit<ReturnType<typeof updateTaskTC.fulfilled>, 'meta'>
+  type UpdateTaskActionType = Omit<ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>, 'meta'>
 
   const action: UpdateTaskActionType = {
     type: tasksThunks.updateTaskTC.fulfilled.type,
@@ -117,7 +116,7 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
 
-  type UpdateTaskActionType = Omit<ReturnType<typeof updateTaskTC.fulfilled>, 'meta'>
+  type UpdateTaskActionType = Omit<ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>, 'meta'>
   const action: UpdateTaskActionType = {
     type: tasksThunks.updateTaskTC.fulfilled.type,
     payload: {

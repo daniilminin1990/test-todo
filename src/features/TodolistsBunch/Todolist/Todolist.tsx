@@ -4,9 +4,9 @@ import EdiatbleSpan from "../../../components/EdiatbleSpan";
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import {useSelector} from "react-redux";
 import {
-  addTaskTC,
-  updateTaskTC,
-  deleteTaskTC,
+  // addTaskTC,
+  // updateTaskTC,
+  // deleteTaskTC,
   TasksWithEntityStatusType, tasksThunks, tasksSelectors, tasksSlice, TaskStateType
 } from "../../../redux/tasksSlice";
 import {Task} from "./Task/Task";
@@ -42,13 +42,33 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
   //   dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => dispatch(todolistsActions.showTasks({todoListId: props.todoListId})))
   // }, []);
 
+  // Region
+  const [taskIdToDrag, setTaskIdToDrag] = useState<string>('')
+  function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
+    setTaskIdToDrag(startDragId)
+    console.log('DRAGGING-ID', startDragId)
+  }
+
+  function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {
+  }
+
+  function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault()
+  }
+
+  function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
+    e.preventDefault()
+    dispatch(tasksThunks.reorderTasksTC({todoListId: props.todoListId, startDragId: taskIdToDrag, endShiftId: endShiftId}))
+  }
+  // End
+
   const removeTask = useCallback((taskId: string) => {
     dispatch(tasksThunks.deleteTaskTC({todoListId: props.todoListId, taskId}))
     // dispatch(removeTask(props.todoListId, taskId))
   }, [dispatch, props.todoListId])
 
   const addTask = useCallback((newTaskTitle: string) => {
-    dispatch(addTaskTC({todoListId: props.todoListId, title: newTaskTitle}))
+    dispatch(tasksThunks.addTaskTC({todoListId: props.todoListId, title: newTaskTitle}))
   }, [dispatch, props.todoListId])
 
   const changeTaskStatus = useCallback((taskId: string, checked: TaskStatuses) => {
@@ -96,25 +116,36 @@ export const Todolist = React.memo(({ updTodoTitle, changeFilter, ...props }: To
             allTodoTasks.map(t => {
 
               return (
-                props.entityStatus === 'loading'
-                  ? <Skeleton key={t.id}><Task key={t.id}
-                                               taskId={t.id}
-                                               tIsDone={t.status}
-                                               oldTitle={t.title}
-                                               onChange={changeTaskStatus}
-                                               onClick={removeTask}
-                                               updTaskTitle={updTaskTitle}
-                  />
-                  </Skeleton>
-                  : <Task key={t.id}
-                          taskId={t.id}
-                          tIsDone={t.status}
-                          oldTitle={t.title}
-                          entityStatus={t.entityStatus}
-                          onChange={changeTaskStatus}
-                          onClick={removeTask}
-                          updTaskTitle={updTaskTitle}
-                  />
+                <div key={t.id}
+                     draggable={true}
+                     onDragStart={(e) => dragStartHandler(e, t.id)}
+                     onDragLeave={(e) => dragEndHandler(e)}
+                     onDragEnd={(e) => dragEndHandler(e)}
+                     onDragOver={(e) => dragOverHandler(e)}
+                     onDrop={(e) => dropHandler(e, t.id)}
+                >
+                  {props.entityStatus === 'loading'
+                    ? <Skeleton key={t.id}
+                    ><Task key={t.id}
+                           taskId={t.id}
+                           tIsDone={t.status}
+                           oldTitle={t.title}
+                           onChange={changeTaskStatus}
+                           onClick={removeTask}
+                           updTaskTitle={updTaskTitle}
+                    />
+                    </Skeleton>
+                    : <Task key={t.id}
+                            taskId={t.id}
+                            tIsDone={t.status}
+                            oldTitle={t.title}
+                            entityStatus={t.entityStatus}
+                            onChange={changeTaskStatus}
+                            onClick={removeTask}
+                            updTaskTitle={updTaskTitle}
+
+                    />}
+                </div>
               )
             })
           }
