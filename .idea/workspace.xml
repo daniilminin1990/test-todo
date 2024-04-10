@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ThemeTogglerSlider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ThemeTogglerSlider.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,7 +273,11 @@
       <workItem from="1712600951035" duration="644000" />
       <workItem from="1712606015986" duration="2801000" />
       <workItem from="1712611250525" duration="22968000" />
-      <workItem from="1712680912340" duration="4208000" />
+      <workItem from="1712680912340" duration="5359000" />
+      <workItem from="1712735330230" duration="480000" />
+      <workItem from="1712737145338" duration="1300000" />
+      <workItem from="1712745301905" duration="1132000" />
+      <workItem from="1712753126891" duration="3024000" />
     </task>
     <servers />
   </component>
