@@ -331,6 +331,18 @@ const reorderTodolistTC = createAppAsyncThunk<
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const todolists = getState().todolists;
   dispatch(appActions.setAppTodoStatus({ statusTodo: "loading" }));
+  dispatch(
+    todolistsActions.updateEntityStatusTodo({
+      todoId: args.startDragId,
+      entityStatus: "loading",
+    })
+  );
+  dispatch(
+    todolistsActions.updateEntityStatusTodo({
+      todoId: args.endShiftId ? args.endShiftId : "",
+      entityStatus: "loading",
+    })
+  );
   const idToServer = dragAndDropIdChanger(todolists, args);
   try {
     const res = await todolistsAPI.reorderTodolist({
@@ -348,6 +360,18 @@ const reorderTodolistTC = createAppAsyncThunk<
     handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   } finally {
+    dispatch(
+      todolistsActions.updateEntityStatusTodo({
+        todoId: args.startDragId,
+        entityStatus: "success",
+      })
+    );
+    dispatch(
+      todolistsActions.updateEntityStatusTodo({
+        todoId: args.endShiftId ? args.endShiftId : "",
+        entityStatus: "success",
+      })
+    );
     dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   }
 });

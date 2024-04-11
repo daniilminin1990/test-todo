@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/ThemeTogglerHOC/ThemeTogglerHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/ThemeTogglerHOC/ThemeTogglerHOC.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +87,7 @@
     &quot;npm.storybook.executor&quot;: &quot;Run&quot;,
     &quot;npm.test.executor&quot;: &quot;Run&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\long-term-projects-it-incubator\\test-todo\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.typescriptcompiler&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\long-term-projects-it-incubator\\test-todo\\node_modules\\typescript\\lib&quot;,
     &quot;ts.rename.search.for.dynamic.occurrences&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -285,7 +288,9 @@
       <workItem from="1712788443081" duration="586000" />
       <workItem from="1712791138987" duration="828000" />
       <workItem from="1712813834545" duration="10926000" />
-      <workItem from="1712841550547" duration="10056000" />
+      <workItem from="1712841550547" duration="10324000" />
+      <workItem from="1712863502622" duration="10414000" />
+      <workItem from="1712875143551" duration="2808000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -327,7 +332,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712849131517</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding">
+      <option name="closed" value="true" />
+      <created>1712851882243</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1712851882243</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,6 +363,7 @@
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
+    <MESSAGE value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
+    <option name="LAST_COMMIT_MESSAGE" value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
   </component>
 </project>

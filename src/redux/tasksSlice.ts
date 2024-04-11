@@ -368,15 +368,16 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
     const idToServer = dragAndDropIdChanger(tasks, args);
     dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
     dispatch(
-      todolistsActions.updateEntityStatusTodo({
-        todoId: args.todoListId,
+      tasksActions.updateTaskEntityStatus({
+        todoListId: args.todoListId,
+        taskId: args.startDragId,
         entityStatus: "loading",
       })
     );
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
-        taskId: args.startDragId,
+        taskId: args.endShiftId ? args.endShiftId : "",
         entityStatus: "loading",
       })
     );
@@ -404,15 +405,16 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
     } finally {
       dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
       dispatch(
-        todolistsActions.updateEntityStatusTodo({
-          todoId: args.todoListId,
+        tasksActions.updateTaskEntityStatus({
+          todoListId: args.todoListId,
+          taskId: args.startDragId,
           entityStatus: "success",
         })
       );
       dispatch(
         tasksActions.updateTaskEntityStatus({
           todoListId: args.todoListId,
-          taskId: args.startDragId,
+          taskId: args.endShiftId ? args.endShiftId : "",
           entityStatus: "success",
         })
       );

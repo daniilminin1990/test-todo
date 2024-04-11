@@ -27,6 +27,8 @@ export const todolistsAPI = {
   updateTodolist(args: UpdateTodoArgs) {
     return instance.put<ResponseType>(`todo-lists/${args.todoListId}`, {
       title: args.title,
+      // addedDate: "2024-04-11T20:06:17.457",
+      // order: -999,
     });
   },
   reorderTodolist(args: ReorderTodoListArgs) {
