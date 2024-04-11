@@ -1,62 +1,64 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { AddItemForm, AddItemFormProps} from "../components/AddItemForm";
-import TextField from '@mui/material/TextField';
-import { action } from '@storybook/addon-actions'
+import {
+  AddItemForm,
+  AddItemFormProps,
+} from "../common/components/AddItemForm/AddItemForm";
+import TextField from "@mui/material/TextField";
+import { action } from "@storybook/addon-actions";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from "@material-ui/core/Button";
 import { getStyles } from "../styles";
 
 const meta: Meta<typeof AddItemForm> = {
-  title: 'TODOLIST/AddItemForm',
+  title: "TODOLIST/AddItemForm",
   component: AddItemForm,
   parameters: {
-    layout: 'centered'
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     callback: {
-      description: 'add newTitle for tl or task'
-    }
-  }
-}
-export default meta
+      description: "add newTitle for tl or task",
+    },
+  },
+};
+export default meta;
 
 // Стандартный вид
-export type Story = StoryObj<typeof AddItemForm>
+export type Story = StoryObj<typeof AddItemForm>;
 
 export const AddItemFormExample: Story = {
   args: {
-    callback: action('Add this todo/task title')
+    callback: action("Add this todo/task title"),
   },
-}
+};
 
 // Вид с ошибкой
 export const AddItemFormError = (props: AddItemFormProps) => {
-
-  const [newTitle, setNewTitle] = useState<string>('')
-  const [error, setError] = useState<string | null>('Порошок не входи')
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [error, setError] = useState<string | null>("Порошок не входи");
 
   // setError('Порошок не входи')
 
   const onClickAddItemHandler = () => {
-    if (newTitle.trim() !== '') {
+    if (newTitle.trim() !== "") {
       // setNewTitle(newTitle.trim())
-      setNewTitle('')
-      setError('')
+      setNewTitle("");
+      setError("");
     } else {
-      setNewTitle('')
-      setError('sdfsd')
+      setNewTitle("");
+      setError("sdfsd");
     }
-  }
+  };
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const titleTyping = e.currentTarget.value
-    setNewTitle(titleTyping)
-    console.log(newTitle)
-    titleTyping.length !== 0 && setError('')
-  }
+    const titleTyping = e.currentTarget.value;
+    setNewTitle(titleTyping);
+    console.log(newTitle);
+    titleTyping.length !== 0 && setError("");
+  };
   const onEnterAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.key === 'Enter' && onClickAddItemHandler()
-  }
+    e.key === "Enter" && onClickAddItemHandler();
+  };
 
   return (
     <div>
@@ -64,14 +66,20 @@ export const AddItemFormError = (props: AddItemFormProps) => {
         id="outlined-basic"
         error={!!error}
         // label="Type title"
-        label={error ? error : 'Type smth'}
+        label={error ? error : "Type smth"}
         variant="outlined"
         value={newTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onEnterAddItem}
-        className={error ? 'error' : ''}
+        className={error ? "error" : ""}
       />
-      <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)}>+</Button>
+      <Button
+        onClick={onClickAddItemHandler}
+        variant="contained"
+        style={getStyles(props.disabled)}
+      >
+        +
+      </Button>
       {/*{error && <div className={'error-message'}>Title is required</div>}*/}
     </div>
   );

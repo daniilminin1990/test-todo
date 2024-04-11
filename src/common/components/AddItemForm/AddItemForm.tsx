@@ -1,13 +1,13 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import {getStyles} from "../styles";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { getStyles } from "../../../styles";
 // import { styled } from '@mui/system';
 
 export type AddItemFormProps = {
-  callback: (newTitle: string) => void
-  disabled?: boolean
-}
+  callback: (newTitle: string) => void;
+  disabled?: boolean;
+};
 
 // Кастомная стилизация TextField от MUI
 // export const StyledTextField = styled(TextField, {
@@ -22,26 +22,26 @@ export type AddItemFormProps = {
 // })
 
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
-  const [newTitle, setNewTitle] = useState<string>('')
-  const [error, setError] = useState<string | null>(null)
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const onClickAddItemHandler = () => {
-    if (newTitle.trim() !== '') {
-      props.callback(newTitle.trim())
-      setNewTitle('')
-      setError('')
+    if (newTitle.trim() !== "") {
+      props.callback(newTitle.trim());
+      setNewTitle("");
+      setError("");
     } else {
-      setNewTitle('')
-      setError('Title is required')
+      setNewTitle("");
+      setError("Title is required");
     }
-  }
+  };
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const titleTyping = e.currentTarget.value
-    setNewTitle(titleTyping)
-    titleTyping.length !== 0 && setError('')
-  }
+    const titleTyping = e.currentTarget.value;
+    setNewTitle(titleTyping);
+    titleTyping.length !== 0 && setError("");
+  };
   const onEnterAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.key === 'Enter' && onClickAddItemHandler()
-  }
+    e.key === "Enter" && onClickAddItemHandler();
+  };
 
   return (
     <div>
@@ -49,15 +49,22 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         id="outlined-basic"
         error={!!error}
         // label="Type title"
-        label={error ? error : 'Type smth'}
+        label={error ? error : "Type smth"}
         variant="outlined"
         value={newTitle}
         onChange={onNewTitleChangeHandler}
         onKeyDown={onEnterAddItem}
-        className={error ? 'error' : ''}
-        disabled = {props.disabled}
+        className={error ? "error" : ""}
+        disabled={props.disabled}
       />
-      <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)} disabled = {props.disabled}>+</Button>
+      <Button
+        onClick={onClickAddItemHandler}
+        variant="contained"
+        style={getStyles(props.disabled)}
+        disabled={props.disabled}
+      >
+        +
+      </Button>
       {/*{error && <div className={'error-message'}>Title is required</div>}*/}
     </div>
   );

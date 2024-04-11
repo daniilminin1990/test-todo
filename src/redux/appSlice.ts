@@ -1,89 +1,106 @@
-import {Dispatch} from "redux";
-import {loginAPI} from "../api/login-api";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {loginActions} from "../features/Login/loginSlice";
-import {todolistsThunks} from "./todolistsSlice";
-import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "../utilities";
+import { Dispatch } from "redux";
+import { loginAPI } from "../api/login-api";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loginActions } from "./loginSlice";
+import { todolistsThunks } from "./todolistsSlice";
+import {
+  createAppAsyncThunk,
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../common/utilities";
 
-export type ServerResponseStatusType = 'idle' | 'success' | 'loading' | 'failed'
-
+export type ServerResponseStatusType =
+  | "idle"
+  | "success"
+  | "loading"
+  | "failed";
 
 const slice = createSlice({
-  name: 'app',
+  name: "app",
   initialState: {
-    statusTodo: 'idle' as ServerResponseStatusType,
-    statusTask: 'idle' as ServerResponseStatusType,
-    addStatus: 'idle' as ServerResponseStatusType,
+    statusTodo: "idle" as ServerResponseStatusType,
+    statusTask: "idle" as ServerResponseStatusType,
+    addStatus: "idle" as ServerResponseStatusType,
     error: null as null | string,
-    isInitialized: false
+    isInitialized: false,
   },
   reducers: {
-    setAppTodoStatus(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
-      state.statusTodo = action.payload.statusTodo
+    setAppTodoStatus(
+      state,
+      action: PayloadAction<{ statusTodo: ServerResponseStatusType }>
+    ) {
+      state.statusTodo = action.payload.statusTodo;
     },
-    setAppStatusTask(state, action: PayloadAction<{ statusTask: ServerResponseStatusType }>) {
-      state.statusTask = action.payload.statusTask
+    setAppStatusTask(
+      state,
+      action: PayloadAction<{ statusTask: ServerResponseStatusType }>
+    ) {
+      state.statusTask = action.payload.statusTask;
     },
-    setAppStatus(state, action: PayloadAction<{ appStatus: ServerResponseStatusType }>) {
-      state.addStatus = action.payload.appStatus
+    setAppStatus(
+      state,
+      action: PayloadAction<{ appStatus: ServerResponseStatusType }>
+    ) {
+      state.addStatus = action.payload.appStatus;
     },
     setAppError(state, action: PayloadAction<{ error: null | string }>) {
-      state.error = action.payload.error
+      state.error = action.payload.error;
     },
     // changeInitialized(state, action: PayloadAction<{value: boolean}>){
     //   state.isInitialized = action.payload.value
     // }
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
       .addCase(initialiseMeTC.fulfilled, (state, action) => {
-        state.isInitialized = action.payload.value
+        state.isInitialized = action.payload.value;
       })
       // НУЖНО ЧТОБЫ ПРИЛОЖЕНИЕ НЕ МОРГАЛО, ЕСЛИ ЗАЛОГИНЕН И ПЕРЕЗАГРУЖАЕШЬ СТРАНИЦУ
       .addCase(initialiseMeTC.rejected, (state, action) => {
-        state.isInitialized = true
-      })
+        state.isInitialized = true;
+      });
   },
   selectors: {
-    selectAddStatus: sliceState => sliceState.addStatus,
+    selectAddStatus: (sliceState) => sliceState.addStatus,
     statusTodo: (sliceState) => sliceState.statusTodo,
     statusTask: (sliceState) => sliceState.statusTask,
     isInitialized: (sliceState) => sliceState.isInitialized,
-    error: (sliceState) => sliceState.error
-  }
-})
+    error: (sliceState) => sliceState.error,
+  },
+});
 
-export const appSlice = slice.reducer
+export const appSlice = slice.reducer;
 
-export const appActions = slice.actions
-export const appSelectors = slice.selectors
-export type AppInitialState = ReturnType<typeof slice.getInitialState>
+export const appActions = slice.actions;
+export const appSelectors = slice.selectors;
+export type AppInitialState = ReturnType<typeof slice.getInitialState>;
 
-const initialiseMeTC = createAppAsyncThunk<
-  { value: boolean },
-  void
->(
+const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, void>(
   `${slice.name}/initialiseMe`,
   async (_, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
+    const { dispatch, rejectWithValue } = thunkAPI;
     try {
-      const res = await loginAPI.initialiseMe()
+      const res = await loginAPI.initialiseMe();
       if (res.data.resultCode === 0) {
-        dispatch(loginActions.setIsLoggedInAC({value: true}))
-        dispatch(todolistsThunks.fetchTodolistsTC())
-        return {value: true}
+        dispatch(loginActions.setIsLoggedInAC({ value: true }));
+        dispatch(todolistsThunks.fetchTodolistsTC());
+        return { value: true };
       } else {
-        handleServerAppError(res.data, dispatch, 'It seems that something wrong')
-        return rejectWithValue(null)
+        handleServerAppError(
+          res.data,
+          dispatch,
+          "It seems that something wrong"
+        );
+        return rejectWithValue(null);
       }
     } catch (e) {
-      handleServerNetworkError(e, dispatch)
-      return rejectWithValue(null)
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
     } finally {
       // dispatch(appActions.setAppStatus({appStatus: 'success'}))
     }
   }
-)
+);
 // export const _initialiseMeTC = () => (dispatch: Dispatch) => {
 //   loginAPI.initialiseMe()
 //     .then((res) => {
@@ -99,4 +116,4 @@ const initialiseMeTC = createAppAsyncThunk<
 //     })
 // }
 
-export const appThunks = {initialiseMeTC}
+export const appThunks = { initialiseMeTC };

@@ -1,41 +1,55 @@
-import React, {ChangeEvent} from 'react';
-import EdiatbleSpan from "../../../../components/EdiatbleSpan";
+import React, { ChangeEvent } from "react";
+import EdiatbleSpan from "../../../../common/components/EditableSpan/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {TaskStatuses} from "../../../../api/tasks-api";
-import {ServerResponseStatusType} from "../../../../redux/appSlice";
+import { ServerResponseStatusType } from "../../../../redux/appSlice";
+import { TaskStatuses } from "../../../../common/enums/enums";
 
 export type TaskProps = {
-  taskId: string,
-  tIsDone: TaskStatuses,
-  oldTitle: string,
-  entityStatus?: ServerResponseStatusType
-  onChange: (taskId: string, checked: TaskStatuses) => void
-  onClick: (taskId: string) => void
-  updTaskTitle: (taskId: string, updTaskTitle: string) => void
-}
+  taskId: string;
+  tIsDone: TaskStatuses;
+  oldTitle: string;
+  entityStatus?: ServerResponseStatusType;
+  onChange: (taskId: string, checked: TaskStatuses) => void;
+  onClick: (taskId: string) => void;
+  updTaskTitle: (taskId: string, updTaskTitle: string) => void;
+};
 
 export const Task = React.memo((props: TaskProps) => {
-
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    let checkToGo = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
-    props.onChange(props.taskId, checkToGo)
-  }
+    let checkToGo = e.currentTarget.checked
+      ? TaskStatuses.Completed
+      : TaskStatuses.New;
+    props.onChange(props.taskId, checkToGo);
+  };
   const onClickHandler = () => {
-    props.onClick(props.taskId)
-  }
+    props.onClick(props.taskId);
+  };
 
   const updTaskTitleHandler = (updTaskTitle: string) => {
-    props.updTaskTitle(props.taskId, updTaskTitle)
-  }
+    props.updTaskTitle(props.taskId, updTaskTitle);
+  };
 
-  const taskCompleted = props.tIsDone === TaskStatuses.Completed
-  console.log(props.entityStatus)
+  const taskCompleted = props.tIsDone === TaskStatuses.Completed;
+  console.log(props.entityStatus);
   return (
-    <li className={taskCompleted ? 'is-done' : ''}>
-      <input type="checkbox" checked={taskCompleted} onChange={onChangeHandler} disabled={props.entityStatus === 'loading'}/>
-      <EdiatbleSpan oldTitle={props.oldTitle} callback={updTaskTitleHandler} disabled={props.entityStatus === 'loading'}/>
-      <IconButton aria-label="delete" onClick={onClickHandler} disabled={props.entityStatus === 'loading'}>
+    <li className={taskCompleted ? "is-done" : ""}>
+      <input
+        type="checkbox"
+        checked={taskCompleted}
+        onChange={onChangeHandler}
+        disabled={props.entityStatus === "loading"}
+      />
+      <EdiatbleSpan
+        oldTitle={props.oldTitle}
+        callback={updTaskTitleHandler}
+        disabled={props.entityStatus === "loading"}
+      />
+      <IconButton
+        aria-label="delete"
+        onClick={onClickHandler}
+        disabled={props.entityStatus === "loading"}
+      >
         <DeleteIcon />
       </IconButton>
     </li>

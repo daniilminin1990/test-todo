@@ -1,67 +1,71 @@
-import React from 'react'
-import Grid from '@mui/material/Grid'
-import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
-import FormLabel from '@mui/material/FormLabel'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import {useFormik} from "formik";
-import {loginSelectors, loginThunks} from "./loginSlice";
-import {useAppDispatch, useAppSelector} from "../../store/store";
-import {Navigate, useNavigate} from "react-router-dom";
-import {LoginParamsType} from "../../api/login-api";
-import {useSelector} from "react-redux";
+import React from "react";
+import Grid from "@mui/material/Grid";
+import Checkbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import FormLabel from "@mui/material/FormLabel";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useFormik } from "formik";
+import { loginSelectors, loginThunks } from "../../redux/loginSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { Navigate } from "react-router-dom";
+import { LoginParamsType } from "../../api/login-api";
 
 export const Login = () => {
-
-  const isLoggedIn = useAppSelector(state => loginSelectors.isLoggedIn(state))
+  const isLoggedIn = useAppSelector((state) =>
+    loginSelectors.isLoggedIn(state)
+  );
   // const isLoggedIn = useSelector(loginSelectors.isLoggedIn)
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: false,
     },
-    validate : (values) => {
-      const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {};
+    validate: (values) => {
+      const errors: Partial<Omit<LoginParamsType, "captcha">> = {};
       if (!values.email) {
-        errors.email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
+        errors.email = "Required";
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+      ) {
+        errors.email = "Invalid email address";
       }
 
       if (!values.password) {
-        errors.password = 'Required';
+        errors.password = "Required";
       } else if (values.password.length < 3) {
-        errors.password = 'Password shouldn\'t be less than 3 symbols or empty';
+        errors.password = "Password shouldn't be less than 3 symbols or empty";
       }
 
-      return errors
+      return errors;
     },
-    onSubmit: values => {
-      dispatch(loginThunks.loginTC(formik.values))
-      formik.resetForm()
+    onSubmit: (values) => {
+      dispatch(loginThunks.loginTC(formik.values));
+      formik.resetForm();
     },
   });
 
-  if(isLoggedIn){
-
-    return <Navigate to={'/'}/>
+  if (isLoggedIn) {
+    return <Navigate to={"/"} />;
     // navigate('/')
   }
 
   return (
-    <Grid container justifyContent={'center'}>
-      <Grid item justifyContent={'center'}>
+    <Grid container justifyContent={"center"}>
+      <Grid item justifyContent={"center"}>
         <FormControl>
           <FormLabel>
             <p>
               To log in get registered
-              <a href={'https://social-network.samuraijs.com/'} target={'_blank'}>
+              <a
+                href={"https://social-network.samuraijs.com/"}
+                target={"_blank"}
+              >
                 here
               </a>
             </p>
@@ -71,20 +75,28 @@ export const Login = () => {
           </FormLabel>
           <form onSubmit={formik.handleSubmit}>
             <FormGroup>
-              <TextField label="Email"
-                         margin="normal"
-                         {...formik.getFieldProps('email')}
+              <TextField
+                label="Email"
+                margin="normal"
+                {...formik.getFieldProps("email")}
               />
-              {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
-              <TextField type="password"
-                         label="Password"
-                         margin="normal"
-                         {...formik.getFieldProps('password')}
+              {formik.touched.email && formik.errors.email && (
+                <div style={{ color: "red" }}>{formik.errors.email}</div>
+              )}
+              <TextField
+                type="password"
+                label="Password"
+                margin="normal"
+                {...formik.getFieldProps("password")}
               />
-              {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
-              <FormControlLabel label={'Remember me'}
-                                control={<Checkbox {...formik.getFieldProps('rememberMe')}/>}/>
-              <Button type={'submit'} variant={'contained'} color={'primary'}>
+              {formik.touched.password && formik.errors.password && (
+                <div style={{ color: "red" }}>{formik.errors.password}</div>
+              )}
+              <FormControlLabel
+                label={"Remember me"}
+                control={<Checkbox {...formik.getFieldProps("rememberMe")} />}
+              />
+              <Button type={"submit"} variant={"contained"} color={"primary"}>
                 Login
               </Button>
             </FormGroup>
@@ -92,5 +104,5 @@ export const Login = () => {
         </FormControl>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
