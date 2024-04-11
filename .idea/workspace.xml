@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="REFACTOR HUDE, sorted folders and files, added beautiful theme">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/ThemeTogglerHOC/ThemeTogglerHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/ThemeTogglerHOC/ThemeTogglerHOC.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -288,7 +285,7 @@
       <workItem from="1712788443081" duration="586000" />
       <workItem from="1712791138987" duration="828000" />
       <workItem from="1712813834545" duration="10926000" />
-      <workItem from="1712841550547" duration="7192000" />
+      <workItem from="1712841550547" duration="10056000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -322,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712823364464</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo">
+      <option name="closed" value="true" />
+      <created>1712849131517</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1712849131517</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,6 +349,7 @@
     <MESSAGE value="." />
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
-    <option name="LAST_COMMIT_MESSAGE" value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
+    <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
   </component>
 </project>
