@@ -94,6 +94,7 @@ export default function AppBarWithToggleLeft(props: {
   );
   const dispatch = useAppDispatch();
   const logoutHandler = () => {
+    localStorage.removeItem("theme");
     dispatch(loginThunks.logoutTC());
   };
 

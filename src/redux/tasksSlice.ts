@@ -9,7 +9,7 @@ import {
 import { appActions, ServerResponseStatusType } from "./appSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodos } from "../common/actions/common.actions";
-import { todolistsThunks } from "./todolistsSlice";
+import { todolistsActions, todolistsThunks } from "./todolistsSlice";
 import {
   createAppAsyncThunk,
   dragAndDropIdChanger,
@@ -123,7 +123,8 @@ const slice = createSlice({
           const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
           state[todoListId].splice(targetIndex, 0, draggedItem);
         }
-      });
+      })
+      .addCase(reorderTasksTC.rejected, (state, action) => {});
   },
   selectors: {
     tasksState: (sliceState) => sliceState as TaskStateType,
@@ -367,6 +368,12 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
     const idToServer = dragAndDropIdChanger(tasks, args);
     dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
     dispatch(
+      todolistsActions.updateEntityStatusTodo({
+        todoId: args.todoListId,
+        entityStatus: "loading",
+      })
+    );
+    dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.startDragId,
@@ -396,6 +403,12 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
       return rejectWithValue(null);
     } finally {
       dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      dispatch(
+        todolistsActions.updateEntityStatusTodo({
+          todoId: args.todoListId,
+          entityStatus: "success",
+        })
+      );
       dispatch(
         tasksActions.updateTaskEntityStatus({
           todoListId: args.todoListId,

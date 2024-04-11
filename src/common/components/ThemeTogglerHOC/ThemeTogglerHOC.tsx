@@ -18,6 +18,7 @@ export const ThemeTogglerHOC = (props: { children: React.ReactNode }) => {
           mode,
           primary: {
             main: "#3f51b5",
+            //   #266798 #266798
           },
           ...(mode === "light" && {
             background: {

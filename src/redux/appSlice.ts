@@ -8,6 +8,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../common/utilities";
+import { tasksThunks } from "./tasksSlice";
 
 export type ServerResponseStatusType =
   | "idle"
@@ -58,6 +59,10 @@ const slice = createSlice({
       // НУЖНО ЧТОБЫ ПРИЛОЖЕНИЕ НЕ МОРГАЛО, ЕСЛИ ЗАЛОГИНЕН И ПЕРЕЗАГРУЖАЕШЬ СТРАНИЦУ
       .addCase(initialiseMeTC.rejected, (state, action) => {
         state.isInitialized = true;
+      })
+      .addCase(tasksThunks.reorderTasksTC.rejected, (state, action) => {
+        console.log("ERROR");
+        state.statusTask = "success";
       });
   },
   selectors: {

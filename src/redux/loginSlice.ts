@@ -29,6 +29,9 @@ const slice = createSlice({
     builder.addCase(loginTC.fulfilled, (state, action) => {
       state.isLoggedIn = action.payload.value;
     });
+    // .addCase(logoutTC.fulfilled, (state, action) => {
+    //   state.isLoggedIn = action.payload.value;
+    // });
   },
   selectors: {
     isLoggedIn: (sliceState) => sliceState.isLoggedIn,
@@ -84,7 +87,7 @@ const loginTC = createAppAsyncThunk<{ value: boolean }, LoginParamsType>(
 //     })
 // }
 
-const logoutTC = createAppAsyncThunk<{ value: boolean }, void>(
+const logoutTC = createAppAsyncThunk<{ value: boolean }>(
   `${slice.name}/logout`,
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
