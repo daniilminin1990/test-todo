@@ -1,29 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  RootReducerType,
-  useAppDispatch,
-  useAppSelector,
-} from "../../store/store";
-import { useSelector } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
   FilterValuesType,
   todolistsActions,
   todolistsSelectors,
   todolistsThunks,
-  TodoUIType,
 } from "../../redux/todolistsSlice";
-import { CircularProgress, Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
-import { appSelectors, ServerResponseStatusType } from "../../redux/appSlice";
+import { appSelectors } from "../../redux/appSlice";
 import { loginSelectors } from "../../redux/loginSlice";
 import { AddItemForm } from "../../common/components";
+import { useActions } from "../../common/hooks/useActions";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
-  const dispatch = useAppDispatch();
-  // const todolists = useSelector<RootReducerType, TodoUIType[]>(state => state.todolist)
-  // const todolists = useAppSelector(state => state.todolists)
+  // const dispatch = useAppDispatch();
+  const {
+    reorderTodolistTC,
+    changeTodoFilter: changeTodoFilterAC,
+    addTodoTC,
+    updateTodoTitleTC,
+  } = useActions();
+
   const todolists = useAppSelector((state) =>
     todolistsSelectors.todolists(state)
   );
@@ -60,45 +60,55 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
     e.preventDefault();
-    dispatch(
-      todolistsThunks.reorderTodolistTC({
-        endShiftId: endShiftId,
-        startDragId: todoListIdToDrag,
-      })
-    );
+    // dispatch(
+    //   todolistsThunks.reorderTodolistTC({
+    //     endShiftId: endShiftId,
+    //     startDragId: todoListIdToDrag,
+    //   })
+    // );
+    reorderTodolistTC({
+      endShiftId: endShiftId,
+      startDragId: todoListIdToDrag,
+    });
   }
 
   // End
 
   const changeFilter = useCallback(
     (todoListId: string, newFilterValue: FilterValuesType) => {
-      dispatch(
-        todolistsActions.changeTodoFilter({
-          todoListId: todoListId,
-          newFilterValue: newFilterValue,
-        })
-      );
+      // dispatch(
+      //   todolistsActions.changeTodoFilter({
+      //     todoListId: todoListId,
+      //     newFilterValue: newFilterValue,
+      //   })
+      // );
+      changeTodoFilterAC({
+        todoListId: todoListId,
+        newFilterValue: newFilterValue,
+      });
     },
-    [dispatch]
+    []
   );
 
-  const addTodo = useCallback(
-    (newTodoTitle: string) => {
-      dispatch(todolistsThunks.addTodoTC(newTodoTitle));
-    },
-    [dispatch]
-  );
+  const addTodo = useCallback((newTodoTitle: string) => {
+    // dispatch(todolistsThunks.addTodoTC(newTodoTitle));
+    addTodoTC(newTodoTitle);
+  }, []);
 
   const updTodoTitle = useCallback(
     (todoListId: string, updTodoTitle: string) => {
-      dispatch(
-        todolistsThunks.updateTodoTitleTC({
-          todoListId: todoListId,
-          title: updTodoTitle,
-        })
-      );
+      // dispatch(
+      //   todolistsThunks.updateTodoTitleTC({
+      //     todoListId: todoListId,
+      //     title: updTodoTitle,
+      //   })
+      // );
+      updateTodoTitleTC({
+        todoListId: todoListId,
+        title: updTodoTitle,
+      });
     },
-    [dispatch]
+    []
   );
 
   if (!isLoggedIn) {

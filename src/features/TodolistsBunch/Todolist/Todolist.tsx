@@ -31,6 +31,7 @@ import {
 } from "../../../store/store";
 import { ServerResponseStatusType } from "../../../redux/appSlice";
 import { TaskStatuses } from "../../../common/enums/enums";
+import { useActions } from "../../../common/hooks/useActions";
 
 type TodolistProps = {
   todoTitle: string;
@@ -49,17 +50,19 @@ type TodolistProps = {
 
 export const Todolist = React.memo(
   ({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
+    const dispatch = useAppDispatch();
+
+    const {
+      deleteTaskTC,
+      addTaskTC,
+      updateTaskTC,
+      deleteTodoTC,
+      reorderTasksTC,
+    } = useActions();
+
     let allTodoTasks = useAppSelector((state) =>
       tasksSelectors.tasksById(state, props.todoListId)
     );
-
-    // const [showT, setShowT] = useState(false)
-    const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //   // dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => setShowT(true))
-    //   dispatch(tasksThunks.fetchTasksTC(props.todoListId)).then(() => dispatch(todolistsActions.showTasks({todoListId: props.todoListId})))
-    // }, []);
 
     // Region
     const [taskIdToDrag, setTaskIdToDrag] = useState<string>("");
@@ -85,64 +88,82 @@ export const Todolist = React.memo(
     ) {
       e.stopPropagation();
       e.preventDefault();
-      dispatch(
-        tasksThunks.reorderTasksTC({
-          todoListId: props.todoListId,
-          startDragId: taskIdToDrag,
-          endShiftId: endShiftId,
-        })
-      );
+      // dispatch(
+      //   tasksThunks.reorderTasksTC({
+      //     todoListId: props.todoListId,
+      //     startDragId: taskIdToDrag,
+      //     endShiftId: endShiftId,
+      //   })
+      // );
+      reorderTasksTC({
+        todoListId: props.todoListId,
+        startDragId: taskIdToDrag,
+        endShiftId: endShiftId,
+      });
     }
     // End
 
     const removeTask = useCallback(
       (taskId: string) => {
-        dispatch(
-          tasksThunks.deleteTaskTC({ todoListId: props.todoListId, taskId })
-        );
-        // dispatch(removeTask(props.todoListId, taskId))
+        // dispatch(
+        //   tasksThunks.deleteTaskTC({ todoListId: props.todoListId, taskId })
+        // );
+        deleteTaskTC({ todoListId: props.todoListId, taskId });
       },
-      [dispatch, props.todoListId]
+      [props.todoListId]
     );
 
     const addTask = useCallback(
       (newTaskTitle: string) => {
-        dispatch(
-          tasksThunks.addTaskTC({
-            todoListId: props.todoListId,
-            title: newTaskTitle,
-          })
-        );
+        // dispatch(
+        //   tasksThunks.addTaskTC({
+        //     todoListId: props.todoListId,
+        //     title: newTaskTitle,
+        //   })
+        // );
+        addTaskTC({
+          todoListId: props.todoListId,
+          title: newTaskTitle,
+        });
       },
-      [dispatch, props.todoListId]
+      [props.todoListId]
     );
 
     const changeTaskStatus = useCallback(
       (taskId: string, checked: TaskStatuses) => {
         console.log("CHANGE-TASK-STATUS");
-        // dispatch(changeTaskStatusAC(props.todoListId, taskId, checked))
-        dispatch(
-          tasksThunks.updateTaskTC({
-            todoListId: props.todoListId,
-            taskId,
-            model: { status: checked },
-          })
-        );
+        // dispatch(
+        //   tasksThunks.updateTaskTC({
+        //     todoListId: props.todoListId,
+        //     taskId,
+        //     model: { status: checked },
+        //   })
+        // );
+        updateTaskTC({
+          todoListId: props.todoListId,
+          taskId,
+          model: { status: checked },
+        });
       },
-      [dispatch, props.todoListId]
+      [props.todoListId]
     );
 
     const updTaskTitle = useCallback(
       (taskId: string, updTaskTitle: string) => {
-        dispatch(
-          tasksThunks.updateTaskTC({
-            todoListId: props.todoListId,
-            taskId,
-            model: { title: updTaskTitle },
-          })
-        );
+        // dispatch(
+        //   tasksThunks.updateTaskTC({
+        //     todoListId: props.todoListId,
+        //     taskId,
+        //     model: { title: updTaskTitle },
+        //   })
+        // );
+        updateTaskTC({
+          todoListId: props.todoListId,
+          taskId,
+          model: { title: updTaskTitle },
+        });
       },
-      [dispatch, props.todoListId]
+      [props.todoListId]
     );
 
     if (props.tasksFilter === "completed") {
@@ -165,8 +186,9 @@ export const Todolist = React.memo(
     }, [changeFilter, props.todoListId]);
 
     const removeTodo = useCallback(() => {
-      dispatch(todolistsThunks.deleteTodoTC(props.todoListId));
-    }, [dispatch]);
+      // dispatch(todolistsThunks.deleteTodoTC(props.todoListId));
+      deleteTodoTC(props.todoListId);
+    }, []);
 
     const updTodoTitleHandler = useCallback(
       (updTlTitle: string) => {

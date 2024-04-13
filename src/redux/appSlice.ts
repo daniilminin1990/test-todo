@@ -80,7 +80,7 @@ export const appActions = slice.actions;
 export const appSelectors = slice.selectors;
 export type AppInitialState = ReturnType<typeof slice.getInitialState>;
 
-const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, void>(
+const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, undefined>(
   `${slice.name}/initialiseMe`,
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
@@ -94,7 +94,8 @@ const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, void>(
         handleServerAppError(
           res.data,
           dispatch,
-          "It seems that something wrong"
+          "It seems that something wrong",
+          false
         );
         return rejectWithValue(null);
       }
@@ -106,19 +107,5 @@ const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, void>(
     }
   }
 );
-// export const _initialiseMeTC = () => (dispatch: Dispatch) => {
-//   loginAPI.initialiseMe()
-//     .then((res) => {
-//       if(res.data.resultCode === 0){
-//         dispatch(appActions.changeInitialized({value: true}))
-//         dispatch(loginActions.setIsLoggedInAC({value: true}))
-//       } else {
-//
-//       }
-//     })
-//     .finally(() => {
-//       dispatch(appActions.changeInitialized({value: true}))
-//     })
-// }
 
 export const appThunks = { initialiseMeTC };

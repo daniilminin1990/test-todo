@@ -87,7 +87,7 @@ const loginTC = createAppAsyncThunk<{ value: boolean }, LoginParamsType>(
 //     })
 // }
 
-const logoutTC = createAppAsyncThunk<{ value: boolean }>(
+const logoutTC = createAppAsyncThunk<{ value: boolean }, undefined>(
   `${slice.name}/logout`,
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
@@ -98,11 +98,7 @@ const logoutTC = createAppAsyncThunk<{ value: boolean }>(
         dispatch(loginActions.setIsLoggedInAC({ value: false }));
         return { value: true };
       } else {
-        handleServerAppError<{}>(
-          res.data,
-          dispatch,
-          "Oops! Something gone wrong"
-        );
+        handleServerAppError(res.data, dispatch, "Oops! Something gone wrong");
         return rejectWithValue(null);
       }
     } catch (e) {

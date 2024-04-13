@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor block todos and tasks on drag">
+      <change afterPath="$PROJECT_DIR$/src/common/hooks/useActions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,7 +294,10 @@
       <workItem from="1712813834545" duration="10926000" />
       <workItem from="1712841550547" duration="10324000" />
       <workItem from="1712863502622" duration="10414000" />
-      <workItem from="1712875143551" duration="2808000" />
+      <workItem from="1712875143551" duration="3624000" />
+      <workItem from="1712879340246" duration="644000" />
+      <workItem from="1712919801490" duration="28000" />
+      <workItem from="1713030070468" duration="1901000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -340,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712851882243</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="refactor block todos and tasks on drag">
+      <option name="closed" value="true" />
+      <created>1712879095749</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1712879095749</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,6 +379,7 @@
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
     <MESSAGE value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
-    <option name="LAST_COMMIT_MESSAGE" value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
+    <MESSAGE value="refactor block todos and tasks on drag" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor block todos and tasks on drag" />
   </component>
 </project>

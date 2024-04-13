@@ -9,63 +9,13 @@ import { Login } from "../features/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { appSelectors } from "../redux/appSlice";
 import { styleCircular } from "../common/utilities";
-import AppBarWithToggleLeft from "../common/components/AppBarWithToggle/AppBarWithToggle";
-
-// For githubpages use this stroke in package.json
-// "homepage": "https://daniilminin1990.github.io/test-todo",
-// And here use HashRouter instead BrowserRouter
-
-// const getDesignTokens = (mode: PaletteMode) => ({
-//   palette: {
-//     mode,
-//     primary: {
-//       ...amber,
-//       ...(mode === 'dark' && {
-//         main: amber[300],
-//       }),
-//     },
-//     ...(mode === 'dark' && {
-//       background: {
-//         default: deepOrange[900],
-//         paper: deepOrange[900],
-//       },
-//     }),
-//     text: {
-//       ...(mode === 'light'
-//         ? {
-//           primary: grey[900],
-//           secondary: grey[800],
-//         }
-//         : {
-//           primary: '#fff',
-//           secondary: grey[500],
-//         }),
-//     },
-//   },
-// });
 const App = React.memo(() => {
   const statusTodo = useAppSelector((state) => appSelectors.statusTodo(state));
   const statusTask = useAppSelector((state) => appSelectors.statusTask(state));
   const isInitialized = useAppSelector((state) =>
     appSelectors.isInitialized(state)
   );
-  // const statusTodo = useAppSelector(state => state.appReducer.statusTodo)
-  // const statusTask = useAppSelector(state => state.appReducer.statusTask)
-  // const isInitialized = useAppSelector(state => state.appReducer.isInitialized)
 
-  // const statusTodo = useAppSelector(state =>  appSelectors.statusTodo(state))
-
-  // const statusTodo = useAppSelector(appSelectors.statusTodo)
-
-  // const statusTask = useSelector(appSelectors.statusTask)
-
-  // const statusTask = useAppSelector(state => state.appReducer.statusTask)
-  // const isInitialized = useSelector(appSelectors.isInitialized)
-
-  // useEffect(() => {
-  //   console.log(isInitialized)
-  //   dispatch(appThunks.initialiseMeTC())
-  // }, []);
   if (!isInitialized) {
     return (
       <div style={styleCircular}>

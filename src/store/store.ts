@@ -1,10 +1,9 @@
-import { AnyAction, combineReducers } from "redux";
 import { todolistsSlice } from "../redux/todolistsSlice";
 import { tasksSlice } from "../redux/tasksSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { appSlice, appThunks } from "../redux/appSlice";
-import { loginSelectors, loginSlice } from "../redux/loginSlice";
-import { configureStore, ThunkDispatch } from "@reduxjs/toolkit";
+import { loginSlice } from "../redux/loginSlice";
+import { configureStore } from "@reduxjs/toolkit";
 
 // const rootReducer = combineReducers({
 //   todolistReducer: todolistsSlice,
