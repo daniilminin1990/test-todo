@@ -58,10 +58,21 @@ const slice = createSlice({
     ) {
       const tasks = state[action.payload.todoListId];
       const id = tasks.findIndex((t) => t.id === action.payload.taskId);
-      console.log("BEFORE AC upd entityStatus --- ", tasks[id].entityStatus);
       if (id > -1) {
         tasks[id] = { ...tasks[id], entityStatus: action.payload.entityStatus };
-        console.log("AFTER AC upd entityStatus, --- ", tasks[id].entityStatus);
+      }
+    },
+    reorderTask(state, action: PayloadAction<ReorderTasksArgs>) {
+      const { todoListId, startDragId, endShiftId } = action.payload;
+      const dragIndex = state[todoListId].findIndex(
+        (t) => t.id === startDragId
+      );
+      const targetIndex = state[todoListId].findIndex(
+        (t) => t.id === endShiftId
+      );
+      if (dragIndex > -1 && targetIndex > -1) {
+        const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
+        state[todoListId].splice(targetIndex, 0, draggedItem);
       }
     },
   },
@@ -111,19 +122,19 @@ const slice = createSlice({
         );
         if (id > -1) state[action.payload.todoListId].splice(id, 1);
       })
-      .addCase(reorderTasksTC.fulfilled, (state, action) => {
-        const { todoListId, startDragId, endShiftId } = action.payload;
-        const dragIndex = state[todoListId].findIndex(
-          (t) => t.id === startDragId
-        );
-        const targetIndex = state[todoListId].findIndex(
-          (t) => t.id === endShiftId
-        );
-        if (dragIndex > -1 && targetIndex > -1) {
-          const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
-          state[todoListId].splice(targetIndex, 0, draggedItem);
-        }
-      })
+      // .addCase(reorderTasksTC.fulfilled, (state, action) => {
+      //   const { todoListId, startDragId, endShiftId } = action.payload;
+      //   const dragIndex = state[todoListId].findIndex(
+      //     (t) => t.id === startDragId
+      //   );
+      //   const targetIndex = state[todoListId].findIndex(
+      //     (t) => t.id === endShiftId
+      //   );
+      //   if (dragIndex > -1 && targetIndex > -1) {
+      //     const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
+      //     state[todoListId].splice(targetIndex, 0, draggedItem);
+      //   }
+      // })
       .addCase(reorderTasksTC.rejected, (state, action) => {});
   },
   selectors: {
@@ -360,7 +371,7 @@ const updateTaskTC = createAppAsyncThunk<
 //     })
 // }
 
-const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
+const reorderTasksTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(
   `${slice.name}/reorderTasks`,
   async (args, thunkAPI) => {
     const { dispatch, rejectWithValue, getState } = thunkAPI;
@@ -390,7 +401,7 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
       });
       if (res.data.resultCode === 0) {
         // dispatch(fetchTasksTC(args.todoListId))
-        return args;
+        return undefined;
       } else {
         handleServerAppError(
           res.data,

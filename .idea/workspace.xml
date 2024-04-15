@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-3 refactor appSlice, loginSlice void --&gt; undefined; handleServerAppError added showGlobalError; added useActions hook and used in App, TodolistBunch and Todolist">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="add drag and drop using dndKit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/hooks/useActions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/hooks/useActions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stories/Task.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,7 +299,7 @@
       <workItem from="1712919801490" duration="28000" />
       <workItem from="1713030070468" duration="1901000" />
       <workItem from="1713093862409" duration="457000" />
-      <workItem from="1713162443042" duration="18750000" />
+      <workItem from="1713162443042" duration="26236000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -360,7 +357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712879095749</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add drag and drop using dndKit">
+      <option name="closed" value="true" />
+      <created>1713181642936</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1713181642936</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -385,6 +390,7 @@
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
     <MESSAGE value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
     <MESSAGE value="refactor block todos and tasks on drag" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor block todos and tasks on drag" />
+    <MESSAGE value="add drag and drop using dndKit" />
+    <option name="LAST_COMMIT_MESSAGE" value="add drag and drop using dndKit" />
   </component>
 </project>

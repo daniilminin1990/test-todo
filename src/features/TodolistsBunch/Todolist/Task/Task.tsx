@@ -15,17 +15,21 @@ import {
 import { TaskType } from "../../../../api/tasks-api";
 
 export type TaskProps = {
+  todoListId: string;
   taskId: string;
   tIsDone: TaskStatuses;
   oldTitle: string;
   entityStatus?: ServerResponseStatusType;
-  onChange: (taskId: string, checked: TaskStatuses) => void;
-  onClick: (taskId: string) => void;
-  updTaskTitle: (taskId: string, updTaskTitle: string) => void;
-  tasks: TasksWithEntityStatusType[];
+  onChange?: (taskId: string, checked: TaskStatuses) => void;
+  onClick?: (taskId: string) => void;
+  updTaskTitle?: (taskId: string, updTaskTitle: string) => void;
 };
 
 export const Task = React.memo((props: TaskProps) => {
+  const tasks = useAppSelector((state) =>
+    tasksSelectors.tasksById(state, props.todoListId)
+  );
+
   const {
     setNodeRef,
     attributes,
@@ -37,7 +41,7 @@ export const Task = React.memo((props: TaskProps) => {
     id: props.taskId,
     data: {
       type: "Task",
-      task: props.tasks[props.tasks.findIndex((t) => t.id === props.taskId)],
+      task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
   });
 
@@ -49,17 +53,40 @@ export const Task = React.memo((props: TaskProps) => {
     let checkToGo = e.currentTarget.checked
       ? TaskStatuses.Completed
       : TaskStatuses.New;
-    props.onChange(props.taskId, checkToGo);
+    if (props.onChange) {
+      props.onChange(props.taskId, checkToGo);
+    }
   };
   const onClickHandler = () => {
-    props.onClick(props.taskId);
+    if (props.onClick) {
+      props.onClick(props.taskId);
+    }
   };
 
   const updTaskTitleHandler = (updTaskTitle: string) => {
-    props.updTaskTitle(props.taskId, updTaskTitle);
+    if (props.updTaskTitle) {
+      props.updTaskTitle(props.taskId, updTaskTitle);
+    }
   };
 
   const taskCompleted = props.tIsDone === TaskStatuses.Completed;
+
+  if (isDragging) {
+    return (
+      <Li
+        className={taskCompleted ? "is-done" : ""}
+        ref={setNodeRef}
+        style={{
+          ...style,
+          opacity: 0.3,
+          border: "mistyrose 2px solid",
+          backgroundColor: "lightgreen",
+          minHeight: "40px",
+        }}
+      />
+    );
+  }
+
   return (
     <Li
       className={taskCompleted ? "is-done" : ""}

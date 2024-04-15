@@ -293,8 +293,8 @@ export const Todolist = React.memo(
             disabled={props.entityStatus === "loading"}
           />
           {allTodoTasks.length !== 0 ? (
-            <ul>
-              <SortableContext items={tasksIds}>
+            <SortableContext items={tasksIds}>
+              <ul>
                 {allTodoTasks.map((t) => {
                   return (
                     // <div
@@ -323,7 +323,7 @@ export const Todolist = React.memo(
                           onChange={changeTaskStatus}
                           onClick={removeTask}
                           updTaskTitle={updTaskTitle}
-                          tasks={allTodoTasks}
+                          todoListId={props.todoListId}
                         />
                       </Skeleton>
                     ) : (
@@ -336,14 +336,14 @@ export const Todolist = React.memo(
                         onChange={changeTaskStatus}
                         onClick={removeTask}
                         updTaskTitle={updTaskTitle}
-                        tasks={allTodoTasks}
+                        todoListId={props.todoListId}
                       />
                     )
                     // </div>
                   );
                 })}
-              </SortableContext>
-            </ul>
+              </ul>
+            </SortableContext>
           ) : props.showTasks ? (
             <p>Nothing to show</p>
           ) : (

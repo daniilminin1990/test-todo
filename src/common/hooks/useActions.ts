@@ -3,7 +3,7 @@ import { ActionCreatorsMapObject, bindActionCreators } from "redux";
 import { useAppDispatch } from "../../store/store";
 import { appThunks } from "../../redux/appSlice";
 import { loginThunks } from "../../redux/loginSlice";
-import { tasksThunks } from "../../redux/tasksSlice";
+import { tasksActions, tasksThunks } from "../../redux/tasksSlice";
 import { todolistsActions, todolistsThunks } from "../../redux/todolistsSlice";
 // ❗ упаковываем actions и соответсвенно при вызове хука не нужно
 // будет передавать actions
@@ -13,6 +13,7 @@ const actionsAll = {
   ...tasksThunks,
   ...todolistsThunks,
   ...todolistsActions,
+  ...tasksActions,
 }; // ПЕРЕЧИСЛЯЕМ ВЕСЬ НАБОР САНОК, КОТОРЫЕ ЕСТЬ
 
 type AllActions = typeof actionsAll;
