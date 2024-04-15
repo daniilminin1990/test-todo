@@ -64,6 +64,7 @@ export const TaskToDelete = () => {
       onChange={onChange}
       onClick={action("onclickAction")}
       updTaskTitle={action("updateTasktion")}
+      tasks={[]}
     />
   );
 };

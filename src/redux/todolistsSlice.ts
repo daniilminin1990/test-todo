@@ -76,6 +76,16 @@ const slice = createSlice({
       const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
       if (id > -1) state[id].showTasks = true;
     },
+    reorderTodolist(state, action: PayloadAction<ReorderTodoListArgs>) {
+      const { startDragId, endShiftId } = action.payload;
+      const dragIndex = state.findIndex((el) => el.id === startDragId);
+      const targetIndex = state.findIndex((el) => el.id === endShiftId);
+
+      if (dragIndex > -1 && targetIndex > -1) {
+        const draggedItem = state.splice(dragIndex, 1)[0];
+        state.splice(targetIndex, 0, draggedItem);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,26 +116,22 @@ const slice = createSlice({
       .addCase(updateTodoTitleTC.fulfilled, (state, action) => {
         const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
         state[id] = { ...state[id], title: action.payload.title };
-      })
-      .addCase(reorderTodolistTC.fulfilled, (state, action) => {
-        const { startDragId, endShiftId } = action.payload;
-        const dragIndex = state.findIndex((el) => el.id === startDragId);
-        const targetIndex = state.findIndex((el) => el.id === endShiftId);
-
-        if (dragIndex > -1 && targetIndex > -1) {
-          const draggedItem = state.splice(dragIndex, 1)[0];
-          state.splice(targetIndex, 0, draggedItem);
-        }
       });
+    // .addCase(reorderTodolistTC.fulfilled, (state, action) => {
+    //   const { startDragId, endShiftId } = action.payload;
+    //   const dragIndex = state.findIndex((el) => el.id === startDragId);
+    //   const targetIndex = state.findIndex((el) => el.id === endShiftId);
+    //
+    //   if (dragIndex > -1 && targetIndex > -1) {
+    //     const draggedItem = state.splice(dragIndex, 1)[0];
+    //     state.splice(targetIndex, 0, draggedItem);
+    //   }
+    // });
   },
   selectors: {
     todolists: (sliceState) => sliceState,
   },
 });
-
-export const todolistsSlice = slice.reducer;
-export const todolistsActions = slice.actions;
-export const todolistsSelectors = slice.selectors;
 
 //! Thunk
 const fetchTodolistsTC = createAppAsyncThunk<
@@ -325,7 +331,8 @@ const updateTodoTitleTC = createAppAsyncThunk<UpdateTodoArgs, UpdateTodoArgs>(
 // }
 
 const reorderTodolistTC = createAppAsyncThunk<
-  ReorderTodoListArgs,
+  // ReorderTodoListArgs,
+  undefined,
   ReorderTodoListArgs
 >(`${slice.name}/reorderTodolist`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
@@ -351,7 +358,7 @@ const reorderTodolistTC = createAppAsyncThunk<
     });
     if (res.data.resultCode === 0) {
       // dispatch(fetchTodolistsTC())
-      return args;
+      return undefined;
     } else {
       handleServerAppError(res.data, dispatch, "I can't reorder");
       return rejectWithValue(null);
@@ -376,6 +383,9 @@ const reorderTodolistTC = createAppAsyncThunk<
   }
 });
 
+export const todolistsSlice = slice.reducer;
+export const todolistsActions = slice.actions;
+export const todolistsSelectors = slice.selectors;
 export const todolistsThunks = {
   fetchTodolistsTC,
   deleteTodoTC,

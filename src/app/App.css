@@ -36,3 +36,16 @@ ul {
 li {
   list-style: none;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #2C387E;
+    border-radius: 10px;
+}

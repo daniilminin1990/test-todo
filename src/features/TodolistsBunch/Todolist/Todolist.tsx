@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AddItemForm } from "../../../common/components/AddItemForm/AddItemForm";
 import EdiatbleSpan from "../../../common/components/EditableSpan/EdiatbleSpan";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { useSelector } from "react-redux";
+import { Grid, Paper } from "@mui/material";
 import {
   // addTaskTC,
   // updateTaskTC,
@@ -19,6 +20,7 @@ import {
   todolistsActions,
   todolistsSelectors,
   todolistsThunks,
+  TodoUIType,
 } from "../../../redux/todolistsSlice";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -32,12 +34,15 @@ import {
 import { ServerResponseStatusType } from "../../../redux/appSlice";
 import { TaskStatuses } from "../../../common/enums/enums";
 import { useActions } from "../../../common/hooks/useActions";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type TodolistProps = {
   todoTitle: string;
   // tasks: TaskType[]
   tasksFilter: FilterValuesType;
   todoListId: string;
+  todolist: TodoUIType;
   changeFilter: (
     todoListId: string,
     newTasksFilterValue: FilterValuesType
@@ -64,43 +69,68 @@ export const Todolist = React.memo(
       tasksSelectors.tasksById(state, props.todoListId)
     );
 
+    let tasksIds = useMemo(
+      () => allTodoTasks.map((task) => task.id),
+      [allTodoTasks]
+    );
+
+    const {
+      setNodeRef,
+      attributes,
+      listeners,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props.todoListId,
+      data: {
+        type: "Todolist",
+        todolist: props.todolist,
+      },
+    });
+
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    };
+
     // Region
-    const [taskIdToDrag, setTaskIdToDrag] = useState<string>("");
-    function dragStartHandler(
-      e: React.DragEvent<HTMLDivElement>,
-      startDragId: string
-    ) {
-      e.stopPropagation();
-      setTaskIdToDrag(startDragId);
-      console.log("DRAGGING-ID", startDragId);
-    }
-
-    function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
-
-    function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    function dropHandler(
-      e: React.DragEvent<HTMLDivElement>,
-      endShiftId: string
-    ) {
-      e.stopPropagation();
-      e.preventDefault();
-      // dispatch(
-      //   tasksThunks.reorderTasksTC({
-      //     todoListId: props.todoListId,
-      //     startDragId: taskIdToDrag,
-      //     endShiftId: endShiftId,
-      //   })
-      // );
-      reorderTasksTC({
-        todoListId: props.todoListId,
-        startDragId: taskIdToDrag,
-        endShiftId: endShiftId,
-      });
-    }
+    // const [taskIdToDrag, setTaskIdToDrag] = useState<string>("");
+    // function dragStartHandler(
+    //   e: React.DragEvent<HTMLDivElement>,
+    //   startDragId: string
+    // ) {
+    //   e.stopPropagation();
+    //   setTaskIdToDrag(startDragId);
+    //   console.log("DRAGGING-ID", startDragId);
+    // }
+    //
+    // function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
+    //
+    // function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    // }
+    //
+    // function dropHandler(
+    //   e: React.DragEvent<HTMLDivElement>,
+    //   endShiftId: string
+    // ) {
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    //   // dispatch(
+    //   //   tasksThunks.reorderTasksTC({
+    //   //     todoListId: props.todoListId,
+    //   //     startDragId: taskIdToDrag,
+    //   //     endShiftId: endShiftId,
+    //   //   })
+    //   // );
+    //   reorderTasksTC({
+    //     todoListId: props.todoListId,
+    //     startDragId: taskIdToDrag,
+    //     endShiftId: endShiftId,
+    //   });
+    // }
     // End
 
     const removeTask = useCallback(
@@ -197,102 +227,154 @@ export const Todolist = React.memo(
       [updTodoTitle, props.todoListId]
     );
 
-    return (
-      <div>
-        <h3>
-          <EdiatbleSpan
-            oldTitle={props.todoTitle}
-            callback={updTodoTitleHandler}
-            disabled={props.disabled === "loading"}
-          />
-          <IconButton
-            aria-label="delete"
-            onClick={removeTodo}
-            disabled={props.entityStatus === "loading"}
+    if (isDragging) {
+      return (
+        <div ref={setNodeRef} style={{ ...style, opacity: 0.5 }}>
+          <Paper
+            elevation={6}
+            style={{
+              padding: "30px",
+              borderRadius: "10px",
+              width: "100%",
+              height: "100%",
+            }}
           >
-            <DeleteIcon />
-          </IconButton>
-        </h3>
-        <AddItemForm
-          callback={addTask}
-          disabled={props.entityStatus === "loading"}
-        />
-        {allTodoTasks.length !== 0 ? (
-          <ul>
-            {allTodoTasks.map((t) => {
-              return (
-                <div
-                  key={t.id}
-                  style={{
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                    marginTop: "10px",
-                    padding: "5px",
-                    border: "0.5px solid gray",
-                  }}
-                  draggable={true}
-                  onDragStart={(e) => dragStartHandler(e, t.id)}
-                  onDragLeave={(e) => dragEndHandler(e)}
-                  onDragEnd={(e) => dragEndHandler(e)}
-                  onDragOver={(e) => dragOverHandler(e)}
-                  onDrop={(e) => dropHandler(e, t.id)}
-                >
-                  {props.entityStatus === "loading" ? (
-                    <Skeleton key={t.id}>
+            <h3>
+              <EdiatbleSpan
+                oldTitle={props.todoTitle}
+                callback={updTodoTitleHandler}
+                disabled={props.disabled === "loading"}
+              />
+              <IconButton
+                aria-label="delete"
+                onClick={removeTodo}
+                disabled={props.entityStatus === "loading"}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </h3>
+            <AddItemForm
+              callback={addTask}
+              disabled={props.entityStatus === "loading"}
+            />
+            <Skeleton>
+              <div>ЛАЛАЛА</div>
+            </Skeleton>
+          </Paper>
+        </div>
+      );
+    }
+
+    return (
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <Paper elevation={6} style={{ padding: "30px", borderRadius: "10px" }}>
+          <h3
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              padding: "0 8px",
+            }}
+          >
+            <EdiatbleSpan
+              oldTitle={props.todoTitle}
+              callback={updTodoTitleHandler}
+              disabled={props.disabled === "loading"}
+            />
+            <IconButton
+              aria-label="delete"
+              onClick={removeTodo}
+              disabled={props.entityStatus === "loading"}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </h3>
+          <AddItemForm
+            callback={addTask}
+            disabled={props.entityStatus === "loading"}
+          />
+          {allTodoTasks.length !== 0 ? (
+            <ul>
+              <SortableContext items={tasksIds}>
+                {allTodoTasks.map((t) => {
+                  return (
+                    // <div
+                    //   key={t.id}
+                    //   style={{
+                    //     borderRadius: "5px",
+                    //     marginBottom: "10px",
+                    //     marginTop: "10px",
+                    //     padding: "5px",
+                    //     border: "0.5px solid gray",
+                    //   }}
+                    //   // draggable={true}
+                    //   // onDragStart={(e) => dragStartHandler(e, t.id)}
+                    //   // onDragLeave={(e) => dragEndHandler(e)}
+                    //   // onDragEnd={(e) => dragEndHandler(e)}
+                    //   // onDragOver={(e) => dragOverHandler(e)}
+                    //   // onDrop={(e) => dropHandler(e, t.id)}
+                    // >
+                    props.entityStatus === "loading" ? (
+                      <Skeleton key={t.id}>
+                        <Task
+                          key={t.id}
+                          taskId={t.id}
+                          tIsDone={t.status}
+                          oldTitle={t.title}
+                          onChange={changeTaskStatus}
+                          onClick={removeTask}
+                          updTaskTitle={updTaskTitle}
+                          tasks={allTodoTasks}
+                        />
+                      </Skeleton>
+                    ) : (
                       <Task
                         key={t.id}
                         taskId={t.id}
                         tIsDone={t.status}
                         oldTitle={t.title}
+                        entityStatus={t.entityStatus}
                         onChange={changeTaskStatus}
                         onClick={removeTask}
                         updTaskTitle={updTaskTitle}
+                        tasks={allTodoTasks}
                       />
-                    </Skeleton>
-                  ) : (
-                    <Task
-                      key={t.id}
-                      taskId={t.id}
-                      tIsDone={t.status}
-                      oldTitle={t.title}
-                      entityStatus={t.entityStatus}
-                      onChange={changeTaskStatus}
-                      onClick={removeTask}
-                      updTaskTitle={updTaskTitle}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </ul>
-        ) : props.showTasks ? (
-          <p>Nothing to show</p>
-        ) : (
-          <Typography variant="h3">
-            <Skeleton />
-          </Typography>
-        )}
-        <Button
-          variant={props.tasksFilter === "all" ? "contained" : "outlined"}
-          color="primary"
-          onClick={onAllClickHandler}
-        >
-          All
-        </Button>
-        <Button
-          variant={props.tasksFilter === "active" ? "contained" : "outlined"}
-          color="error"
-          onClick={onActiveClickHandler}
-        >
-          Active
-        </Button>
-        <Button
-          variant={props.tasksFilter === "completed" ? "contained" : "outlined"}
-          color="success"
-          onClick={onCompletedClickHandler}
-        >
-          Completed
-        </Button>
+                    )
+                    // </div>
+                  );
+                })}
+              </SortableContext>
+            </ul>
+          ) : props.showTasks ? (
+            <p>Nothing to show</p>
+          ) : (
+            <Typography variant="h3">
+              <Skeleton />
+            </Typography>
+          )}
+          <Button
+            variant={props.tasksFilter === "all" ? "contained" : "outlined"}
+            color="primary"
+            onClick={onAllClickHandler}
+          >
+            All
+          </Button>
+          <Button
+            variant={props.tasksFilter === "active" ? "contained" : "outlined"}
+            color="error"
+            onClick={onActiveClickHandler}
+          >
+            Active
+          </Button>
+          <Button
+            variant={
+              props.tasksFilter === "completed" ? "contained" : "outlined"
+            }
+            color="success"
+            onClick={onCompletedClickHandler}
+          >
+            Completed
+          </Button>
+        </Paper>
       </div>
     );
   }
