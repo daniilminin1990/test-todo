@@ -62,7 +62,7 @@ const slice = createSlice({
         tasks[id] = { ...tasks[id], entityStatus: action.payload.entityStatus };
       }
     },
-    reorderTask(state, action: PayloadAction<ReorderTasksArgs>) {
+    _reorderTask(state, action: PayloadAction<ReorderTasksArgs>) {
       const { todoListId, startDragId, endShiftId } = action.payload;
       const dragIndex = state[todoListId].findIndex(
         (t) => t.id === startDragId
@@ -73,6 +73,48 @@ const slice = createSlice({
       if (dragIndex > -1 && targetIndex > -1) {
         const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
         state[todoListId].splice(targetIndex, 0, draggedItem);
+      }
+    },
+    reorderTask(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        endTodoListId?: string;
+        startDragId: string;
+        endShiftId: string | null;
+      }>
+    ) {
+      const { todoListId, endTodoListId, startDragId, endShiftId } =
+        action.payload;
+      const startIndex = state[todoListId].findIndex(
+        (task) => task.id === startDragId
+      );
+      const endIndex = state[todoListId].findIndex(
+        (task) => task.id === endShiftId
+      );
+
+      if (startIndex === -1 || endIndex === -1) return state;
+
+      const [draggedTask] = state[todoListId].splice(startIndex, 1);
+      state[todoListId].splice(endIndex, 0, draggedTask);
+
+      if (endTodoListId) {
+        // если таска была перетащена в другой тудулист
+        if (todoListId !== endTodoListId) {
+          // удаляем таску из предыдущего тудулиста
+          state[todoListId] = state[todoListId].filter(
+            (task) => task.id !== startDragId
+          );
+          // определяем индекс, под который нужно добавить таску в новый тудулист
+          const newEndIndex = state[endTodoListId].findIndex(
+            (task) => task.id === endShiftId
+          );
+          // добавляем таску в новый тудулист
+          state[endTodoListId].splice(newEndIndex, 0, {
+            ...draggedTask,
+            todoListId: endTodoListId, // обновляем todoListId у перетаскиваемой таски
+          });
+        }
       }
     },
   },

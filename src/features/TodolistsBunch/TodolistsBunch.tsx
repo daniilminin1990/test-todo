@@ -41,6 +41,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     changeTodoFilter: changeTodoFilterAC,
     addTodoTC,
     updateTodoTitleTC,
+    deleteTaskTC,
+    addTaskTC,
   } = useActions();
 
   const todolists = useAppSelector((state) =>
@@ -55,6 +57,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
   const [activeTodo, setActiveTodo] = useState<TodoUIType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
+  const [todoIdToAddNewTask, setTodoIdToAddNewTask] = useState<string>("");
 
   const todolistIds = useMemo(() => todolists.map((tl) => tl.id), [todolists]);
   const tasks = useAppSelector(tasksSelectors.tasksState);
@@ -139,16 +142,18 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     console.log("Событие", event.active.data);
     if (event.active.data.current?.type === "Todolist") {
       setActiveTodo(event.active.data.current.todolist);
+      setTodoIdToAddNewTask(event.active.data.current.todolist.id);
       return;
     }
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
-      return;
+      event.active.data.current.todoListId =
+        event.active.data.current.task.todoListId;
     }
   };
 
   const onDragEndHandler = (event: DragEndEvent) => {
-    // setActiveTodo(null);
+    setActiveTodo(null);
     setActiveTask(null);
     const { active, over } = event;
     if (!over) return;
@@ -175,6 +180,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
   };
 
+  // Region Вариант 1 На UI без запросов - не работает для дропа тасок между тудулистами и дропа в пустой тудулист
   const onDragOverHandler = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
@@ -189,41 +195,155 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const isOverATask = over.data.current?.type === "Task";
     if (!isActiveATask) return;
     if (isActiveATask && isOverATask) {
-      const activeIndex = tasks[active.data.current?.task.todoListId].findIndex(
-        (t) => t.id === activeId
-      );
-      const overIndex = tasks[active.data.current?.task.todoListId].findIndex(
-        (t) => t.id === overId
-      );
-      const activeTodoList = tasks[active.data.current?.task.todoListId];
-      const activeTodolistId = activeTodoList.find(
-        (t) => t.id === overId
-      )?.todoListId;
-      const overTodoList = tasks[active.data.current?.task.todoListId];
-      const overTodolistId = overTodoList.find(
-        (t) => t.id === overId
-      )?.todoListId;
-      if (activeTodolistId !== overTodolistId) {
-        //! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
-        //! 2 создаем в новом тудулисте новую
-        //! 3 делаем на созданную таску реордер
+      let activeTodoListId = active.data.current?.task.todoListId || "";
+      let overTodoListId = over.data.current?.task.todoListId || "";
+      console.log("activeTodoListId", activeTodoListId);
+      console.log("overTodoListId", overTodoListId);
+      // Когда activeTodolistId === overTodolistId
+      if (activeTodoListId === overTodoListId) {
+        reorderTask({
+          startDragId: activeId.toString(),
+          endShiftId: overId.toString(),
+          todoListId: activeTodoListId,
+          endTodoListId: overTodoListId,
+        });
+        // reorderTask({
+        //   todoListId: active.data.current?.task.todoListId,
+        //   startDragId: activeId.toString(),
+        //   endShiftId: overId.toString(),
+        // });
       }
+      // todo Антоним
+      if (activeTodoListId !== overTodoListId) {
+        activeTodoListId = overTodoListId;
+        const activeTitleCopy = active.data.current?.task.title;
+        reorderTask({
+          startDragId: activeId.toString(),
+          endShiftId: overId.toString(),
+          todoListId: activeTodoListId,
+          endTodoListId: overTodoListId,
+        });
+      }
+    }
+    const isOverATodolist = over.data.current?.type === "Todolist";
+    if (!isActiveATask) return;
+    if (isActiveATask && isOverATodolist) {
+      const activeTask = active.data.current?.task;
+      const overTodolist = over.data.current?.todolist;
+      if (!activeTask || !overTodolist) return; // добавляем проверку на существование тасок и тудулиста
 
-      console.log("ACTIVE", active, "OVER", over);
-      console.log("ACTIVE INDEX", activeIndex, "OVERINDEX", overIndex);
-      reorderTasksTC({
-        todoListId: active.data.current?.task.todoListId,
-        startDragId: activeId.toString(),
-        endShiftId: overId.toString(),
-      });
       reorderTask({
-        todoListId: active.data.current?.task.todoListId,
         startDragId: activeId.toString(),
         endShiftId: overId.toString(),
+        todoListId: overTodolist.id,
+        endTodoListId: overTodolist.id,
       });
     }
   };
+  // End
 
+  // Region 2 Вариант с запросами, работающий только для перетаскивания тасок внутри туду
+  // const onDragOverHandler = (event: DragOverEvent) => {
+  //   const { active, over } = event;
+  //   if (!over) return;
+  //
+  //   const activeId = active.id;
+  //   // console.log("ACTIVE ID", active);
+  //   const overId = over.id;
+  //
+  //   if (activeId === overId) return;
+  //   // 1 сценарий, дропаю таску на другую таску в одном или другом туду
+  //   const isActiveATask = active.data.current?.type === "Task";
+  //   const isOverATask = over.data.current?.type === "Task";
+  //   if (!isActiveATask) return;
+  //   if (isActiveATask && isOverATask) {
+  //     const activeTodoListId = active.data.current?.task.todoListId || "";
+  //     const overTodoListId = over.data.current?.task.todoListId || "";
+  //     console.log("activeTodoListId", activeTodoListId);
+  //     console.log("overTodoListId", overTodoListId);
+  //     // Когда activeTodolistId === overTodolistId
+  //     if (activeTodoListId === overTodoListId) {
+  //       reorderTasksTC({
+  //         todoListId: active.data.current?.task.todoListId,
+  //         startDragId: activeId.toString(),
+  //         endShiftId: overId.toString(),
+  //       });
+  //       reorderTask({
+  //         todoListId: active.data.current?.task.todoListId,
+  //         startDragId: activeId.toString(),
+  //         endShiftId: overId.toString(),
+  //       });
+  //     }
+  //   }
+  // };
+  // End
+
+  // Region Вариант 3 как вариант 2 только вместе с попыткой перетаскивания тасок в другой туду с тасками. Работает, но лишние запросы и лишние таски появляются
+  // const onDragOverHandler = (event: DragOverEvent) => {
+  //   const { active, over } = event;
+  //   if (!over) return;
+  //
+  //   const activeId = active.id;
+  //   // console.log("ACTIVE ID", active);
+  //   const overId = over.id;
+  //
+  //   if (activeId === overId) return;
+  //   // 1 сценарий, дропаю таску на другую таску в одном или другом туду
+  //   const isActiveATask = active.data.current?.type === "Task";
+  //   const isOverATask = over.data.current?.type === "Task";
+  //   if (!isActiveATask) return;
+  //   if (isActiveATask && isOverATask) {
+  //     const activeTodoListId = active.data.current?.task.todoListId || "";
+  //     const overTodoListId = over.data.current?.task.todoListId || "";
+  //     console.log("activeTodoListId", activeTodoListId);
+  //     console.log("overTodoListId", overTodoListId);
+  //     // Когда activeTodolistId === overTodolistId
+  //     if (activeTodoListId === overTodoListId) {
+  //       reorderTasksTC({
+  //         todoListId: active.data.current?.task.todoListId,
+  //         startDragId: activeId.toString(),
+  //         endShiftId: overId.toString(),
+  //       });
+  //       reorderTask({
+  //         todoListId: active.data.current?.task.todoListId,
+  //         startDragId: activeId.toString(),
+  //         endShiftId: overId.toString(),
+  //       });
+  //     }
+  //     // todo Антоним
+  //     if (activeTodoListId !== overTodoListId) {
+  //       const activeTitleCopy = active.data.current?.task.title;
+  //       reorderTask({
+  //         todoListId: overTodoListId,
+  //         startDragId: activeId.toString(),
+  //         endShiftId: overId.toString(),
+  //       });
+  //       //! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
+  //       deleteTaskTC({
+  //         todoListId: active.data.current?.task.todoListId,
+  //         taskId: activeId.toString(),
+  //       });
+  //       //! 2 создаем в новом тудулисте новую
+  //       if (overTodoListId) {
+  //         addTaskTC({
+  //           todoListId: overTodoListId,
+  //           title: activeTitleCopy,
+  //         }).then((res) => {
+  //           console.log("ДОСТУЧАЛСЯ!", res);
+  //           if (res.payload?.task.id) {
+  //             //! 3 делаем на созданную таску реордер
+  //             reorderTasksTC({
+  //               todoListId: overTodoListId,
+  //               startDragId: activeId.toString(),
+  //               endShiftId: res.payload?.task.id.toString(),
+  //             });
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // };
+  // End
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 3 },
