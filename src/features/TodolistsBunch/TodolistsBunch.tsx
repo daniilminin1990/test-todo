@@ -235,67 +235,30 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }
 
   return (
-    <DndContext
-      onDragStart={onDragStartHandler}
-      onDragOver={onDragOverHandler}
-      onDragEnd={onDragEndHandler}
-      sensors={sensors}
-    >
+    <>
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
       </Grid>
       <Grid container spacing={3}>
-        <SortableContext items={todolistIds}>
-          {todolists.map((tl) => {
-            return (
-              <Grid item key={tl.id}>
-                <Todolist
-                  key={tl.id}
-                  todoListId={tl.id}
-                  todoTitle={tl.title}
-                  tasksFilter={tl.filter}
-                  changeFilter={changeFilter}
-                  updTodoTitle={updTodoTitle}
-                  entityStatus={tl.entityStatus}
-                  disabled={tl.entityStatus}
-                  showTasks={tl.showTasks}
-                  todolist={tl}
-                />
-              </Grid>
-            );
-          })}
-        </SortableContext>
-      </Grid>
-      {createPortal(
-        <DragOverlay>
-          {activeTodo && (
-            <Grid item>
+        {todolists.map((tl) => {
+          return (
+            <Grid item key={tl.id}>
               <Todolist
-                key={activeTodo.id}
-                todoListId={activeTodo.id}
-                todoTitle={activeTodo.title}
-                tasksFilter={activeTodo.filter}
+                key={tl.id}
+                todoListId={tl.id}
+                todoTitle={tl.title}
+                tasksFilter={tl.filter}
                 changeFilter={changeFilter}
                 updTodoTitle={updTodoTitle}
-                entityStatus={activeTodo.entityStatus}
-                disabled={activeTodo.entityStatus}
-                showTasks={activeTodo.showTasks}
-                todolist={activeTodo}
+                entityStatus={tl.entityStatus}
+                disabled={tl.entityStatus}
+                showTasks={tl.showTasks}
+                todolist={tl}
               />
             </Grid>
-          )}
-          {activeTask && (
-            <Task
-              key={activeTask.id}
-              taskId={activeTask.id}
-              tIsDone={activeTask.status}
-              oldTitle={activeTask.title}
-              todoListId={activeTask.todoListId}
-            />
-          )}
-        </DragOverlay>,
-        document.body
-      )}
-    </DndContext>
+          );
+        })}
+      </Grid>
+    </>
   );
 };
