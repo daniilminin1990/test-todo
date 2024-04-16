@@ -122,19 +122,19 @@ const slice = createSlice({
         );
         if (id > -1) state[action.payload.todoListId].splice(id, 1);
       })
-      // .addCase(reorderTasksTC.fulfilled, (state, action) => {
-      //   const { todoListId, startDragId, endShiftId } = action.payload;
-      //   const dragIndex = state[todoListId].findIndex(
-      //     (t) => t.id === startDragId
-      //   );
-      //   const targetIndex = state[todoListId].findIndex(
-      //     (t) => t.id === endShiftId
-      //   );
-      //   if (dragIndex > -1 && targetIndex > -1) {
-      //     const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
-      //     state[todoListId].splice(targetIndex, 0, draggedItem);
-      //   }
-      // })
+      .addCase(reorderTasksTC.fulfilled, (state, action) => {
+        const { todoListId, startDragId, endShiftId } = action.payload;
+        const dragIndex = state[todoListId].findIndex(
+          (t) => t.id === startDragId
+        );
+        const targetIndex = state[todoListId].findIndex(
+          (t) => t.id === endShiftId
+        );
+        if (dragIndex > -1 && targetIndex > -1) {
+          const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
+          state[todoListId].splice(targetIndex, 0, draggedItem);
+        }
+      })
       .addCase(reorderTasksTC.rejected, (state, action) => {});
   },
   selectors: {
@@ -371,7 +371,7 @@ const updateTaskTC = createAppAsyncThunk<
 //     })
 // }
 
-const reorderTasksTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(
+const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
   `${slice.name}/reorderTasks`,
   async (args, thunkAPI) => {
     const { dispatch, rejectWithValue, getState } = thunkAPI;
@@ -401,7 +401,7 @@ const reorderTasksTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(
       });
       if (res.data.resultCode === 0) {
         // dispatch(fetchTasksTC(args.todoListId))
-        return undefined;
+        return args;
       } else {
         handleServerAppError(
           res.data,

@@ -5,17 +5,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { ServerResponseStatusType } from "../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../common/enums/enums";
 import { styled } from "styled-components";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { useAppSelector } from "../../../../store/store";
-import {
-  tasksSelectors,
-  TasksWithEntityStatusType,
-} from "../../../../redux/tasksSlice";
-import { TaskType } from "../../../../api/tasks-api";
 
 export type TaskProps = {
-  todoListId: string;
   taskId: string;
   tIsDone: TaskStatuses;
   oldTitle: string;
@@ -26,29 +17,6 @@ export type TaskProps = {
 };
 
 export const Task = React.memo((props: TaskProps) => {
-  const tasks = useAppSelector((state) =>
-    tasksSelectors.tasksById(state, props.todoListId)
-  );
-
-  const {
-    setNodeRef,
-    attributes,
-    listeners,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: props.taskId,
-    data: {
-      type: "Task",
-      task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
-    },
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked
       ? TaskStatuses.Completed
@@ -71,30 +39,8 @@ export const Task = React.memo((props: TaskProps) => {
 
   const taskCompleted = props.tIsDone === TaskStatuses.Completed;
 
-  if (isDragging) {
-    return (
-      <Li
-        className={taskCompleted ? "is-done" : ""}
-        ref={setNodeRef}
-        style={{
-          ...style,
-          opacity: 0.3,
-          border: "mistyrose 2px solid",
-          backgroundColor: "lightgreen",
-          minHeight: "40px",
-        }}
-      />
-    );
-  }
-
   return (
-    <Li
-      className={taskCompleted ? "is-done" : ""}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
+    <Li className={taskCompleted ? "is-done" : ""}>
       <input
         type="checkbox"
         checked={taskCompleted}
