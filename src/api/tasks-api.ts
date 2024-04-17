@@ -59,18 +59,13 @@ export const tasksApi = {
     );
   },
   reorderTasks(args: ReorderTasksArgs) {
-    if (args.startDragId !== "-1") {
-      console.log("RESULT -1");
-      console.log("TASKSAPI Reorder", args.startDragId);
-      return instance.put<ResponseType>(
-        `todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`,
-        {
-          putAfterItemId: args.endShiftId,
-        }
-      );
-    } else {
-      return {};
-    }
+    console.log("TASKSAPI Reorder", args.startDragId);
+    return instance.put<any>(
+      `todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`,
+      {
+        putAfterItemId: args.endShiftId,
+      }
+    );
   },
 };
 

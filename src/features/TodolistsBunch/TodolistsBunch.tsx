@@ -67,6 +67,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const [activeTodo, setActiveTodo] = useState<TodoUIType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
   const [memoTodoId, setMemoTodoId] = useState<string | null>(null);
+  const [memoOverTodoId, setMemoOverTodoId] = useState<string | null>(null);
+  const [memoActiveTaskId, setMemoActiveTaskId] = useState<string | null>(null);
+  const [memoOverTaskId, setMemoOverTaskId] = useState<string | null>(null);
 
   const todolistIds = useMemo(() => todolists.map((tl) => tl.id), [todolists]);
   const tasks = useAppSelector(tasksSelectors.tasksState);
@@ -113,9 +116,12 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const { active, over } = event;
     if (!over) return;
     const activeId = active.id;
+    const activeTId = active.data.current?.task.id;
     const overId = over.id;
+    const overTId = over.data.current?.task.id;
 
     if (activeId === overId) return;
+    if (activeTId === overTId) return;
     // 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
@@ -125,14 +131,25 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       const overTodoListId = over.data.current?.task.todoListId || "";
       // Когда activeTodolistId === overTodolistId
       if (activeTodoListId === overTodoListId) {
-        // reorderTask({
-        //   todoListId: active.data.current?.task.todoListId,
-        //   startDragId: activeId.toString(),
-        //   endShiftId: overId?.toString() || null,
-        // });
+        if (activeTId !== overTId) {
+          setMemoActiveTaskId(activeTId);
+          setMemoOverTaskId(overTId);
+          console.log("activeTodoListId === overTodoListId");
+          console.log("memoTaskId", memoActiveTaskId);
+          console.log("overTaskId", overTId);
+          reorderTask({
+            todoListId: active.data.current?.task.todoListId,
+            startDragId: activeTId.toString(),
+            endShiftId: overTId?.toString() || null,
+          });
+        }
       }
       if (activeTodoListId !== overTodoListId) {
+        console.log("activeTodoListId !== overTodoListId");
         setMemoTodoId(activeTodoListId);
+        setMemoOverTodoId(overTodoListId);
+        setMemoActiveTaskId(activeTId);
+        setMemoOverTaskId(overTId);
         moveTaskAcrossTodolists({
           todoListId: activeTodoListId,
           endTodoListId: overTodoListId,
@@ -150,28 +167,27 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
     console.log("onDragEndHandler", {
       activeId: event.active.id,
+      memoId: memoTodoId,
+      memoActiveTaskId: memoActiveTaskId,
+      memoOverTaskId: memoOverTaskId,
       overId: event.over?.id,
+      activeTId: event.active.data.current?.task.id,
+      overTId: event.over?.data.current?.task.id,
     });
 
-    const activeId = memoTodoId
-      ? tasks[memoTodoId].findIndex((task) => task.id === active.id)
-      : active.id;
+    // const activeId = memoTodoId
+    //   ? tasks[memoTodoId].findIndex((task) => task.id === active.id)
+    //   : active.id;
+    const activeId = memoTodoId;
+    const activeTId = memoActiveTaskId;
 
     // const overId = over.id;
     const overId = over.id;
-    if (activeId === overId) {
+    const overTId = memoOverTaskId;
+    if (activeTId === overTId && activeId === overId) {
       console.log("activeId === overId");
       return;
     }
-
-    // if (event.over?.data.current?.type === "Todolist") {
-    //   console.log("A СЮДА ПОПАЛ?");
-    //   const endShiftId = event.over.data.current.todolist.id;
-    //   if (activeTodo) {
-    //     reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
-    //     reorderTodolist({ endShiftId, startDragId: activeTodo.id });
-    //   }
-    // }
 
     // Region 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
@@ -187,42 +203,64 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // console.log("activeTodoListId", activeTodoListId);
       // console.log("overTodoListId", overTodoListId);
       //! Когда activeTodolistId === overTodolistId
-      if (activeTodoListId === overTodoListId) {
-        console.log("SOLO TODOLIST");
-        //? Надо разделять санку и action, иначе не работает
-        reorderTasksSoloTodoDnDTC({
-          todoListId: active.data.current?.task.todoListId,
-          startDragId: activeId.toString(),
-          endShiftId: overId.toString(),
-        });
-        reorderTask({
-          todoListId: active.data.current?.task.todoListId,
-          startDragId: activeId.toString(),
-          endShiftId: overId.toString(),
-        });
+      if (memoTodoId === memoOverTodoId) {
+        console.log("activeTodoListId === overTodoListId");
+        if (activeTId !== overTId) {
+          console.log("activeTId !== overTId");
+          console.log("ReorferTasksSoloTodoDnD", {
+            todoListId: activeTodoListId,
+            startDragId: memoActiveTaskId,
+            endShiftId: memoOverTaskId,
+          });
+          reorderTasksSoloTodoDnDTC({
+            todoListId: activeTodoListId,
+            startDragId: memoActiveTaskId || "",
+            endShiftId: memoOverTaskId || "",
+          });
+        }
+        // reorderTask({
+        //   todoListId: active.data.current?.task.todoListId,
+        //   startDragId: activeId.toString(),
+        //   endShiftId: overId.toString(),
+        // });
       }
       // todo Антоним
-      if (memoTodoId !== overTodoListId) {
+      if (memoTodoId !== memoOverTodoId) {
+        console.log("memoTodoId !== overTodoListId");
         if (memoTodoId === null) return;
         const activeCopy: TaskType = active.data.current?.task;
         // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
         deleteTaskTC({
           todoListId: memoTodoId,
-          taskId: event.active.id.toString(),
+          taskId: memoActiveTaskId || "",
         }).then(() => {
           //! 2 создаем в новом тудулисте новую
-          if (overTodoListId) {
+          if (memoOverTodoId) {
             addTaskDnDTC({
-              todoListId: overTodoListId,
+              todoListId: memoOverTodoId,
               title: activeCopy.title,
             }).then((res) => {
               if (res.payload?.task.id) {
-                console.log("TodoBunch startDragId", res.payload?.task.id);
+                console.log("reorderTasksDnDBetweenTodosTC", {
+                  todoListId: memoOverTodoId,
+                  endShiftId: memoOverTaskId,
+                });
+                const startIndex = tasks[memoOverTodoId].findIndex(
+                  (t) => t.id === memoOverTaskId
+                );
+                const searchingIdTrue =
+                  tasks[memoOverTodoId][startIndex - 2].id;
+                const alternativeId = tasks[memoOverTodoId][0].id;
+                const startIndexMinus = searchingIdTrue
+                  ? searchingIdTrue
+                  : alternativeId;
+                // tasks[memoOverTodoId][startIndex - 2].id;
+
                 //! 3 делаем на созданную таску реордер и ререндер
                 reorderTasksDnDBetweenTodosTC({
-                  todoListId: overTodoListId,
-                  startDragId: res.payload?.task.id.toString(),
-                  endShiftId: overId.toString(),
+                  todoListId: memoOverTodoId,
+                  startDragId: startIndexMinus,
+                  endShiftId: memoOverTaskId || "",
                   newTodoListId: res.payload?.task.todoListId.toString(),
                 }).then(() => {
                   // fetchTasksTC();
@@ -273,6 +311,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
 
     setMemoTodoId(null);
+    setMemoOverTodoId(null);
+    setMemoActiveTaskId(null);
+    setMemoOverTaskId(null);
   };
 
   // End
