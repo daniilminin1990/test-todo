@@ -21,6 +21,9 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  closestCenter,
+  pointerWithin,
+  rectIntersection,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -116,9 +119,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const { active, over } = event;
     if (!over) return;
     const activeId = active.id;
-    const activeTId = active.data.current?.task.id;
+    const activeTId = active.data.current?.task?.id;
     const overId = over.id;
-    const overTId = over.data.current?.task.id;
+    const overTId = over.data.current?.task?.id;
 
     if (activeId === overId) return;
     if (activeTId === overTId) return;
@@ -171,8 +174,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       memoActiveTaskId: memoActiveTaskId,
       memoOverTaskId: memoOverTaskId,
       overId: event.over?.id,
-      activeTId: event.active.data.current?.task.id,
-      overTId: event.over?.data.current?.task.id,
+      activeTId: event.active.data.current?.task?.id,
+      overTId: event.over?.data.current?.task?.id,
     });
 
     // const activeId = memoTodoId
@@ -263,12 +266,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     if (event.over?.data.current?.type === "Todolist") {
       const isOverATodolist = over.data.current?.type === "Todolist";
       console.log(isOverATodolist);
-      console.log("A СЮДА ПОПАЛ?");
-      const endShiftId = event.over.data.current.todolist.id;
-      if (activeTodo) {
-        reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
-        reorderTodolist({ endShiftId, startDragId: activeTodo.id });
-      }
       // Region 2 сценарий - пустой тудулист
       if (isActiveATask && isOverATodolist) {
         console.log("ВАВАААААААААААААААААААААААААААА");
@@ -289,6 +286,15 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
             });
           }
         });
+      }
+    }
+
+    if (over?.data.current?.type === "Todolist") {
+      console.log("A СЮДА ПОПАЛ?");
+      const endShiftId = event.over?.data.current?.todolist.id;
+      if (activeTodo) {
+        reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
+        reorderTodolist({ endShiftId, startDragId: activeTodo.id });
       }
     }
 
