@@ -16,8 +16,9 @@ export function dragAndDropIdChangerKIT(
   const endId = tasks.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
-  console.log("startId", startId);
-  console.log("endId", endId);
+  console.log("Changer startUIIndex", startId);
+  console.log("Changer endUIIndex", endId);
+  console.log("Changer endId", args.endShiftId);
 
   if (endId > 0 && endId <= startId) {
     return tasks[endId - 1].id;

@@ -220,7 +220,6 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(
       })
     );
     dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-    console.log("DELETETASKT=TC");
     try {
       const res = await tasksApi.deleteTask(args);
       if (res.data.resultCode === 0) {
@@ -494,10 +493,11 @@ const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
     newTodoListId: string;
   }
 >(`${slice.name}/reorderTasksDnDBetweenTodosTC`, async (args, thunkAPI) => {
-  console.log(args);
+  console.log("TasksSlice", args.endShiftId);
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const tasksNew = getState().tasks[args.newTodoListId];
   const idToServer = dragAndDropIdChangerKIT(tasksNew, args);
+  console.log("After changer", idToServer);
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
     tasksActions.updateTaskEntityStatus({

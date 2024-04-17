@@ -173,7 +173,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     //   }
     // }
 
-    // 1 сценарий, дропаю таску на другую таску в одном или другом туду
+    // Region 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
     if (!isActiveATask) {
@@ -184,14 +184,11 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // const activeTodoListId = active.data.current?.task.todoListId || "";
       const activeTodoListId = active.data.current?.task.todoListId;
       const overTodoListId = over.data.current?.task.todoListId;
-      console.log("memoTodoId", memoTodoId);
-      console.log("activeTodoId", active.data.current?.task.todoListId);
-      console.log("overTodoId", over.data.current?.task.todoListId);
       // console.log("activeTodoListId", activeTodoListId);
       // console.log("overTodoListId", overTodoListId);
       //! Когда activeTodolistId === overTodolistId
       if (activeTodoListId === overTodoListId) {
-        console.log("===");
+        console.log("SOLO TODOLIST");
         //? Надо разделять санку и action, иначе не работает
         reorderTasksSoloTodoDnDTC({
           todoListId: active.data.current?.task.todoListId,
@@ -207,7 +204,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // todo Антоним
       if (memoTodoId !== overTodoListId) {
         if (memoTodoId === null) return;
-        console.log("!==");
         const activeCopy: TaskType = active.data.current?.task;
         // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
         deleteTaskTC({
@@ -221,6 +217,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
               title: activeCopy.title,
             }).then((res) => {
               if (res.payload?.task.id) {
+                console.log("TodoBunch startDragId", res.payload?.task.id);
                 //! 3 делаем на созданную таску реордер и ререндер
                 reorderTasksDnDBetweenTodosTC({
                   todoListId: overTodoListId,
@@ -243,7 +240,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         // });
       }
     }
-
     if (event.over?.data.current?.type === "Todolist") {
       const isOverATodolist = over.data.current?.type === "Todolist";
       console.log(isOverATodolist);
@@ -253,6 +249,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
         reorderTodolist({ endShiftId, startDragId: activeTodo.id });
       }
+      // Region 2 сценарий - пустой тудулист
       if (isActiveATask && isOverATodolist) {
         console.log("ВАВАААААААААААААААААААААААААААА");
         const activeTodoListId = active.data.current?.task.todoListId;
