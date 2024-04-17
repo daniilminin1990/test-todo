@@ -218,11 +218,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
             endShiftId: memoOverTaskId || "",
           });
         }
-        // reorderTask({
-        //   todoListId: active.data.current?.task.todoListId,
-        //   startDragId: activeId.toString(),
-        //   endShiftId: overId.toString(),
-        // });
       }
       // todo Антоним
       if (memoTodoId !== memoOverTodoId) {
@@ -245,17 +240,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                   todoListId: memoOverTodoId,
                   endShiftId: memoOverTaskId,
                 });
-                const startIndex = tasks[memoOverTodoId].findIndex(
+                const searchEndIndex = tasks[memoOverTodoId].findIndex(
                   (t) => t.id === memoOverTaskId
                 );
-                const searchingIdTrue =
-                  tasks[memoOverTodoId][startIndex - 2].id;
-                const alternativeId = tasks[memoOverTodoId][0].id;
-                const startIndexMinus = searchingIdTrue
-                  ? searchingIdTrue
-                  : alternativeId;
-                // tasks[memoOverTodoId][startIndex - 2].id;
-                // Вероятно и не получится сделать ререндер для такой таски, потому что она не попала еще в стейт и по индексам не получится. Поэтому нужно сделать сначала удаление всего тудулиста, потом создание массива тасок в этом туду и только там ебануть реордер. Возможно запроса реордер не потребуется.
+                // todo How to change the id to set the task if task goes upward?
                 //! 3 делаем на созданную таску реордер и ререндер
                 reorderTasksDnDBetweenTodosTC({
                   todoListId: memoOverTodoId,
@@ -267,26 +255,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                   fetchTodolistsTC();
                 });
               }
-              // fetchTodolistsTC().then((res) => {
-              //   reorderTasksDnDBetweenTodosTC({
-              //     todoListId: memoOverTodoId,
-              //     startDragId: activeId ? activeId.toString() : "",
-              //     endShiftId: memoOverTaskId || "",
-              //     newTodoListId: memoOverTodoId,
-              //   }).then(() => {
-              //     // fetchTasksTC();
-              //     fetchTodolistsTC();
-              //   });
-              // });
             });
           }
         });
-        // moveTaskAcrossTodolists({
-        //   todoListId: activeTodoListId,
-        //   endTodoListId: overTodoListId,
-        //   startDragId: activeId.toString(),
-        //   endShiftId: overId.toString(),
-        // });
       }
     }
     if (event.over?.data.current?.type === "Todolist") {
