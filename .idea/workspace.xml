@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="return to DnD without dndKit, just React Native. No dnd for tasks between todolists">
-      <change afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChangerKIT.ts" afterDir="false" />
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="HUGE REFACTOR DragAndDrop almost Done. Now can drag from one todo to another where there are already has tasks. But no realization for dragging to empty todolist">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +67,7 @@
     "Jest.renders learn react link.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dndkit",
+    "git-widget-placeholder": "dndKit",
     "last_opened_file_path": "D:/long-term-projects-it-incubator/test-todo/src/common/utilities",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.stylelint": "true",
@@ -378,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713189123062</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="HUGE REFACTOR DragAndDrop almost Done. Now can drag from one todo to another where there are already has tasks. But no realization for dragging to empty todolist">
+      <option name="closed" value="true" />
+      <created>1713312920043</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1713312920043</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,6 +409,7 @@
     <MESSAGE value="refactor block todos and tasks on drag" />
     <MESSAGE value="add drag and drop using dndKit" />
     <MESSAGE value="upgrade drag and drop through dndKit: draggable todos and draggable tasks. But didn't make drag task on another todo" />
-    <option name="LAST_COMMIT_MESSAGE" value="upgrade drag and drop through dndKit: draggable todos and draggable tasks. But didn't make drag task on another todo" />
+    <MESSAGE value="HUGE REFACTOR DragAndDrop almost Done. Now can drag from one todo to another where there are already has tasks. But no realization for dragging to empty todolist" />
+    <option name="LAST_COMMIT_MESSAGE" value="HUGE REFACTOR DragAndDrop almost Done. Now can drag from one todo to another where there are already has tasks. But no realization for dragging to empty todolist" />
   </component>
 </project>
