@@ -255,11 +255,11 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                   ? searchingIdTrue
                   : alternativeId;
                 // tasks[memoOverTodoId][startIndex - 2].id;
-
+                // Вероятно и не получится сделать ререндер для такой таски, потому что она не попала еще в стейт и по индексам не получится. Поэтому нужно сделать сначала удаление всего тудулиста, потом создание массива тасок в этом туду и только там ебануть реордер. Возможно запроса реордер не потребуется.
                 //! 3 делаем на созданную таску реордер и ререндер
                 reorderTasksDnDBetweenTodosTC({
                   todoListId: memoOverTodoId,
-                  startDragId: startIndexMinus,
+                  startDragId: res.payload.task.id,
                   endShiftId: memoOverTaskId || "",
                   newTodoListId: res.payload?.task.todoListId.toString(),
                 }).then(() => {
@@ -267,6 +267,17 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                   fetchTodolistsTC();
                 });
               }
+              // fetchTodolistsTC().then((res) => {
+              //   reorderTasksDnDBetweenTodosTC({
+              //     todoListId: memoOverTodoId,
+              //     startDragId: activeId ? activeId.toString() : "",
+              //     endShiftId: memoOverTaskId || "",
+              //     newTodoListId: memoOverTodoId,
+              //   }).then(() => {
+              //     // fetchTasksTC();
+              //     fetchTodolistsTC();
+              //   });
+              // });
             });
           }
         });

@@ -495,7 +495,7 @@ const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
 >(`${slice.name}/reorderTasksDnDBetweenTodosTC`, async (args, thunkAPI) => {
   console.log("TasksSlice", args.endShiftId);
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const tasksNew = getState().tasks[args.newTodoListId];
+  const tasksNew = getState().tasks[args.todoListId];
   const idToServer = dragAndDropIdChangerKIT(tasksNew, args);
   console.log("After changer", idToServer);
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
@@ -516,9 +516,9 @@ const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
 
   try {
     const res = await tasksApi.reorderTasks({
-      todoListId: args.newTodoListId,
+      todoListId: args.todoListId,
       startDragId: args.startDragId,
-      endShiftId: idToServer,
+      endShiftId: args.endShiftId,
     });
     if (res.data.resultCode === 0) {
       // dispatch(fetchTasksTC(args.todoListId))
