@@ -1,19 +1,26 @@
 // Общая
-export function dragAndDropIdChanger<
-  T extends { id: string },
-  R extends { startDragId: string; endShiftId: string | null }
->(array: T[], args: R) {
-  const startId = array.findIndex(
+import { TaskType } from "../../api/tasks-api";
+
+export function dragAndDropIdChangerKIT(
+  tasks: TaskType[],
+  args: {
+    todoListId: string;
+    startDragId: string;
+    endShiftId: string;
+    newTodoListId: string;
+  }
+) {
+  const startId = tasks.findIndex(
     (item, index) => item.id === args.startDragId && index >= 0
   );
-  const endId = array.findIndex(
+  const endId = tasks.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
   console.log("startId", startId);
   console.log("endId", endId);
 
   if (endId > 0 && endId <= startId) {
-    return array[endId - 1].id;
+    return tasks[endId - 1].id;
   } else if (endId > startId) {
     return args.endShiftId;
   } else {

@@ -59,6 +59,7 @@ export const tasksApi = {
     );
   },
   reorderTasks(args: ReorderTasksArgs) {
+    console.log("TASKSAPI Reorder", args.endShiftId);
     return instance.put<ResponseType>(
       `todo-lists/${args.todoListId}/tasks/${args.startDragId}/reorder`,
       {
