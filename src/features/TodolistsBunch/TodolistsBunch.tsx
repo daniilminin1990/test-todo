@@ -6,7 +6,7 @@ import {
 } from "../../redux/todolistsSlice";
 import { Grid } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { appSelectors } from "../../redux/appSlice";
 import { loginSelectors } from "../../redux/loginSlice";
 import { AddItemForm } from "../../common/components";
@@ -23,6 +23,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     addTodoTC,
     updateTodoTitleTC,
   } = useActions();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const todolists = useAppSelector((state) =>
     todolistsSelectors.todolists(state)
@@ -94,33 +96,39 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         <AddItemForm callback={addTodo} />
       </Grid>
       <Grid container spacing={3}>
-        {todolists.map((tl) => {
-          return (
-            <Grid
-              item
-              key={tl.id}
-              draggable={true}
-              onDragStart={(e) => dragStartHandler(e, tl.id)}
-              onDragLeave={(e) => dragEndHandler(e)}
-              onDragEnd={(e) => dragEndHandler(e)}
-              onDragOver={(e) => dragOverHandler(e)}
-              onDrop={(e) => dropHandler(e, tl.id)}
-            >
-              <Todolist
+        {todolists
+          .filter((e) =>
+            searchParams.get("search")
+              ? e.title.includes(searchParams.get("search") ?? "")
+              : e
+          )
+          .map((tl) => {
+            return (
+              <Grid
+                item
                 key={tl.id}
-                todoListId={tl.id}
-                todoTitle={tl.title}
-                tasksFilter={tl.filter}
-                changeFilter={changeFilter}
-                updTodoTitle={updTodoTitle}
-                entityStatus={tl.entityStatus}
-                disabled={tl.entityStatus}
-                showTasks={tl.showTasks}
-                todolist={tl}
-              />
-            </Grid>
-          );
-        })}
+                draggable={true}
+                onDragStart={(e) => dragStartHandler(e, tl.id)}
+                onDragLeave={(e) => dragEndHandler(e)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDragOver={(e) => dragOverHandler(e)}
+                onDrop={(e) => dropHandler(e, tl.id)}
+              >
+                <Todolist
+                  key={tl.id}
+                  todoListId={tl.id}
+                  todoTitle={tl.title}
+                  tasksFilter={tl.filter}
+                  changeFilter={changeFilter}
+                  updTodoTitle={updTodoTitle}
+                  entityStatus={tl.entityStatus}
+                  disabled={tl.entityStatus}
+                  showTasks={tl.showTasks}
+                  todolist={tl}
+                />
+              </Grid>
+            );
+          })}
       </Grid>
     </>
   );

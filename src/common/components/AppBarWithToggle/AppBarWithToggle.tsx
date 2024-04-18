@@ -22,6 +22,7 @@ import { ThemeTogglerSlider } from "../ThemeTogglerSlider/ThemeTogglerSlider";
 import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { loginSelectors, loginThunks } from "../../../redux/loginSlice";
+import SearchAppBar from "./SearchAppBar/SearchAppBar";
 
 const drawerWidth = 240;
 
@@ -116,12 +117,15 @@ export default function AppBarWithToggleLeft(props: {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <ThemeTogglerSlider />
-          {isLoggedIn && (
-            <Button color="inherit" onClick={logoutHandler}>
-              Logout
-            </Button>
-          )}
+          <div style={{ display: "flex" }}>
+            <SearchAppBar />
+            <ThemeTogglerSlider />
+            {isLoggedIn && (
+              <Button color="inherit" onClick={logoutHandler}>
+                Logout
+              </Button>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
