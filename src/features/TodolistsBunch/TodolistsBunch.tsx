@@ -131,12 +131,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
-    // if (!isActiveATask) return;
     if (isActiveATask && isOverATask) {
-      // if (activeTId === overTId) {
-      //   console.log("activeTId === overTId");
-      //   return;
-      // }
       const activeTodoListId = active.data.current?.task.todoListId || "";
       const overTodoListId = over.data.current?.task.todoListId || "";
       // Когда activeTodolistId === overTodolistId
@@ -175,23 +170,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const { active, over } = event;
     if (!over) return;
 
-    console.log("onDragEndHandler", {
-      activeId: event.active.id,
-      memoId: memoTodoId,
-      memoActiveTaskId: memoActiveTaskId,
-      memoOverTaskId: memoOverTaskId,
-      overId: event.over?.id,
-      activeTId: event.active.data.current?.task?.id,
-      overTId: event.over?.data.current?.task?.id,
-    });
-
-    // const activeId = memoTodoId
-    //   ? tasks[memoTodoId].findIndex((task) => task.id === active.id)
-    //   : active.id;
     const activeId = memoTodoId;
     const activeTId = memoActiveTaskId;
 
-    // const overId = over.id;
     const overId = over.id;
     const overTId = memoOverTaskId;
     if (activeTId === overTId && activeId === overId) {
@@ -202,16 +183,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // Region 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
-    // if (!isActiveATask) {
-    //   console.log("!isActiveATask");
-    //   return;
-    // }
     if (isActiveATask && isOverATask) {
-      // const activeTodoListId = active.data.current?.task.todoListId || "";
       const activeTodoListId = active.data.current?.task.todoListId;
       const overTodoListId = over.data.current?.task.todoListId;
-      // console.log("activeTodoListId", activeTodoListId);
-      // console.log("overTodoListId", overTodoListId);
       //! Когда activeTodolistId === overTodolistId
       if (memoTodoId === memoOverTodoId) {
         console.log("activeTodoListId === overTodoListId");
@@ -302,15 +276,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       }
     }
 
-    // if (over?.data.current?.type === "Todolist") {
-    //   console.log("A СЮДА ПОПАЛ?");
-    //   const endShiftId = event.over?.data.current?.todolist.id;
-    //   if (activeTodo) {
-    //     reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
-    //     reorderTodolist({ endShiftId, startDragId: activeTodo.id });
-    //   }
-    // }
-
     setMemoTodoId(null);
     setMemoOverTodoId(null);
     setMemoActiveTaskId(null);
@@ -320,7 +285,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // End
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 3 },
+      activationConstraint: { distance: 5 },
     })
   );
 
