@@ -124,12 +124,19 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const overTId = over.data.current?.task?.id;
 
     if (activeId === overId) return;
-    if (activeTId === overTId) return;
+
+    if (activeTodo) {
+      console.log("activeTodo");
+    }
     // 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
-    if (!isActiveATask) return;
+    // if (!isActiveATask) return;
     if (isActiveATask && isOverATask) {
+      // if (activeTId === overTId) {
+      //   console.log("activeTId === overTId");
+      //   return;
+      // }
       const activeTodoListId = active.data.current?.task.todoListId || "";
       const overTodoListId = over.data.current?.task.todoListId || "";
       // Когда activeTodolistId === overTodolistId
@@ -195,10 +202,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // Region 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
-    if (!isActiveATask) {
-      console.log("!isActiveATask");
-      return;
-    }
+    // if (!isActiveATask) {
+    //   console.log("!isActiveATask");
+    //   return;
+    // }
     if (isActiveATask && isOverATask) {
       // const activeTodoListId = active.data.current?.task.todoListId || "";
       const activeTodoListId = active.data.current?.task.todoListId;
@@ -266,6 +273,12 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     if (event.over?.data.current?.type === "Todolist") {
       const isOverATodolist = over.data.current?.type === "Todolist";
       console.log(isOverATodolist);
+      console.log("A СЮДА ПОПАЛ?");
+      const endShiftId = event.over?.data.current?.todolist.id;
+      if (activeTodo) {
+        reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
+        reorderTodolist({ endShiftId, startDragId: activeTodo.id });
+      }
       // Region 2 сценарий - пустой тудулист
       if (isActiveATask && isOverATodolist) {
         console.log("ВАВАААААААААААААААААААААААААААА");
@@ -289,14 +302,14 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       }
     }
 
-    if (over?.data.current?.type === "Todolist") {
-      console.log("A СЮДА ПОПАЛ?");
-      const endShiftId = event.over?.data.current?.todolist.id;
-      if (activeTodo) {
-        reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
-        reorderTodolist({ endShiftId, startDragId: activeTodo.id });
-      }
-    }
+    // if (over?.data.current?.type === "Todolist") {
+    //   console.log("A СЮДА ПОПАЛ?");
+    //   const endShiftId = event.over?.data.current?.todolist.id;
+    //   if (activeTodo) {
+    //     reorderTodolistTC({ endShiftId, startDragId: activeTodo.id });
+    //     reorderTodolist({ endShiftId, startDragId: activeTodo.id });
+    //   }
+    // }
 
     setMemoTodoId(null);
     setMemoOverTodoId(null);
