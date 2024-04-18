@@ -121,43 +121,43 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const onDragOverHandler = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
-    const activeId = active.id;
-    const activeTId = active.data.current?.task?.id;
-    const overId = over.id;
-    const overTId = over.data.current?.task?.id;
+    let activeTodoListId = active.id;
+    const activeTaskId = active.data.current?.task?.id;
+    let overTodoListId = over.id;
+    const overTaskId = over.data.current?.task?.id;
 
-    if (activeId === overId) return;
+    if (activeTodoListId === overTodoListId) return;
 
     // 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
     if (isActiveATask && isOverATask) {
-      const activeTodoListId = active.data.current?.task.todoListId || "";
-      const overTodoListId = over.data.current?.task.todoListId || "";
+      activeTodoListId = active.data.current?.task.todoListId || "";
+      overTodoListId = over.data.current?.task.todoListId || "";
       // Когда activeTodolistId === overTodolistId
-      if (activeTodoListId === overTodoListId && activeTId !== overTId) {
-        setMemoActiveTaskId(activeTId);
-        setMemoOverTaskId(overTId);
+      if (activeTodoListId === overTodoListId && activeTaskId !== overTaskId) {
+        setMemoActiveTaskId(activeTaskId);
+        setMemoOverTaskId(overTaskId);
         console.log("activeTodoListId === overTodoListId");
         console.log("memoTaskId", memoActiveTaskId);
-        console.log("overTaskId", overTId);
+        console.log("overTaskId", overTaskId);
         reorderTask({
           todoListId: activeTask?.todoListId || "",
-          startDragId: activeTId.toString(),
-          endShiftId: overTId?.toString() || null,
+          startDragId: activeTaskId.toString(),
+          endShiftId: overTaskId?.toString() || null,
         });
       }
       if (activeTodoListId !== overTodoListId) {
         console.log("activeTodoListId !== overTodoListId");
-        setMemoTodoId(activeTodoListId);
-        setMemoOverTodoId(overTodoListId);
-        setMemoActiveTaskId(activeTId);
-        setMemoOverTaskId(overTId);
+        setMemoTodoId(activeTodoListId.toString());
+        setMemoOverTodoId(overTodoListId.toString());
+        setMemoActiveTaskId(activeTaskId);
+        setMemoOverTaskId(overTaskId);
         moveTaskAcrossTodolists({
           todoListId: activeTask?.todoListId || "",
-          endTodoListId: overTodoListId,
+          endTodoListId: overTodoListId.toString(),
           startDragId: activeTask?.id.toString() || "",
-          endShiftId: overId.toString(),
+          endShiftId: overTodoListId.toString(),
         });
       }
     }
