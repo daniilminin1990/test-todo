@@ -15,6 +15,7 @@ import { loginSelectors } from "../../redux/loginSlice";
 import { AddItemForm } from "../../common/components";
 import { useActions } from "../../common/hooks/useActions";
 import {
+  CollisionDetection,
   DndContext,
   DragEndEvent,
   DragOverEvent,
@@ -73,6 +74,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const [memoOverTodoId, setMemoOverTodoId] = useState<string | null>(null);
   const [memoActiveTaskId, setMemoActiveTaskId] = useState<string | null>(null);
   const [memoOverTaskId, setMemoOverTaskId] = useState<string | null>(null);
+  const [mA, setMA] = useState<any | null>(null);
+  const [mO, setMO] = useState<any | null>(null);
 
   const todolistIds = useMemo(() => todolists.map((tl) => tl.id), [todolists]);
   const tasks = useAppSelector(tasksSelectors.tasksState);
@@ -138,7 +141,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       if (activeTodoListId === overTodoListId) {
         if (activeTId !== overTId) {
           setMemoActiveTaskId(activeTId);
+          setMA(active);
           setMemoOverTaskId(overTId);
+          setMO(over);
           console.log("activeTodoListId === overTodoListId");
           console.log("memoTaskId", memoActiveTaskId);
           console.log("overTaskId", overTId);
@@ -154,7 +159,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         setMemoTodoId(activeTodoListId);
         setMemoOverTodoId(overTodoListId);
         setMemoActiveTaskId(activeTId);
+        setMA(active);
         setMemoOverTaskId(overTId);
+        setMO(over);
         moveTaskAcrossTodolists({
           todoListId: activeTodoListId,
           endTodoListId: overTodoListId,
@@ -283,6 +290,34 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   };
 
   // End
+  // const customCollisionDetection: CollisionDetection = (active, over) => {
+  //   const activeRect = active.rect;
+  //   const overRect = over.rect;
+
+  //   const intersection = rectIntersection(activeRect, overRect);
+
+  //   if (!intersection) {
+  //     return null;
+  //   }
+
+  //   const intersectionWidth = intersection.right - intersection.left;
+  //   const intersectionHeight = intersection.bottom - intersection.top;
+  //   const overArea = overRect.width * overRect.height;
+  //   const intersectionArea = intersectionWidth * intersectionHeight;
+
+  //   const overlapPercent = (intersectionArea / overArea) * 100;
+
+  //   if (overlapPercent < 50) {
+  //     return null;
+  //   }
+
+  //   return [{
+  //     active,
+  //     over,
+  //     rect: intersection,
+  //   }];
+  // }
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
@@ -299,6 +334,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       onDragOver={onDragOverHandler}
       onDragEnd={onDragEndHandler}
       sensors={sensors}
+      // collisionDetection={customCollisionDetection}
     >
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
