@@ -30,7 +30,7 @@ export const Task = React.memo((props: TaskProps) => {
   const tasks = useAppSelector((state) =>
     tasksSelectors.tasksById(state, props.todoListId)
   );
-  const blockDragMode = useSelector(appSelectors.blockDragMode);
+  const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
 
   const {
     setNodeRef,
@@ -45,7 +45,7 @@ export const Task = React.memo((props: TaskProps) => {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
-    disabled: blockDragMode
+    disabled: isBlockDragMode
   });
 
   const style = {

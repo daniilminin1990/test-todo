@@ -1,10 +1,10 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { getStyles } from "../../../styles";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useAppDispatch} from "../../../store/store";
-import {appActions} from "../../../redux/appSlice";
+import {appActions, appSelectors} from "../../../redux/appSlice";
 // import { styled } from '@mui/system';
 
 export type AddItemFormProps = {
@@ -28,12 +28,13 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
   const [newTitle, setNewTitle] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
   const onClickAddItemHandler = () => {
     if (newTitle.trim() !== "") {
       props.callback(newTitle.trim());
       setNewTitle("");
       setError("");
-      dispatch(appActions.changeBlockDragMode({blockDragMode: false}));
+
     } else {
       setNewTitle("");
       setError("Title is required");
@@ -43,11 +44,24 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
     const titleTyping = e.currentTarget.value;
     setNewTitle(titleTyping);
     titleTyping.length !== 0 && setError("");
-    dispatch(appActions.changeBlockDragMode({blockDragMode: true}))
+    dispatch(appActions.changeBlockDragMode({isBlockDragMode: true}))
   };
   const onEnterAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === "Enter" && onClickAddItemHandler();
   };
+
+  const onFocusHandler = () => {
+    dispatch(appActions.changeBlockDragMode({isBlockDragMode: true}));
+  }
+  const onBlurHandler = () => {
+    dispatch(appActions.changeBlockDragMode({isBlockDragMode: false}));
+  }
+
+  useEffect(() => {
+    if (newTitle === "") {
+      dispatch(appActions.changeBlockDragMode({isBlockDragMode: false}));
+    }
+  }, []);
 
   return (
     <div>
@@ -62,6 +76,8 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         onKeyDown={onEnterAddItem}
         className={error ? "error" : ""}
         disabled={props.disabled}
+        onFocus={onFocusHandler}
+        onBlur={onBlurHandler}
       />
       <Button
         onClick={onClickAddItemHandler}

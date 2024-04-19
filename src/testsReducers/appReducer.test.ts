@@ -7,6 +7,7 @@ beforeEach(() => {
     addStatus: 'idle',
     error: null,
     isInitialized: false,
+    isBlockDragMode: false
   }
 })
 

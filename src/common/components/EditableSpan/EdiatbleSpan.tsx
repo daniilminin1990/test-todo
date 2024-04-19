@@ -13,9 +13,9 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [updTitle, setUpdTitle] = useState<string>(props.oldTitle);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  dispatch(appActions.changeBlockDragMode({blockDragMode: edit}))
 
   const swapHandler = () => {
+    dispatch(appActions.changeBlockDragMode({isBlockDragMode: false}));
     if (!props.disabled) {
       setEdit(!edit);
       // edit === false && props.callback(updTitle)
@@ -42,6 +42,13 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
     }
   };
 
+  const onFocusHandler = () => {
+    dispatch(appActions.changeBlockDragMode({isBlockDragMode: true}));
+  }
+  // const onBlurHandler = () => {
+  //   dispatch(appActions.changeBlockDragMode({isBlockDragMode: true}));
+  // }
+
   return (
     <>
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -55,6 +62,7 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
           onChange={onChangeHandler}
           autoFocus
           onKeyDown={onKeyDownHandler}
+          onFocus={onFocusHandler}
           InputProps={{
             style: {
               padding: "5px 10px",

@@ -56,7 +56,8 @@ type TodolistProps = {
 export const Todolist = React.memo(
   ({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
     const dispatch = useAppDispatch();
-    const blockDragMode = useSelector(appSelectors.blockDragMode);
+    const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
+      console.log(isBlockDragMode)
 
     const {
       deleteTaskTC,
@@ -88,7 +89,7 @@ export const Todolist = React.memo(
         type: "Todolist",
         todolist: props.todolist,
       },
-        disabled: blockDragMode
+        disabled: isBlockDragMode
     });
 
     const style = {

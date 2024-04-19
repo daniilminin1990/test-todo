@@ -24,7 +24,7 @@ const slice = createSlice({
     addStatus: "idle" as ServerResponseStatusType,
     error: null as null | string,
     isInitialized: false,
-    blockDragMode: false,
+    isBlockDragMode: true,
   },
   reducers: {
     setAppTodoStatus(
@@ -51,8 +51,8 @@ const slice = createSlice({
     // changeInitialized(state, action: PayloadAction<{value: boolean}>){
     //   state.isInitialized = action.payload.value
     // },
-    changeBlockDragMode(state, action: PayloadAction<{ blockDragMode: boolean }>){
-      state.blockDragMode = action.payload.blockDragMode;
+    changeBlockDragMode(state, action: PayloadAction<{ isBlockDragMode: boolean }>){
+      state.isBlockDragMode = action.payload.isBlockDragMode;
     }
   },
   extraReducers: (builder) => {
@@ -75,7 +75,7 @@ const slice = createSlice({
     statusTask: (sliceState) => sliceState.statusTask,
     isInitialized: (sliceState) => sliceState.isInitialized,
     error: (sliceState) => sliceState.error,
-    blockDragMode: (sliceState) => sliceState.blockDragMode
+    isBlockDragMode: (sliceState) => sliceState.isBlockDragMode
   },
 });
 
