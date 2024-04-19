@@ -1,5 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import TextField from "@mui/material/TextField";
+import {useAppDispatch} from "../../../store/store";
+import {appActions} from "../../../redux/appSlice";
 
 export type EdiatbleSpanProps = {
   oldTitle: string;
@@ -10,6 +12,8 @@ const EdiatbleSpan = React.memo((props: EdiatbleSpanProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [updTitle, setUpdTitle] = useState<string>(props.oldTitle);
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  dispatch(appActions.changeBlockDragMode({blockDragMode: edit}))
 
   const swapHandler = () => {
     if (!props.disabled) {

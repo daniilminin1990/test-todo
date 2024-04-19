@@ -31,7 +31,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../store/store";
-import { ServerResponseStatusType } from "../../../redux/appSlice";
+import {appSelectors, ServerResponseStatusType} from "../../../redux/appSlice";
 import { TaskStatuses } from "../../../common/enums/enums";
 import { useActions } from "../../../common/hooks/useActions";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
@@ -56,6 +56,7 @@ type TodolistProps = {
 export const Todolist = React.memo(
   ({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
     const dispatch = useAppDispatch();
+    const blockDragMode = useSelector(appSelectors.blockDragMode);
 
     const {
       deleteTaskTC,
@@ -87,6 +88,7 @@ export const Todolist = React.memo(
         type: "Todolist",
         todolist: props.todolist,
       },
+        disabled: blockDragMode
     });
 
     const style = {

@@ -2,7 +2,7 @@ import React, { ChangeEvent } from "react";
 import EdiatbleSpan from "../../../../common/components/EditableSpan/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { ServerResponseStatusType } from "../../../../redux/appSlice";
+import {appSelectors, ServerResponseStatusType} from "../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../common/enums/enums";
 import { styled } from "styled-components";
 import { useSortable } from "@dnd-kit/sortable";
@@ -13,6 +13,7 @@ import {
   TasksWithEntityStatusType,
 } from "../../../../redux/tasksSlice";
 import { TaskType } from "../../../../api/tasks-api";
+import {useSelector} from "react-redux";
 
 export type TaskProps = {
   todoListId: string;
@@ -29,6 +30,7 @@ export const Task = React.memo((props: TaskProps) => {
   const tasks = useAppSelector((state) =>
     tasksSelectors.tasksById(state, props.todoListId)
   );
+  const blockDragMode = useSelector(appSelectors.blockDragMode);
 
   const {
     setNodeRef,
@@ -43,6 +45,7 @@ export const Task = React.memo((props: TaskProps) => {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
+    disabled: blockDragMode
   });
 
   const style = {
