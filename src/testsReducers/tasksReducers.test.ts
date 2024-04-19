@@ -21,6 +21,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
       {
         id: "2",
@@ -34,6 +36,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
       {
         id: "3",
@@ -47,6 +51,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
     ],
     todolistId2: [
@@ -62,6 +68,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
       {
         id: "2",
@@ -75,6 +83,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
       {
         id: "3",
@@ -88,6 +98,8 @@ beforeEach(() => {
         order: 0,
         priority: 0,
         entityStatus: "idle",
+        isDragging: false,
+        isDragOver: false,
       },
     ],
   };

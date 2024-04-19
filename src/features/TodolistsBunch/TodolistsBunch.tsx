@@ -56,6 +56,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     fetchTasksTC,
     fetchTodolistsTC,
     addTaskTC,
+    changeIsDragOver,
+    changeIsDragging,
   } = useActions();
 
   const todolists = useAppSelector((state) =>

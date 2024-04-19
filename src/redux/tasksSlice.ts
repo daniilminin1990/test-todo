@@ -24,6 +24,8 @@ export type TaskStateType = {
 
 export type TasksWithEntityStatusType = TaskType & {
   entityStatus: ServerResponseStatusType;
+  isDragging: boolean;
+  isDragOver: boolean;
 };
 
 const slice = createSlice({
@@ -120,6 +122,32 @@ const slice = createSlice({
         state[todoListId].splice(targetIndex, 0, draggedItem);
       }
     },
+    changeIsDragging(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        taskId: string;
+        isDragging: boolean;
+      }>
+    ) {
+      const { todoListId, taskId, isDragging } = action.payload;
+      const tasks = state[todoListId];
+      const id = tasks.findIndex((t) => t.id === taskId);
+      if (id > -1) tasks[id] = { ...tasks[id], isDragging };
+    },
+    changeIsDragOver(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        taskId: string;
+        isDragOver: boolean;
+      }>
+    ) {
+      const { todoListId, taskId, isDragOver } = action.payload;
+      const tasks = state[todoListId];
+      const id = tasks.findIndex((t) => t.id === taskId);
+      if (id > -1) tasks[id] = { ...tasks[id], isDragOver };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -141,7 +169,12 @@ const slice = createSlice({
       // Таски с сервера с ошибками
       .addCase(fetchTasksTC.fulfilled, (state, action) => {
         const { todolistId, tasks } = action.payload;
-        state[todolistId] = tasks.map((t) => ({ ...t, entityStatus: "idle" }));
+        state[todolistId] = tasks.map((t) => ({
+          ...t,
+          entityStatus: "idle",
+          isDragging: false,
+          isDragOver: false,
+        }));
         return state;
       })
       // Таски с сервера с ошибками
@@ -152,6 +185,8 @@ const slice = createSlice({
         state[action.payload.task.todoListId].unshift({
           ...action.payload.task,
           entityStatus: "idle",
+          isDragging: false,
+          isDragOver: false,
         });
       })
       .addCase(updateTaskTC.fulfilled, (state, action) => {
