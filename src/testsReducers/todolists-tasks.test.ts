@@ -9,7 +9,10 @@ import { TodolistType } from "../api/todolists-api";
 import { UnknownAction } from "redux";
 
 test("All id should be equals", () => {
-  const startTasksState: TaskStateType = {};
+  const startTasksState = {
+    allTasks: {} as TaskStateType,
+    isBlockTasksToDrag: false,
+  };
   const startTodolistsState = {
     allTodolists: [] as TodoUIType[],
     isBlockTodosToDrag: false,

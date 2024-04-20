@@ -117,11 +117,16 @@ test("correct task should be deleted from correct array", () => {
       taskId: "2",
     },
   };
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
 
-  expect(endState["todolistId1"].length).toBe(3);
-  expect(endState["todolistId2"].length).toBe(2);
-  expect(endState["todolistId2"].every((t) => t.id != "2")).toBeTruthy();
+  expect(endState.allTasks["todolistId1"].length).toBe(3);
+  expect(endState.allTasks["todolistId2"].length).toBe(2);
+  expect(
+    endState.allTasks["todolistId2"].every((t) => t.id != "2")
+  ).toBeTruthy();
 });
 
 test("correct task should be added to correct array", () => {
@@ -143,13 +148,16 @@ test("correct task should be added to correct array", () => {
     },
   };
 
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
 
-  expect(endState["todolistId1"].length).toBe(3);
-  expect(endState["todolistId2"].length).toBe(4);
-  expect(endState["todolistId2"][0].id).toBeDefined();
-  expect(endState["todolistId2"][0].title).toBe("juice");
-  expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
+  expect(endState.allTasks["todolistId1"].length).toBe(3);
+  expect(endState.allTasks["todolistId2"].length).toBe(4);
+  expect(endState.allTasks["todolistId2"][0].id).toBeDefined();
+  expect(endState.allTasks["todolistId2"][0].title).toBe("juice");
+  expect(endState.allTasks["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 
 test("status of specified task should be changed", () => {
@@ -170,10 +178,17 @@ test("status of specified task should be changed", () => {
     },
   };
 
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
 
-  expect(endState["todolistId1"][1].status).toBe(TaskStatuses.Completed);
-  expect(endState["todolistId2"][1].status).toBe(TaskStatuses.Completed);
+  expect(endState.allTasks["todolistId1"][1].status).toBe(
+    TaskStatuses.Completed
+  );
+  expect(endState.allTasks["todolistId2"][1].status).toBe(
+    TaskStatuses.Completed
+  );
 });
 
 test("title of specified task should be changed", () => {
@@ -196,11 +211,14 @@ test("title of specified task should be changed", () => {
       },
     },
   };
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
 
-  expect(endState["todolistId1"][1].title).toBe("JS");
-  expect(endState["todolistId2"][1].title).toBe("YOGURT");
-  expect(endState["todolistId2"][0].title).toBe("bread");
+  expect(endState.allTasks["todolistId1"][1].title).toBe("JS");
+  expect(endState.allTasks["todolistId2"][1].title).toBe("YOGURT");
+  expect(endState.allTasks["todolistId2"][0].title).toBe("bread");
 });
 
 test("new array should be added when new todolist is added", () => {
@@ -226,7 +244,10 @@ test("new array should be added when new todolist is added", () => {
     },
   };
 
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
 
   const keys = Object.keys(endState);
   const newKey = keys.find((k) => k != "todolistId1" && k != "todolistId2");
@@ -234,7 +255,7 @@ test("new array should be added when new todolist is added", () => {
     throw new Error("new key should be added");
   }
   expect(keys.length).toBe(3);
-  expect(endState[newKey]).toEqual([]);
+  expect(endState.allTasks[newKey]).toEqual([]);
 });
 
 test("property with todolistId should be deleted", () => {
@@ -248,11 +269,14 @@ test("property with todolistId should be deleted", () => {
       todoListId: "todolistId2",
     },
   };
-  const endState = tasksSlice(startState, action);
+  const endState = tasksSlice(
+    { allTasks: startState, isBlockTasksToDrag: false },
+    action
+  );
   const keys = Object.keys(endState);
 
   expect(keys.length).toBe(1);
-  expect(endState["todolistId2"]).toBeUndefined();
+  expect(endState.allTasks["todolistId2"]).toBeUndefined();
 });
 
 test("empty arrays should be added when we set todolists", () => {
@@ -271,12 +295,15 @@ test("empty arrays should be added when we set todolists", () => {
     },
   };
 
-  const endState = tasksSlice({}, action);
+  const endState = tasksSlice(
+    { allTasks: {}, isBlockTasksToDrag: false },
+    action
+  );
   const keys = Object.keys(endState);
 
   expect(keys.length).toBe(2);
-  expect(endState["1"]).toStrictEqual([]);
-  expect(endState["2"]).toStrictEqual([]);
+  expect(endState.allTasks["1"]).toStrictEqual([]);
+  expect(endState.allTasks["2"]).toStrictEqual([]);
 });
 
 test("tasks should be added for todolist", () => {
@@ -287,12 +314,15 @@ test("tasks should be added for todolist", () => {
   };
   const endState = tasksSlice(
     {
-      todolistId2: [],
-      todolistId1: [],
+      allTasks: {
+        todolistId2: [],
+        todolistId1: [],
+      },
+      isBlockTasksToDrag: false,
     },
     action
   );
 
-  expect(endState["todolistId1"].length).toBe(3);
-  expect(endState["todolistId2"].length).toBe(0);
+  expect(endState.allTasks["todolistId1"].length).toBe(3);
+  expect(endState.allTasks["todolistId2"].length).toBe(0);
 });

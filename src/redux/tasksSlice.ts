@@ -30,7 +30,10 @@ export type TasksWithEntityStatusType = TaskType & {
 
 const slice = createSlice({
   name: "tasks",
-  initialState: {} as TaskStateType,
+  initialState: {
+    allTasks: {} as TaskStateType,
+    isBlockTasksToDrag: false,
+  },
   reducers: {
     // removeTask(state, action: PayloadAction<{ todoListId: string, taskId: string }>) {
     //   const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
@@ -56,8 +59,8 @@ const slice = createSlice({
       const { startDragId, endShiftId, todoListId, endTodoListId } =
         action.payload;
 
-      const startTodolistTasks = state[todoListId];
-      const endTodolistTasks = state[endTodoListId];
+      const startTodolistTasks = state.allTasks[todoListId];
+      const endTodolistTasks = state.allTasks[endTodoListId];
 
       const startTaskIndex = startTodolistTasks.findIndex(
         (task) => task.id === startDragId
@@ -103,7 +106,7 @@ const slice = createSlice({
         entityStatus: ServerResponseStatusType;
       }>
     ) {
-      const tasks = state[action.payload.todoListId];
+      const tasks = state.allTasks[action.payload.todoListId];
       const id = tasks.findIndex((t) => t.id === action.payload.taskId);
       if (id > -1) {
         tasks[id] = { ...tasks[id], entityStatus: action.payload.entityStatus };
@@ -111,15 +114,15 @@ const slice = createSlice({
     },
     reorderTask(state, action: PayloadAction<ReorderTasksArgs>) {
       const { todoListId, startDragId, endShiftId } = action.payload;
-      const dragIndex = state[todoListId].findIndex(
+      const dragIndex = state.allTasks[todoListId].findIndex(
         (t) => t.id === startDragId
       );
-      const targetIndex = state[todoListId].findIndex(
+      const targetIndex = state.allTasks[todoListId].findIndex(
         (t) => t.id === endShiftId
       );
       if (dragIndex > -1 && targetIndex > -1) {
-        const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
-        state[todoListId].splice(targetIndex, 0, draggedItem);
+        const draggedItem = state.allTasks[todoListId].splice(dragIndex, 1)[0];
+        state.allTasks[todoListId].splice(targetIndex, 0, draggedItem);
       }
     },
     changeTaskIsDragging(
@@ -131,7 +134,7 @@ const slice = createSlice({
       }>
     ) {
       const { todoListId, taskId, isDragging } = action.payload;
-      const tasks = state[todoListId];
+      const tasks = state.allTasks[todoListId];
       const id = tasks.findIndex((t) => t.id === taskId);
       if (id > -1) tasks[id] = { ...tasks[id], isDragging };
     },
@@ -144,32 +147,38 @@ const slice = createSlice({
       }>
     ) {
       const { todoListId, taskId, isDragOver } = action.payload;
-      const tasks = state[todoListId];
+      const tasks = state.allTasks[todoListId];
       const id = tasks.findIndex((t) => t.id === taskId);
       if (id > -1) tasks[id] = { ...tasks[id], isDragOver };
+    },
+    changeIsBlockTasksToDrag(state, action: PayloadAction<boolean>) {
+      state.isBlockTasksToDrag = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(todolistsThunks.addTodoTC.fulfilled, (state, action) => {
-        state[action.payload.newTodolist.id] = [];
+        state.allTasks[action.payload.newTodolist.id] = [];
       })
       .addCase(todolistsThunks.deleteTodoTC.fulfilled, (state, action) => {
-        delete state[action.payload.todoListId];
+        delete state.allTasks[action.payload.todoListId];
       })
       .addCase(todolistsThunks.fetchTodolistsTC.fulfilled, (state, action) => {
         action.payload.todolists.forEach((tl) => {
-          state[tl.id] = [];
+          state.allTasks[tl.id] = [];
         });
       })
       // Очистка стейта после разлогинивания
       .addCase(clearTasksAndTodos, () => {
-        return {};
+        return {
+          allTasks: {},
+          isBlockTasksToDrag: false,
+        };
       })
       // Таски с сервера с ошибками
       .addCase(fetchTasksTC.fulfilled, (state, action) => {
         const { todolistId, tasks } = action.payload;
-        state[todolistId] = tasks.map((t) => ({
+        state.allTasks[todolistId] = tasks.map((t) => ({
           ...t,
           entityStatus: "idle",
           isDragging: false,
@@ -182,7 +191,7 @@ const slice = createSlice({
       //
       // })
       .addCase(addTaskTC.fulfilled, (state, action) => {
-        state[action.payload.task.todoListId].unshift({
+        state.allTasks[action.payload.task.todoListId].unshift({
           ...action.payload.task,
           entityStatus: "idle",
           isDragging: false,
@@ -190,37 +199,40 @@ const slice = createSlice({
         });
       })
       .addCase(updateTaskTC.fulfilled, (state, action) => {
-        const tasks = state[action.payload.todoListId];
+        const tasks = state.allTasks[action.payload.todoListId];
         const id = tasks.findIndex((t) => t.id === action.payload.taskId);
         if (id > -1) {
           tasks[id] = { ...tasks[id], ...action.payload.model };
         }
       })
       .addCase(deleteTaskTC.fulfilled, (state, action) => {
-        const id = state[action.payload.todoListId].findIndex(
+        const id = state.allTasks[action.payload.todoListId].findIndex(
           (t) => t.id === action.payload.taskId
         );
-        if (id > -1) state[action.payload.todoListId].splice(id, 1);
+        if (id > -1) state.allTasks[action.payload.todoListId].splice(id, 1);
       })
       .addCase(reorderTasksTC.fulfilled, (state, action) => {
         const { todoListId, startDragId, endShiftId } = action.payload;
-        const dragIndex = state[todoListId].findIndex(
+        const dragIndex = state.allTasks[todoListId].findIndex(
           (t) => t.id === startDragId
         );
-        const targetIndex = state[todoListId].findIndex(
+        const targetIndex = state.allTasks[todoListId].findIndex(
           (t) => t.id === endShiftId
         );
         if (dragIndex > -1 && targetIndex > -1) {
-          const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
-          state[todoListId].splice(targetIndex, 0, draggedItem);
+          const draggedItem = state.allTasks[todoListId].splice(
+            dragIndex,
+            1
+          )[0];
+          state.allTasks[todoListId].splice(targetIndex, 0, draggedItem);
         }
       })
       .addCase(reorderTasksTC.rejected, (state, action) => {});
   },
   selectors: {
-    tasksState: (sliceState) => sliceState as TaskStateType,
+    tasksState: (sliceState) => sliceState.allTasks as TaskStateType,
     tasksById: (sliceState, todoId: string) =>
-      sliceState[todoId] as TasksWithEntityStatusType[],
+      sliceState.allTasks[todoId] as TasksWithEntityStatusType[],
     // isTaskDragging: (sliceState, todoId: string) =>
     //   sliceState[todoId] as TasksWithEntityStatusType[],
   },
@@ -316,7 +328,9 @@ const updateTaskTC = createAppAsyncThunk<
 >(`${slice.name}/updateTask`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const state = getState();
-  const task = state.tasks[args.todoListId].find((tl) => tl.id === args.taskId);
+  const task = state.tasks.allTasks[args.todoListId].find(
+    (tl) => tl.id === args.taskId
+  );
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
     tasksActions.updateTaskEntityStatus({
@@ -371,7 +385,7 @@ const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
   `${slice.name}/reorderTasks`,
   async (args, thunkAPI) => {
     const { dispatch, rejectWithValue, getState } = thunkAPI;
-    const tasks = getState().tasks[args.todoListId];
+    const tasks = getState().tasks.allTasks[args.todoListId];
     const idToServer = dragAndDropIdChanger(tasks, args);
     dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
     dispatch(
@@ -464,7 +478,7 @@ const reorderTasksSoloTodoDnDTC = createAppAsyncThunk<
   ReorderTasksArgs
 >(`${slice.name}/reorderTasksSoloTodoDnDTC`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const tasks = getState().tasks[args.todoListId];
+  const tasks = getState().tasks.allTasks[args.todoListId];
   const idToServer = dragAndDropIdChanger(tasks, args);
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
@@ -532,7 +546,7 @@ const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
 >(`${slice.name}/reorderTasksDnDBetweenTodosTC`, async (args, thunkAPI) => {
   console.log("TasksSlice", args.endShiftId);
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const tasksNew = getState().tasks[args.todoListId];
+  const tasksNew = getState().tasks.allTasks[args.todoListId];
   const idToServer = dragAndDropIdChangerKIT(tasksNew, args);
   console.log("After changer", idToServer);
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
