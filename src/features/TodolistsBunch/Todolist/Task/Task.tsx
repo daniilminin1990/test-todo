@@ -35,11 +35,10 @@ export const Task = React.memo((props: TaskProps) => {
   );
   const isBlockTasksToDrag = useAppSelector(tasksSelectors.tasksState);
   const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
-  const isTaskDragging =
-    tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragging;
-  console.log("isTaskDragging", isTaskDragging);
-  const isTaskDragOver =
-    tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragOver;
+  // const isTaskDragging =
+  //   tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragging;
+  // const isTaskDragOver =
+  //   tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragOver;
 
   const {
     setNodeRef,
@@ -54,7 +53,7 @@ export const Task = React.memo((props: TaskProps) => {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
-    disabled: isBlockDragMode && isBlockTasksToDrag && !isTaskDragging,
+    disabled: isBlockDragMode && isBlockTasksToDrag,
   });
 
   const style = {

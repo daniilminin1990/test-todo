@@ -1,25 +1,67 @@
 // Общая
+import { TasksWithEntityStatusType } from "../../redux/tasksSlice";
+
 export function dragAndDropIdChanger<
   T extends { id: string },
-  R extends { startDragId: string; endShiftId: string | null }
+  R extends {
+    startDragId: string;
+    endShiftId: string | null;
+    startOrder?: number;
+  }
 >(array: T[], args: R) {
-  const startId = array.findIndex(
+  const startIndex = array.findIndex(
     (item, index) => item.id === args.startDragId && index >= 0
   );
-  const endId = array.findIndex(
+  const endIndex = array.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
-  console.log("startId", startId);
-  console.log("endId", endId);
+  console.log("startIndex", startIndex);
+  console.log("endIndex", endIndex);
 
-  if (endId > 0 && endId <= startId) {
-    return array[endId - 1].id;
-  } else if (endId > startId) {
+  if (endIndex > 0 && endIndex <= startIndex) {
+    return array[endIndex - 1].id;
+  } else if (endIndex > startIndex) {
     return args.endShiftId;
   } else {
     return null;
   }
 }
+export function dragAndDropIdChangerByOrder(
+  tasks: TasksWithEntityStatusType[],
+  args: {
+    todoListId: string;
+    startDragId: string;
+    startOrder: number;
+    endShiftId: string;
+  }
+) {
+  const startIndex = tasks.findIndex(
+    (item, index) => item.id === args.startDragId && index >= 0
+  );
+  const endIndex = tasks.findIndex(
+    (item, index) => item.id === args.endShiftId && index >= 0
+  );
+  console.log("startIndex", startIndex);
+  console.log("endIndex", endIndex);
+
+  if (endIndex === 0) {
+    return null;
+  } else if (endIndex === tasks.length - 1) {
+    return args.endShiftId;
+  } else {
+    return tasks[endIndex - 1].id;
+  }
+  // if (endIndex > 0 && endIndex === tasks.length - 2) {
+  //   console.log({ firstIf: tasks[endIndex - 1], length: tasks.length });
+  //   return tasks[endIndex - 1].id;
+  // } else if (endIndex === tasks.length - 1) {
+  //   console.log({ secondIf: tasks[endIndex - 1], length: tasks.length });
+  //   return args.endShiftId;
+  // } else {
+  //   return null;
+  // }
+}
+
 //   // ! НА СЕРВЕРЕ ОБРАБОТКА КАК ГАВНО, поэтому танцы с бубном
 //   // Определяем UI index тудулиста, НА который перетаскиваем
 //   // Отнимаем 1 из UI index и определяем его id, если таковой есть, то збс. Если нет, то null

@@ -101,16 +101,6 @@ export const Todolist = React.memo(
         !isBlockDragMode,
     });
 
-    console.log(
-      "Заблокан тудулист?",
-      // isBlockDragMode &&
-      todolistsState.isBlockTodosToDrag &&
-        !todolist.isTodoDragging &&
-        !isBlockDragMode
-        ? "ДА"
-        : "НЕТ"
-    );
-
     const style = {
       // transform: CSS.Transform.toString(transform),
       // transition,

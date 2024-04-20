@@ -17,6 +17,7 @@ import {
   handleServerNetworkError,
 } from "../common/utilities";
 import { dragAndDropIdChangerKIT } from "../common/utilities/dragAndDropIdChangerKIT";
+import { dragAndDropIdChangerByOrder } from "../common/utilities/dragAndDropIdChanger";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[];
@@ -537,20 +538,22 @@ const reorderTasksSoloTodoDnDTC = createAppAsyncThunk<
   }
 });
 
-const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
+const reorderTasksDnDByOrderTC = createAppAsyncThunk<
   undefined,
   {
     todoListId: string;
+    startOrder: number;
     startDragId: string;
     endShiftId: string;
-    newTodoListId: string;
   }
->(`${slice.name}/reorderTasksDnDBetweenTodosTC`, async (args, thunkAPI) => {
-  console.log("TasksSlice", args.endShiftId);
+>(`${slice.name}/reorderTasksDnDByOrderTC`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const tasksNew = getState().tasks.allTasks[args.todoListId];
-  const idToServer = dragAndDropIdChangerKIT(tasksNew, args);
-  console.log("After changer", idToServer);
+  const tasks = getState().tasks.allTasks[args.todoListId];
+  const idToServer = dragAndDropIdChangerByOrder(tasks, args);
+  // const idToServer =
+  //   tasks.findIndex((t) => t.id === args.endShiftId) === 0
+  //     ? null
+  //     : args.endShiftId;
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
     tasksActions.updateTaskEntityStatus({
@@ -571,7 +574,7 @@ const reorderTasksDnDBetweenTodosTC = createAppAsyncThunk<
     const res = await tasksApi.reorderTasks({
       todoListId: args.todoListId,
       startDragId: args.startDragId,
-      endShiftId: args.endShiftId,
+      endShiftId: idToServer,
     });
     if (res.data.resultCode === 0) {
       // dispatch(fetchTasksTC(args.todoListId))
@@ -617,7 +620,7 @@ export const tasksThunks = {
   reorderTasksTC,
   addTaskDnDTC,
   reorderTasksSoloTodoDnDTC,
-  reorderTasksDnDBetweenTodosTC,
+  reorderTasksDnDByOrderTC,
 };
 
 // ================================================
