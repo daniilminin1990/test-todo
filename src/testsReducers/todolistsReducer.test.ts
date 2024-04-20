@@ -11,35 +11,41 @@ import { UnknownAction } from "redux";
 
 let todolistId1: string;
 let todolistId2: string;
-let startState: Array<TodoUIType> = [];
+let startState = {
+  allTodolists: [] as Array<TodoUIType>,
+  isBlockTodosToDrag: false,
+};
 
 beforeEach(() => {
   todolistId1 = v1();
   todolistId2 = v1();
-  startState = [
-    {
-      id: todolistId1,
-      title: "What to learn",
-      filter: "all",
-      addedDate: "",
-      order: 0,
-      entityStatus: "idle",
-      showTasks: true,
-      isTodoDragging: false,
-      isTodoDragOver: false,
-    },
-    {
-      id: todolistId2,
-      title: "What to buy",
-      filter: "all",
-      addedDate: "",
-      order: 0,
-      entityStatus: "idle",
-      showTasks: true,
-      isTodoDragging: false,
-      isTodoDragOver: false,
-    },
-  ];
+  startState = {
+    allTodolists: [
+      {
+        id: todolistId1,
+        title: "What to learn",
+        filter: "all",
+        addedDate: "",
+        order: 0,
+        entityStatus: "idle",
+        showTasks: true,
+        isTodoDragging: false,
+        isTodoDragOver: false,
+      },
+      {
+        id: todolistId2,
+        title: "What to buy",
+        filter: "all",
+        addedDate: "",
+        order: 0,
+        entityStatus: "idle",
+        showTasks: true,
+        isTodoDragging: false,
+        isTodoDragOver: false,
+      },
+    ],
+    isBlockTodosToDrag: false,
+  };
 });
 
 test("correct todolist should be removed", () => {
@@ -54,8 +60,8 @@ test("correct todolist should be removed", () => {
     },
   };
   const endState = todolistsSlice(startState, action);
-  expect(endState.length).toBe(1);
-  expect(endState[0].id).toBe(todolistId2);
+  expect(endState.allTodolists.length).toBe(1);
+  expect(endState.allTodolists[0].id).toBe(todolistId2);
 });
 
 test("correct todolist should be added", () => {
@@ -82,9 +88,9 @@ test("correct todolist should be added", () => {
   };
   const endState = todolistsSlice(startState, action);
 
-  expect(endState.length).toBe(3);
-  expect(endState[0].title).toBe(newTodolist.title);
-  expect(endState[0].filter).toBe("all");
+  expect(endState.allTodolists.length).toBe(3);
+  expect(endState.allTodolists[0].title).toBe(newTodolist.title);
+  expect(endState.allTodolists[0].filter).toBe("all");
 });
 
 test("correct todolist should change its name", () => {
@@ -102,8 +108,8 @@ test("correct todolist should change its name", () => {
   };
   const endState = todolistsSlice(startState, action);
 
-  expect(endState[0].title).toBe("What to learn");
-  expect(endState[1].title).toBe(newTodolistTitle);
+  expect(endState.allTodolists[0].title).toBe("What to learn");
+  expect(endState.allTodolists[1].title).toBe(newTodolistTitle);
 });
 
 test("correct filter of todolist should be changed", () => {
@@ -114,8 +120,8 @@ test("correct filter of todolist should be changed", () => {
   });
   const endState = todolistsSlice(startState, action);
 
-  expect(endState[0].filter).toBe("all");
-  expect(endState[1].filter).toBe(newFilter);
+  expect(endState.allTodolists[0].filter).toBe("all");
+  expect(endState.allTodolists[1].filter).toBe(newFilter);
 });
 
 test("todolist should be added", () => {
@@ -126,10 +132,13 @@ test("todolist should be added", () => {
 
   const action: FetchTodosType = {
     type: todolistsThunks.fetchTodolistsTC.fulfilled.type,
-    payload: { todolists: startState },
+    payload: { todolists: startState.allTodolists },
   };
-  const endState = todolistsSlice([], action);
-  expect(endState.length).toBe(2);
+  const endState = todolistsSlice(
+    { allTodolists: [], isBlockTodosToDrag: false },
+    action
+  );
+  expect(endState.allTodolists.length).toBe(2);
 });
 test("correct entity status of todolist should be changed", () => {
   let newStatus: ServerResponseStatusType = "loading";
@@ -138,6 +147,6 @@ test("correct entity status of todolist should be changed", () => {
     entityStatus: newStatus,
   });
   const endState = todolistsSlice(startState, action);
-  expect(endState[0].entityStatus).toBe("idle");
-  expect(endState[1].entityStatus).toBe(newStatus);
+  expect(endState.allTodolists[0].entityStatus).toBe("idle");
+  expect(endState.allTodolists[1].entityStatus).toBe(newStatus);
 });

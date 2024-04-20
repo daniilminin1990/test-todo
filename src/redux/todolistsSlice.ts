@@ -27,7 +27,10 @@ export type TodoUIType = TodolistType & {
 
 const slice = createSlice({
   name: "todolists",
-  initialState: [] as TodoUIType[],
+  initialState: {
+    allTodolists: [] as TodoUIType[],
+    isBlockTodosToDrag: false,
+  },
   reducers: {
     // removeTodo(state, action: PayloadAction<{ todoListId: string }>) {
     //   const id = state.findIndex(tl => tl.id === action.payload.todoListId)
@@ -52,9 +55,14 @@ const slice = createSlice({
         newFilterValue: FilterValuesType;
       }>
     ) {
-      const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
+      const id = state.allTodolists.findIndex(
+        (tl) => tl.id === action.payload.todoListId
+      );
       if (id > -1)
-        state[id] = { ...state[id], filter: action.payload.newFilterValue };
+        state.allTodolists[id] = {
+          ...state.allTodolists[id],
+          filter: action.payload.newFilterValue,
+        };
     },
     // updateTodoTitle(state, action: PayloadAction<{ todoListId: string, newTodoTitle: string }>) {
     //   const id = state.findIndex(tl => tl.id === action.payload.todoListId)
@@ -67,25 +75,36 @@ const slice = createSlice({
         entityStatus: ServerResponseStatusType;
       }>
     ) {
-      const id = state.findIndex((tl) => tl.id === action.payload.todoId);
+      const id = state.allTodolists.findIndex(
+        (tl) => tl.id === action.payload.todoId
+      );
       if (id > -1)
-        state[id] = { ...state[id], entityStatus: action.payload.entityStatus };
+        state.allTodolists[id] = {
+          ...state.allTodolists[id],
+          entityStatus: action.payload.entityStatus,
+        };
     },
     // fetchTodos(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
     //   return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     // },
     showTasks(state, action: PayloadAction<{ todoListId: string }>) {
-      const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
-      if (id > -1) state[id].showTasks = true;
+      const id = state.allTodolists.findIndex(
+        (tl) => tl.id === action.payload.todoListId
+      );
+      if (id > -1) state.allTodolists[id].showTasks = true;
     },
     reorderTodolist(state, action: PayloadAction<ReorderTodoListArgs>) {
       const { startDragId, endShiftId } = action.payload;
-      const dragIndex = state.findIndex((el) => el.id === startDragId);
-      const targetIndex = state.findIndex((el) => el.id === endShiftId);
+      const dragIndex = state.allTodolists.findIndex(
+        (el) => el.id === startDragId
+      );
+      const targetIndex = state.allTodolists.findIndex(
+        (el) => el.id === endShiftId
+      );
 
       if (dragIndex > -1 && targetIndex > -1) {
-        const draggedItem = state.splice(dragIndex, 1)[0];
-        state.splice(targetIndex, 0, draggedItem);
+        const draggedItem = state.allTodolists.splice(dragIndex, 1)[0];
+        state.allTodolists.splice(targetIndex, 0, draggedItem);
       }
     },
     changeTodoIsDragging(
@@ -96,8 +115,9 @@ const slice = createSlice({
       }>
     ) {
       const { todoListId, isTodoDragging } = action.payload;
-      const id = state.findIndex((tl) => tl.id === todoListId);
-      if (id > -1) state[id] = { ...state[id], isTodoDragging };
+      const id = state.allTodolists.findIndex((tl) => tl.id === todoListId);
+      if (id > -1)
+        state.allTodolists[id] = { ...state.allTodolists[id], isTodoDragging };
     },
     changeTodoIsDragOver(
       state,
@@ -107,32 +127,41 @@ const slice = createSlice({
       }>
     ) {
       const { todoListId, isTodoDragOver } = action.payload;
-      const id = state.findIndex((tl) => tl.id === todoListId);
-      if (id > -1) state[id] = { ...state[id], isTodoDragOver };
+      const id = state.allTodolists.findIndex((tl) => tl.id === todoListId);
+      if (id > -1)
+        state.allTodolists[id] = { ...state.allTodolists[id], isTodoDragOver };
+    },
+    changeIsBlockTodosToDrag(state, action: PayloadAction<boolean>) {
+      state.isBlockTodosToDrag = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(clearTasksAndTodos, () => {
-        return [];
+        return { allTodolists: [], isBlockTodosToDrag: false };
       })
       .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-        return action.payload.todolists.map((tl) => ({
-          ...tl,
-          filter: "all",
-          entityStatus: "idle",
-          showTasks: false,
-          isTodoDragging: false,
-          isTodoDragOver: false,
-        }));
+        return {
+          allTodolists: action.payload.todolists.map((tl) => ({
+            ...tl,
+            filter: "all",
+            entityStatus: "idle",
+            showTasks: false,
+            isTodoDragging: false,
+            isTodoDragOver: false,
+          })),
+          isBlockTodosToDrag: false,
+        };
       })
       .addCase(deleteTodoTC.fulfilled, (state, action) => {
-        const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
+        const id = state.allTodolists.findIndex(
+          (tl) => tl.id === action.payload.todoListId
+        );
         // delete state[id] ЭТО НЕ ПОДОЙДЕТ, ИНАЧЕ БУДЕТ ПУСТОЙ ЭЛЕМЕНТ В МАССИВЕ И НУЖНО ПРОВЕРИТЬ, А НАЙДЕТ ЛИ ВАЩЕ ТАКОЙ ID
-        if (id > -1) state.splice(id, 1);
+        if (id > -1) state.allTodolists.splice(id, 1);
       })
       .addCase(addTodoTC.fulfilled, (state, action) => {
-        state.unshift({
+        state.allTodolists.unshift({
           ...action.payload.newTodolist,
           filter: action.payload.filter,
           entityStatus: action.payload.entityStatus,
@@ -142,8 +171,13 @@ const slice = createSlice({
         });
       })
       .addCase(updateTodoTitleTC.fulfilled, (state, action) => {
-        const id = state.findIndex((tl) => tl.id === action.payload.todoListId);
-        state[id] = { ...state[id], title: action.payload.title };
+        const id = state.allTodolists.findIndex(
+          (tl) => tl.id === action.payload.todoListId
+        );
+        state.allTodolists[id] = {
+          ...state.allTodolists[id],
+          title: action.payload.title,
+        };
       });
     // .addCase(reorderTodolistTC.fulfilled, (state, action) => {
     //   const { startDragId, endShiftId } = action.payload;
@@ -159,7 +193,7 @@ const slice = createSlice({
   selectors: {
     todolists: (sliceState) => sliceState,
     todolistById: (sliceState, todoListId: string) =>
-      sliceState.find((tl) => tl.id === todoListId) as TodoUIType,
+      sliceState.allTodolists.find((tl) => tl.id === todoListId) as TodoUIType,
   },
 });
 
@@ -370,7 +404,7 @@ const reorderTodolistTC = createAppAsyncThunk<
   ReorderTodoListArgs
 >(`${slice.name}/reorderTodolist`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const todolists = getState().todolists;
+  const todolists = getState().todolists.allTodolists;
   dispatch(appActions.setAppTodoStatus({ statusTodo: "loading" }));
   dispatch(
     todolistsActions.updateEntityStatusTodo({

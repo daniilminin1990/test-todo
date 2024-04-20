@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="create states isDragging, isDragOver and reducers to change in tasksSlice">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="add changeTaskDragStatus, changeTodoDragStatus to slices.&#10;Realized I need to make dragStatus for all todolists and all tasks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -313,7 +310,7 @@
       <workItem from="1713349827559" duration="839000" />
       <workItem from="1713543236745" duration="2945000" />
       <workItem from="1713546565944" duration="16463000" />
-      <workItem from="1713599349670" duration="6282000" />
+      <workItem from="1713599349670" duration="8312000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -435,7 +432,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713560071062</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add changeTaskDragStatus, changeTodoDragStatus to slices.&#10;Realized I need to make dragStatus for all todolists and all tasks">
+      <option name="closed" value="true" />
+      <created>1713611489694</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1713611489694</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -468,6 +473,7 @@
     <MESSAGE value="add blockDragMode state in appSlice" />
     <MESSAGE value="refactor blockDragMode -&gt; isBlockDragMode state in appSlice. Added logic to block dragging" />
     <MESSAGE value="create states isDragging, isDragOver and reducers to change in tasksSlice" />
-    <option name="LAST_COMMIT_MESSAGE" value="create states isDragging, isDragOver and reducers to change in tasksSlice" />
+    <MESSAGE value="add changeTaskDragStatus, changeTodoDragStatus to slices.&#10;Realized I need to make dragStatus for all todolists and all tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="add changeTaskDragStatus, changeTodoDragStatus to slices.&#10;Realized I need to make dragStatus for all todolists and all tasks" />
   </component>
 </project>

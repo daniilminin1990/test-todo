@@ -60,6 +60,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     changeTaskIsDragOver,
     changeTodoIsDragging,
     changeTodoIsDragOver,
+    changeIsBlockTodosToDrag,
   } = useActions();
 
   const todolists = useAppSelector((state) =>
@@ -81,7 +82,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const [mA, setMA] = useState<any | null>(null);
   const [mO, setMO] = useState<any | null>(null);
 
-  const todolistIds = useMemo(() => todolists.map((tl) => tl.id), [todolists]);
+  const todolistIds = useMemo(
+    () => todolists.allTodolists.map((tl) => tl.id),
+    [todolists]
+  );
   const tasks = useAppSelector(tasksSelectors.tasksState);
   // console.log('TODO-UI-INDEX', todolists[0])
 
@@ -113,7 +117,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     console.log("Событие", event.active.data);
     if (event.active.data.current?.type === "Todolist") {
       setActiveTodo(event.active.data.current.todolist);
-      const isTodoDragging = todolists.find(
+      const isTodoDragging = todolists.allTodolists.find(
         (tl) => tl.id === event.active.data.current?.todolist.id
       )?.isTodoDragging;
       changeTodoIsDragging({
@@ -359,7 +363,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       </Grid>
       <Grid container spacing={3}>
         <SortableContext items={todolistIds}>
-          {todolists.map((tl) => {
+          {todolists.allTodolists.map((tl) => {
             return (
               <Grid item key={tl.id}>
                 <Todolist
