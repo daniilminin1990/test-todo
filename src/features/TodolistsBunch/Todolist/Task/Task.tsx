@@ -33,18 +33,20 @@ export const Task = React.memo((props: TaskProps) => {
   const tasks = useAppSelector((state) =>
     tasksSelectors.tasksById(state, props.todoListId)
   );
+  const isBlockTasksToDrag = useAppSelector(tasksSelectors.tasksState);
   const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
   const isTaskDragging =
-    tasks[tasks.findIndex((t) => t.id === props.taskId)].isDragging;
+    tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragging;
+  console.log("isTaskDragging", isTaskDragging);
   const isTaskDragOver =
-    tasks[tasks.findIndex((t) => t.id === props.taskId)].isDragOver;
+    tasks[tasks.findIndex((t) => t.id === props.taskId)].isTaskDragOver;
 
   const {
     setNodeRef,
     attributes,
     listeners,
-    // transform,
-    // transition,
+    transform,
+    transition,
     isDragging,
   } = useSortable({
     id: props.taskId,
@@ -52,12 +54,12 @@ export const Task = React.memo((props: TaskProps) => {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
-    disabled: isBlockDragMode,
+    disabled: isBlockDragMode && isBlockTasksToDrag && !isTaskDragging,
   });
 
   const style = {
     // transform: CSS.Transform.toString(transform),
-    // transition,
+    transition,
   };
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked
@@ -81,11 +83,9 @@ export const Task = React.memo((props: TaskProps) => {
 
   const taskCompleted = props.tIsDone === TaskStatuses.Completed;
 
-  if (isTaskDragging && isDragging) {
+  if (isDragging) {
     return (
       <Li
-        isTaskDragging={isTaskDragging}
-        isTaskDragOver={isTaskDragOver}
         className={taskCompleted ? "is-done" : ""}
         ref={setNodeRef}
         style={{
@@ -101,8 +101,6 @@ export const Task = React.memo((props: TaskProps) => {
 
   return (
     <Li
-      isTaskDragging={isTaskDragging}
-      isTaskDragOver={isTaskDragOver}
       className={taskCompleted ? "is-done" : ""}
       ref={setNodeRef}
       style={style}
@@ -131,12 +129,7 @@ export const Task = React.memo((props: TaskProps) => {
   );
 });
 
-interface LiProps {
-  isTaskDragging: boolean;
-  isTaskDragOver: boolean;
-}
-
-const Li = styled.li<LiProps>`
+const Li = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -146,7 +139,4 @@ const Li = styled.li<LiProps>`
   margin-bottom: 10px;
   margin-top: 10px;
   border: 0.5px solid gray;
-  opacity: ${({ isTaskDragging }) => (isTaskDragging ? 0.5 : 1)};
-  background-color: ${({ isTaskDragOver }) =>
-    isTaskDragOver ? "ligthgray" : ""};
 `;

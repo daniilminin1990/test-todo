@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor todolistsSlice state -- {allTodolists: [] as TodoUIType[],&#10;isBlockTodosToDrag: false},">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor tasksSlice state -- {allTasks: {} as TaskStateType,&#10;isBlockTasksToDrag: false},">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +312,7 @@
       <workItem from="1713349827559" duration="839000" />
       <workItem from="1713543236745" duration="2945000" />
       <workItem from="1713546565944" duration="16463000" />
-      <workItem from="1713599349670" duration="9456000" />
+      <workItem from="1713599349670" duration="27010000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -448,7 +450,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713613504624</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="refactor tasksSlice state -- {allTasks: {} as TaskStateType,&#10;isBlockTasksToDrag: false},">
+      <option name="closed" value="true" />
+      <created>1713614551584</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1713614551584</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,6 +493,7 @@
     <MESSAGE value="create states isDragging, isDragOver and reducers to change in tasksSlice" />
     <MESSAGE value="add changeTaskDragStatus, changeTodoDragStatus to slices.&#10;Realized I need to make dragStatus for all todolists and all tasks" />
     <MESSAGE value="refactor todolistsSlice state -- {allTodolists: [] as TodoUIType[],&#10;isBlockTodosToDrag: false}," />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor todolistsSlice state -- {allTodolists: [] as TodoUIType[],&#10;isBlockTodosToDrag: false}," />
+    <MESSAGE value="refactor tasksSlice state -- {allTasks: {} as TaskStateType,&#10;isBlockTasksToDrag: false}," />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor tasksSlice state -- {allTasks: {} as TaskStateType,&#10;isBlockTasksToDrag: false}," />
   </component>
 </project>

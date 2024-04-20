@@ -29,7 +29,7 @@ const slice = createSlice({
   name: "todolists",
   initialState: {
     allTodolists: [] as TodoUIType[],
-    isBlockTodosToDrag: false,
+    isBlockTodosToDrag: true,
   },
   reducers: {
     // removeTodo(state, action: PayloadAction<{ todoListId: string }>) {

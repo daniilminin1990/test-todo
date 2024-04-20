@@ -60,7 +60,7 @@ export const Todolist = React.memo(
   ({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
     const dispatch = useAppDispatch();
     const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
-    console.log(isBlockDragMode);
+    const todolistsState = useAppSelector((state) => state.todolists);
     const todolist = useAppSelector((state) =>
       todolistsSelectors.todolistById(state, props.todoListId)
     );
@@ -95,58 +95,29 @@ export const Todolist = React.memo(
         type: "Todolist",
         todolist: props.todolist,
       },
-      disabled: isBlockDragMode,
+      disabled:
+        todolistsState.isBlockTodosToDrag &&
+        !todolist.isTodoDragging &&
+        !isBlockDragMode,
     });
 
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-    };
+    console.log(
+      "Заблокан тудулист?",
+      // isBlockDragMode &&
+      todolistsState.isBlockTodosToDrag &&
+        !todolist.isTodoDragging &&
+        !isBlockDragMode
+        ? "ДА"
+        : "НЕТ"
+    );
 
-    // Region
-    // const [taskIdToDrag, setTaskIdToDrag] = useState<string>("");
-    // function dragStartHandler(
-    //   e: React.DragEvent<HTMLDivElement>,
-    //   startDragId: string
-    // ) {
-    //   e.stopPropagation();
-    //   setTaskIdToDrag(startDragId);
-    //   console.log("DRAGGING-ID", startDragId);
-    // }
-    //
-    // function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
-    //
-    // function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-    //   e.stopPropagation();
-    //   e.preventDefault();
-    // }
-    //
-    // function dropHandler(
-    //   e: React.DragEvent<HTMLDivElement>,
-    //   endShiftId: string
-    // ) {
-    //   e.stopPropagation();
-    //   e.preventDefault();
-    //   // dispatch(
-    //   //   tasksThunks.reorderTasksTC({
-    //   //     todoListId: props.todoListId,
-    //   //     startDragId: taskIdToDrag,
-    //   //     endShiftId: endShiftId,
-    //   //   })
-    //   // );
-    //   reorderTasksTC({
-    //     todoListId: props.todoListId,
-    //     startDragId: taskIdToDrag,
-    //     endShiftId: endShiftId,
-    //   });
-    // }
-    // End
+    const style = {
+      // transform: CSS.Transform.toString(transform),
+      // transition,
+    };
 
     const removeTask = useCallback(
       (taskId: string) => {
-        // dispatch(
-        //   tasksThunks.deleteTaskTC({ todoListId: props.todoListId, taskId })
-        // );
         deleteTaskTC({ todoListId: props.todoListId, taskId });
       },
       [props.todoListId]
@@ -154,12 +125,6 @@ export const Todolist = React.memo(
 
     const addTask = useCallback(
       (newTaskTitle: string) => {
-        // dispatch(
-        //   tasksThunks.addTaskTC({
-        //     todoListId: props.todoListId,
-        //     title: newTaskTitle,
-        //   })
-        // );
         addTaskTC({
           todoListId: props.todoListId,
           title: newTaskTitle,
@@ -171,13 +136,6 @@ export const Todolist = React.memo(
     const changeTaskStatus = useCallback(
       (taskId: string, checked: TaskStatuses) => {
         console.log("CHANGE-TASK-STATUS");
-        // dispatch(
-        //   tasksThunks.updateTaskTC({
-        //     todoListId: props.todoListId,
-        //     taskId,
-        //     model: { status: checked },
-        //   })
-        // );
         updateTaskTC({
           todoListId: props.todoListId,
           taskId,
@@ -189,13 +147,6 @@ export const Todolist = React.memo(
 
     const updTaskTitle = useCallback(
       (taskId: string, updTaskTitle: string) => {
-        // dispatch(
-        //   tasksThunks.updateTaskTC({
-        //     todoListId: props.todoListId,
-        //     taskId,
-        //     model: { title: updTaskTitle },
-        //   })
-        // );
         updateTaskTC({
           todoListId: props.todoListId,
           taskId,
@@ -236,43 +187,43 @@ export const Todolist = React.memo(
       [updTodoTitle, props.todoListId]
     );
 
-    if (todolist.isTodoDragging && isDragging) {
-      return (
-        <div ref={setNodeRef} style={{ ...style, opacity: 0.5 }}>
-          <Paper
-            elevation={6}
-            style={{
-              padding: "30px",
-              borderRadius: "10px",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <h3>
-              <EdiatbleSpan
-                oldTitle={props.todoTitle}
-                callback={updTodoTitleHandler}
-                disabled={props.disabled === "loading"}
-              />
-              <IconButton
-                aria-label="delete"
-                onClick={removeTodo}
-                disabled={props.entityStatus === "loading"}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </h3>
-            <AddItemForm
-              callback={addTask}
-              disabled={props.entityStatus === "loading"}
-            />
-            <Skeleton>
-              <div>ЛАЛАЛА</div>
-            </Skeleton>
-          </Paper>
-        </div>
-      );
-    }
+    // if (isDragging) {
+    //   return (
+    //     <div ref={setNodeRef} style={{ ...style, opacity: 0.5 }}>
+    //       <Paper
+    //         elevation={6}
+    //         style={{
+    //           padding: "30px",
+    //           borderRadius: "10px",
+    //           width: "100%",
+    //           height: "100%",
+    //         }}
+    //       >
+    //         <h3>
+    //           <EdiatbleSpan
+    //             oldTitle={props.todoTitle}
+    //             callback={updTodoTitleHandler}
+    //             disabled={props.disabled === "loading"}
+    //           />
+    //           <IconButton
+    //             aria-label="delete"
+    //             onClick={removeTodo}
+    //             disabled={props.entityStatus === "loading"}
+    //           >
+    //             <DeleteIcon />
+    //           </IconButton>
+    //         </h3>
+    //         <AddItemForm
+    //           callback={addTask}
+    //           disabled={props.entityStatus === "loading"}
+    //         />
+    //         <Skeleton>
+    //           <div>ЛАЛАЛА</div>
+    //         </Skeleton>
+    //       </Paper>
+    //     </div>
+    //   );
+    // }
 
     return (
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>

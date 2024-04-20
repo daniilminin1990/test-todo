@@ -24,15 +24,15 @@ export type TaskStateType = {
 
 export type TasksWithEntityStatusType = TaskType & {
   entityStatus: ServerResponseStatusType;
-  isDragging: boolean;
-  isDragOver: boolean;
+  isTaskDragging: boolean;
+  isTaskDragOver: boolean;
 };
 
 const slice = createSlice({
   name: "tasks",
   initialState: {
     allTasks: {} as TaskStateType,
-    isBlockTasksToDrag: false,
+    isBlockTasksToDrag: true,
   },
   reducers: {
     // removeTask(state, action: PayloadAction<{ todoListId: string, taskId: string }>) {
@@ -130,26 +130,26 @@ const slice = createSlice({
       action: PayloadAction<{
         todoListId: string;
         taskId: string;
-        isDragging: boolean;
+        isTaskDragging: boolean;
       }>
     ) {
-      const { todoListId, taskId, isDragging } = action.payload;
+      const { todoListId, taskId, isTaskDragging } = action.payload;
       const tasks = state.allTasks[todoListId];
       const id = tasks.findIndex((t) => t.id === taskId);
-      if (id > -1) tasks[id] = { ...tasks[id], isDragging };
+      if (id > -1) tasks[id] = { ...tasks[id], isTaskDragging };
     },
     changeTaskIsDragOver(
       state,
       action: PayloadAction<{
         todoListId: string;
         taskId: string;
-        isDragOver: boolean;
+        isTaskDragOver: boolean;
       }>
     ) {
-      const { todoListId, taskId, isDragOver } = action.payload;
+      const { todoListId, taskId, isTaskDragOver } = action.payload;
       const tasks = state.allTasks[todoListId];
       const id = tasks.findIndex((t) => t.id === taskId);
-      if (id > -1) tasks[id] = { ...tasks[id], isDragOver };
+      if (id > -1) tasks[id] = { ...tasks[id], isTaskDragOver };
     },
     changeIsBlockTasksToDrag(state, action: PayloadAction<boolean>) {
       state.isBlockTasksToDrag = action.payload;
@@ -181,8 +181,8 @@ const slice = createSlice({
         state.allTasks[todolistId] = tasks.map((t) => ({
           ...t,
           entityStatus: "idle",
-          isDragging: false,
-          isDragOver: false,
+          isTaskDragging: false,
+          isTaskDragOver: false,
         }));
         return state;
       })
@@ -194,8 +194,8 @@ const slice = createSlice({
         state.allTasks[action.payload.task.todoListId].unshift({
           ...action.payload.task,
           entityStatus: "idle",
-          isDragging: false,
-          isDragOver: false,
+          isTaskDragging: false,
+          isTaskDragOver: false,
         });
       })
       .addCase(updateTaskTC.fulfilled, (state, action) => {
@@ -231,6 +231,8 @@ const slice = createSlice({
   },
   selectors: {
     tasksState: (sliceState) => sliceState.allTasks as TaskStateType,
+    isBlockTasksToDrag: (sliceState) =>
+      sliceState.isBlockTasksToDrag as boolean,
     tasksById: (sliceState, todoId: string) =>
       sliceState.allTasks[todoId] as TasksWithEntityStatusType[],
     // isTaskDragging: (sliceState, todoId: string) =>
