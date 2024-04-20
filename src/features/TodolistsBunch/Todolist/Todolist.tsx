@@ -31,7 +31,10 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../store/store";
-import {appSelectors, ServerResponseStatusType} from "../../../redux/appSlice";
+import {
+  appSelectors,
+  ServerResponseStatusType,
+} from "../../../redux/appSlice";
 import { TaskStatuses } from "../../../common/enums/enums";
 import { useActions } from "../../../common/hooks/useActions";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
@@ -57,7 +60,10 @@ export const Todolist = React.memo(
   ({ updTodoTitle, changeFilter, ...props }: TodolistProps) => {
     const dispatch = useAppDispatch();
     const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
-      console.log(isBlockDragMode)
+    console.log(isBlockDragMode);
+    const todolist = useAppSelector((state) =>
+      todolistsSelectors.todolistById(state, props.todoListId)
+    );
 
     const {
       deleteTaskTC,
@@ -89,7 +95,7 @@ export const Todolist = React.memo(
         type: "Todolist",
         todolist: props.todolist,
       },
-        disabled: isBlockDragMode
+      disabled: isBlockDragMode,
     });
 
     const style = {
@@ -230,7 +236,7 @@ export const Todolist = React.memo(
       [updTodoTitle, props.todoListId]
     );
 
-    if (isDragging) {
+    if (todolist.isTodoDragging && isDragging) {
       return (
         <div ref={setNodeRef} style={{ ...style, opacity: 0.5 }}>
           <Paper

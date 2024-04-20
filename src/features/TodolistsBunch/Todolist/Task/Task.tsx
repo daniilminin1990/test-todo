@@ -2,7 +2,10 @@ import React, { ChangeEvent } from "react";
 import EdiatbleSpan from "../../../../common/components/EditableSpan/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {appSelectors, ServerResponseStatusType} from "../../../../redux/appSlice";
+import {
+  appSelectors,
+  ServerResponseStatusType,
+} from "../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../common/enums/enums";
 import { styled } from "styled-components";
 import { useSortable } from "@dnd-kit/sortable";
@@ -13,7 +16,7 @@ import {
   TasksWithEntityStatusType,
 } from "../../../../redux/tasksSlice";
 import { TaskType } from "../../../../api/tasks-api";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 export type TaskProps = {
   todoListId: string;
@@ -31,13 +34,17 @@ export const Task = React.memo((props: TaskProps) => {
     tasksSelectors.tasksById(state, props.todoListId)
   );
   const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
+  const isTaskDragging =
+    tasks[tasks.findIndex((t) => t.id === props.taskId)].isDragging;
+  const isTaskDragOver =
+    tasks[tasks.findIndex((t) => t.id === props.taskId)].isDragOver;
 
   const {
     setNodeRef,
     attributes,
     listeners,
-    transform,
-    transition,
+    // transform,
+    // transition,
     isDragging,
   } = useSortable({
     id: props.taskId,
@@ -45,12 +52,12 @@ export const Task = React.memo((props: TaskProps) => {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
     },
-    disabled: isBlockDragMode
+    disabled: isBlockDragMode,
   });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+    // transform: CSS.Transform.toString(transform),
+    // transition,
   };
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked
@@ -74,9 +81,11 @@ export const Task = React.memo((props: TaskProps) => {
 
   const taskCompleted = props.tIsDone === TaskStatuses.Completed;
 
-  if (isDragging) {
+  if (isTaskDragging && isDragging) {
     return (
       <Li
+        isTaskDragging={isTaskDragging}
+        isTaskDragOver={isTaskDragOver}
         className={taskCompleted ? "is-done" : ""}
         ref={setNodeRef}
         style={{
@@ -92,6 +101,8 @@ export const Task = React.memo((props: TaskProps) => {
 
   return (
     <Li
+      isTaskDragging={isTaskDragging}
+      isTaskDragOver={isTaskDragOver}
       className={taskCompleted ? "is-done" : ""}
       ref={setNodeRef}
       style={style}
@@ -120,7 +131,12 @@ export const Task = React.memo((props: TaskProps) => {
   );
 });
 
-const Li = styled.li`
+interface LiProps {
+  isTaskDragging: boolean;
+  isTaskDragOver: boolean;
+}
+
+const Li = styled.li<LiProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,4 +146,7 @@ const Li = styled.li`
   margin-bottom: 10px;
   margin-top: 10px;
   border: 0.5px solid gray;
+  opacity: ${({ isTaskDragging }) => (isTaskDragging ? 0.5 : 1)};
+  background-color: ${({ isTaskDragOver }) =>
+    isTaskDragOver ? "ligthgray" : ""};
 `;

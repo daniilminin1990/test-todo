@@ -221,6 +221,8 @@ test("new array should be added when new todolist is added", () => {
       filter: "all",
       entityStatus: "idle",
       showTasks: true,
+      isTodoDragging: false,
+      isTodoDragOver: false,
     },
   };
 

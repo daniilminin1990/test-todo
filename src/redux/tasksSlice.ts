@@ -122,7 +122,7 @@ const slice = createSlice({
         state[todoListId].splice(targetIndex, 0, draggedItem);
       }
     },
-    changeIsDragging(
+    changeTaskIsDragging(
       state,
       action: PayloadAction<{
         todoListId: string;
@@ -135,7 +135,7 @@ const slice = createSlice({
       const id = tasks.findIndex((t) => t.id === taskId);
       if (id > -1) tasks[id] = { ...tasks[id], isDragging };
     },
-    changeIsDragOver(
+    changeTaskIsDragOver(
       state,
       action: PayloadAction<{
         todoListId: string;
@@ -221,6 +221,8 @@ const slice = createSlice({
     tasksState: (sliceState) => sliceState as TaskStateType,
     tasksById: (sliceState, todoId: string) =>
       sliceState[todoId] as TasksWithEntityStatusType[],
+    // isTaskDragging: (sliceState, todoId: string) =>
+    //   sliceState[todoId] as TasksWithEntityStatusType[],
   },
 });
 

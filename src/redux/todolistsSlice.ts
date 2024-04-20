@@ -21,6 +21,8 @@ export type TodoUIType = TodolistType & {
   filter: FilterValuesType;
   entityStatus: ServerResponseStatusType;
   showTasks: boolean;
+  isTodoDragging: boolean;
+  isTodoDragOver: boolean;
 };
 
 const slice = createSlice({
@@ -86,6 +88,28 @@ const slice = createSlice({
         state.splice(targetIndex, 0, draggedItem);
       }
     },
+    changeTodoIsDragging(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        isTodoDragging: boolean;
+      }>
+    ) {
+      const { todoListId, isTodoDragging } = action.payload;
+      const id = state.findIndex((tl) => tl.id === todoListId);
+      if (id > -1) state[id] = { ...state[id], isTodoDragging };
+    },
+    changeTodoIsDragOver(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        isTodoDragOver: boolean;
+      }>
+    ) {
+      const { todoListId, isTodoDragOver } = action.payload;
+      const id = state.findIndex((tl) => tl.id === todoListId);
+      if (id > -1) state[id] = { ...state[id], isTodoDragOver };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,6 +122,8 @@ const slice = createSlice({
           filter: "all",
           entityStatus: "idle",
           showTasks: false,
+          isTodoDragging: false,
+          isTodoDragOver: false,
         }));
       })
       .addCase(deleteTodoTC.fulfilled, (state, action) => {
@@ -111,6 +137,8 @@ const slice = createSlice({
           filter: action.payload.filter,
           entityStatus: action.payload.entityStatus,
           showTasks: action.payload.showTasks,
+          isTodoDragging: action.payload.isTodoDragging,
+          isTodoDragOver: action.payload.isTodoDragOver,
         });
       })
       .addCase(updateTodoTitleTC.fulfilled, (state, action) => {
@@ -130,6 +158,8 @@ const slice = createSlice({
   },
   selectors: {
     todolists: (sliceState) => sliceState,
+    todolistById: (sliceState, todoListId: string) =>
+      sliceState.find((tl) => tl.id === todoListId) as TodoUIType,
   },
 });
 
@@ -232,6 +262,8 @@ const addTodoTC = createAppAsyncThunk<
     filter: FilterValuesType;
     entityStatus: ServerResponseStatusType;
     showTasks: boolean;
+    isTodoDragging: boolean;
+    isTodoDragOver: boolean;
   },
   string
 >(`${slice.name}/addTodo`, async (newTodolistTitle, thunkAPI) => {
@@ -245,6 +277,8 @@ const addTodoTC = createAppAsyncThunk<
         filter: "all",
         entityStatus: "idle",
         showTasks: true,
+        isTodoDragging: false,
+        isTodoDragOver: false,
       };
       // dispatch(addAppStatusAC('success'))
     } else {
