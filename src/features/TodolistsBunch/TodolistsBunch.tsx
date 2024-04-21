@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useAppSelector } from "../../store/store";
+import { RootReducerType, useAppSelector } from "../../store/store";
 import {
   FilterValuesType,
   todolistsSelectors,
@@ -7,7 +7,7 @@ import {
 import { ClassNameMap, Grid, Pagination, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { appSelectors } from "../../redux/appSlice";
+import { appSelectors, appSlice } from "../../redux/appSlice";
 import { loginSelectors } from "../../redux/loginSlice";
 import { AddItemForm } from "../../common/components";
 import { useActions } from "../../common/hooks/useActions";
@@ -18,6 +18,7 @@ import { CSSProperties } from "@mui/material/styles/createMixins";
 import { createStyles, Theme } from "@material-ui/core/styles";
 import { MyPagination } from "../../common/components/MyPagination/MyPagination";
 import Box from "@mui/material/Box";
+import { useSelector } from "react-redux";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
@@ -42,16 +43,25 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const isLoggedIn = useAppSelector((state) =>
     loginSelectors.isLoggedIn(state)
   );
+  const searchQuery = useSelector<RootReducerType, string>(
+    (state) => state.app.searchQuery
+  );
+
   // Paginaton
-  const [page, setPage] = useState<number | string>(1); //
-  const [pageCount, setPageCount] = useState(4); //
+  const [page, setPage] = useState<number>(1);
+  const [pageCount, setPageCount] = useState(4);
   const [query, setQuery] = useState("");
 
   const theme: any = useTheme();
 
   useEffect(() => {
-    setSearchParams({ page: page.toString() });
-  }, [page, query]);
+    const searchQueryParams: { search?: string } =
+      searchQuery !== "" ? { search: searchQuery } : {};
+    const pageQueryParams: { pageQ?: string } =
+      page.toString() !== "1" ? { pageQ: page.toString() } : {};
+    const allQuery = { ...searchQueryParams, ...pageQueryParams };
+    setSearchParams(allQuery);
+  }, [page, searchQuery]);
 
   const styles = {
     ul: {

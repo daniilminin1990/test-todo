@@ -24,6 +24,7 @@ const slice = createSlice({
     addStatus: "idle" as ServerResponseStatusType,
     error: null as null | string,
     isInitialized: false,
+    searchQuery: "" as string,
   },
   reducers: {
     setAppTodoStatus(
@@ -50,6 +51,10 @@ const slice = createSlice({
     // changeInitialized(state, action: PayloadAction<{value: boolean}>){
     //   state.isInitialized = action.payload.value
     // }
+    setSearchQuery(state, action: PayloadAction<{ searchQuery: string }>) {
+      console.log("appSlice", action.payload.searchQuery);
+      state.searchQuery = action.payload.searchQuery;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -71,6 +76,7 @@ const slice = createSlice({
     statusTask: (sliceState) => sliceState.statusTask,
     isInitialized: (sliceState) => sliceState.isInitialized,
     error: (sliceState) => sliceState.error,
+    searchQuery: (sliceState) => sliceState.searchQuery,
   },
 });
 

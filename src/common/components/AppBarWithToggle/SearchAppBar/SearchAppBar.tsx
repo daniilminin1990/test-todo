@@ -14,6 +14,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useSearchParams } from "react-router-dom";
 import { FormControl } from "@mui/material";
 import { Event } from "@mui/icons-material";
+import { appActions } from "../../../../redux/appSlice";
+import { useAppDispatch } from "../../../../store/store";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,24 +60,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [state, setState] = useState("");
-
-  useEffect(() => {
-    setSearchParams({ search: state });
-  }, []);
+  const dispatch = useAppDispatch();
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    // e.preventDefault();
-    let page = searchParams.get("page");
-    if (!page) {
-      return;
-    }
-    if (e.currentTarget.value) {
-      setSearchParams({ page: page, search: e.currentTarget.value });
-    } else {
-      setSearchParams({ page: page });
-    }
+    // console.log(e.currentTarget.value);
+    dispatch(appActions.setSearchQuery({ searchQuery: e.currentTarget.value }));
   };
 
   return (
