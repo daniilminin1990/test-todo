@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAppSelector } from "../../store/store";
 import {
   FilterValuesType,
@@ -16,7 +16,8 @@ import { useTheme } from "@mui/material/styles";
 import { grey, yellow } from "@mui/material/colors";
 import { CSSProperties } from "@mui/material/styles/createMixins";
 import { createStyles, Theme } from "@material-ui/core/styles";
-import {MyPagination} from "../../common/components/MyPagination/MyPagination";
+import { MyPagination } from "../../common/components/MyPagination/MyPagination";
+import Box from "@mui/material/Box";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
@@ -41,9 +42,32 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const isLoggedIn = useAppSelector((state) =>
     loginSelectors.isLoggedIn(state)
   );
+  // Paginaton
+  const [page, setPage] = useState<number | string>(1); //
+  const [pageCount, setPageCount] = useState(4); //
+  const [query, setQuery] = useState("");
 
+  const theme: any = useTheme();
+
+  useEffect(() => {
+    setSearchParams({ page: page.toString() });
+  }, [page, query]);
+
+  const styles = {
+    ul: {
+      "& .MuiPaginationItem-root": {
+        backgroundColor: theme.palette.mode === "dark" ? "#ffffff" : "#171717",
+        color: theme.palette.mode === "dark" ? "#171717" : "#ffffff",
+
+        "&.Mui-selected": {
+          backgroundColor: "#6c00ea",
+        },
+      },
+    },
+  };
   // Region
   const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>("");
+
   function dragStartHandler(
     e: React.DragEvent<HTMLDivElement>,
     startDragId: string
@@ -96,14 +120,17 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     return <Navigate to={"/login"} />;
   }
 
+  const displayedTodolists = todolists.slice(
+    (Number(page) - 1) * pageCount,
+    Number(page) * pageCount
+  );
   return (
     <>
-      <MyPagination />
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
       </Grid>
-      <Grid container spacing={3}>
-        {todolists
+      <Grid container spacing={3} justifyContent={"space-evenly"}>
+        {displayedTodolists
           .filter((e) =>
             searchParams.get("search")
               ? e.title.includes(searchParams.get("search") ?? "")
@@ -137,6 +164,24 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
             );
           })}
       </Grid>
+      <Stack spacing={2} direction={"column"} sx={{ marginTop: "20px" }}>
+        <Box
+          sx={{
+            ...styles.ul,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            count={Math.ceil(todolists.length / pageCount)}
+            shape="rounded"
+            variant="outlined"
+            onChange={(e, num) => setPage(num)}
+            hideNextButton={true}
+            hidePrevButton={true}
+          />
+        </Box>
+      </Stack>
     </>
   );
 };

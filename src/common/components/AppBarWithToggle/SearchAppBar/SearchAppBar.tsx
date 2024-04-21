@@ -4,6 +4,8 @@ import {
   ChangeEventHandler,
   FormEvent,
   FormEventHandler,
+  useEffect,
+  useState,
 } from "react";
 import { alpha, styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -57,13 +59,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchAppBar() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [state, setState] = useState("");
+
+  useEffect(() => {
+    setSearchParams({ search: state });
+  }, []);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     // e.preventDefault();
+    let page = searchParams.get("page");
+    if (!page) {
+      return;
+    }
     if (e.currentTarget.value) {
-      setSearchParams({ search: e.currentTarget.value });
+      setSearchParams({ page: page, search: e.currentTarget.value });
     } else {
-      setSearchParams({});
+      setSearchParams({ page: page });
     }
   };
 
