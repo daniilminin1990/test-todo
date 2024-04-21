@@ -36,18 +36,29 @@ const slice = createSlice({
     isBlockTasksToDrag: true,
   },
   reducers: {
-    // removeTask(state, action: PayloadAction<{ todoListId: string, taskId: string }>) {
-    //   const id = state[action.payload.todoListId].findIndex(t => t.id === action.payload.taskId)
-    //   if (id > -1) state[action.payload.todoListId].splice(id, 1)
-    // },
-    // addTask(state, action: PayloadAction<TaskType | undefined>) {
-    //   if (action.payload) {
-    //     state[action.payload.todoListId].unshift({
-    //       ...action.payload,
-    //       entityStatus: "idle",
-    //     });
-    //   }
-    // },
+    removeTask(
+      state,
+      action: PayloadAction<{ todoListId: string; taskId: string }>
+    ) {
+      const id = state.allTasks[action.payload.todoListId].findIndex(
+        (t) => t.id === action.payload.taskId
+      );
+      if (id > -1) state.allTasks[action.payload.todoListId].splice(id, 1);
+    },
+    addTask(
+      state,
+      action: PayloadAction<{ todoListId: string; task: TaskType | undefined }>
+    ) {
+      if (action.payload && action.payload.task) {
+        const { todoListId, task } = action.payload;
+        state.allTasks[todoListId].unshift({
+          ...task,
+          entityStatus: "idle",
+          isTaskDragging: false,
+          isTaskDragOver: false,
+        });
+      }
+    },
     moveTaskAcrossTodolists(
       state,
       action: PayloadAction<{

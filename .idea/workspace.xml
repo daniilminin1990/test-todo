@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor almost everything about dnd&#10;Need to fix conditions to drag task between todos">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="LOGIC DONE! Need final refactor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
@@ -311,7 +308,7 @@
       <workItem from="1713349827559" duration="839000" />
       <workItem from="1713543236745" duration="2945000" />
       <workItem from="1713546565944" duration="16463000" />
-      <workItem from="1713599349670" duration="42772000" />
+      <workItem from="1713599349670" duration="46969000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -465,7 +462,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713635871608</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="LOGIC DONE! Need final refactor">
+      <option name="closed" value="true" />
+      <created>1713654486669</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1713654486669</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -502,6 +507,7 @@
     <MESSAGE value="refactor todolistsSlice state -- {allTodolists: [] as TodoUIType[],&#10;isBlockTodosToDrag: false}," />
     <MESSAGE value="refactor tasksSlice state -- {allTasks: {} as TaskStateType,&#10;isBlockTasksToDrag: false}," />
     <MESSAGE value="refactor almost everything about dnd&#10;Need to fix conditions to drag task between todos" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor almost everything about dnd&#10;Need to fix conditions to drag task between todos" />
+    <MESSAGE value="LOGIC DONE! Need final refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="LOGIC DONE! Need final refactor" />
   </component>
 </project>
