@@ -158,6 +158,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const onDragOverHandler = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
+    console.log(active);
     let activeTodoListId = active.data.current?.todolist?.id;
     const activeTaskId = active.data.current?.task?.id;
     let overTodoListId = over.data.current?.todolist?.id;
