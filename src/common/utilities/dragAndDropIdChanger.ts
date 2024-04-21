@@ -35,6 +35,44 @@ export function dragAndDropIdChangerByOrder(
     endShiftId: string;
   }
 ) {
+  // А нужен ли мне тут запрос на сервер??? -- нет, его нужно делать в dragSTART!
+
+  const startIndex = tasks.findIndex(
+    (item, index) => item.id === args.startDragId && index >= 0
+  );
+  const endIndex = tasks.findIndex(
+    (item, index) => item.id === args.endShiftId && index >= 0
+  );
+  console.log("startIndex", startIndex);
+  console.log("endIndex", endIndex);
+
+  if (endIndex === 0) {
+    return null;
+  } else if (endIndex === tasks.length - 1) {
+    return args.endShiftId;
+  } else {
+    return tasks[endIndex - 1].id;
+  }
+  // if (endIndex > 0 && endIndex === tasks.length - 2) {
+  //   console.log({ firstIf: tasks[endIndex - 1], length: tasks.length });
+  //   return tasks[endIndex - 1].id;
+  // } else if (endIndex === tasks.length - 1) {
+  //   console.log({ secondIf: tasks[endIndex - 1], length: tasks.length });
+  //   return args.endShiftId;
+  // } else {
+  //   return null;
+  // }
+}
+
+export function dndOrderFinder(
+  tasks: TasksWithEntityStatusType[],
+  args: {
+    todoListId: string;
+    startDragId: string;
+    startOrder: number;
+    endShiftId: string;
+  }
+) {
   const startIndex = tasks.findIndex(
     (item, index) => item.id === args.startDragId && index >= 0
   );
