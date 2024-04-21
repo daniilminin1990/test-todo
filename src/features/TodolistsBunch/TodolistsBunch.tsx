@@ -132,32 +132,11 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     getTodos();
     if (event.active.data.current?.type === "Todolist") {
       setActiveTodo(event.active.data.current.todolist);
-      const isTodoDragging = todolists.allTodolists.find(
-        (tl) => tl.id === event.active.data.current?.todolist.id
-      )?.isTodoDragging;
-      changeTodoIsDragging({
-        todoListId: event.active.data.current.todolist.id,
-        isTodoDragging: true,
-      });
-      changeIsBlockTasksToDrag(true);
-      // changeTaskIsDragging({
-      //   todoListId: event.active.data.current.task.todolistId,
-      //   taskId: tasks[event.active.data.current.task.todoListId].findIndex(
-      //     (t) => t.id
-      //   ),
-      //   isDragging: false,
-      // });
       console.log(event.active);
       return;
     }
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
-      changeIsBlockTodosToDrag(true);
-      changeTaskIsDragging({
-        todoListId: event.active.data.current.task.todoListId,
-        taskId: event.active.data.current.task.id,
-        isTaskDragging: true,
-      });
       console.log(event.active);
       event.active.data.current.todoListId =
         event.active.data.current.task.todoListId;
@@ -366,8 +345,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       }
     }
 
-    changeIsBlockTasksToDrag(false);
-    changeIsBlockTodosToDrag(false);
     setActiveTodo(null);
     setActiveTask(null);
     setMemoActiveTodoId(null);
