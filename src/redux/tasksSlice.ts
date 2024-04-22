@@ -51,6 +51,7 @@ const slice = createSlice({
     ) {
       if (action.payload && action.payload.task) {
         const { todoListId, task } = action.payload;
+        console.log("addTask", todoListId);
         state.allTasks[todoListId].unshift({
           ...task,
           entityStatus: "idle",
@@ -95,6 +96,31 @@ const slice = createSlice({
         endTodolistTasks.splice(endTaskIndex, 0, draggedTask);
       } else {
         endTodolistTasks.push(draggedTask);
+      }
+    },
+    moveTaskInEmptyTodolists(
+      state,
+      action: PayloadAction<{
+        todoListId: string;
+        endTodoListId: string;
+        startDragId: string;
+      }>
+    ) {
+      const { startDragId, todoListId, endTodoListId } = action.payload;
+
+      const endTodolistTasks = state.allTasks[endTodoListId];
+      const taskToPut = state.allTasks[todoListId].find(
+        (task) => task.id === startDragId
+      );
+
+      const startTodolistTasks = state.allTasks[todoListId];
+      startTodolistTasks.splice(
+        startTodolistTasks.findIndex((task) => task.id === startDragId),
+        1
+      );
+
+      if (taskToPut) {
+        endTodolistTasks.unshift(taskToPut);
       }
     },
 

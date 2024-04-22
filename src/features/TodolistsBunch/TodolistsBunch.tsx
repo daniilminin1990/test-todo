@@ -65,6 +65,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     changeTodoIsDragOver,
     changeIsBlockTodosToDrag,
     changeIsBlockTasksToDrag,
+    moveTaskInEmptyTodolists,
   } = useActions();
 
   const todolists = useAppSelector((state) =>
@@ -156,19 +157,26 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const isOverATask = over.data.current?.type === "Task";
     const isActiveATodolist = active.data.current?.type === "Todolist";
     const isOverATodolist = over.data.current?.type === "Todolist";
-    // let realOverTodoIndex = todolists.allTodolists.findIndex(
-    //   (tl) => tl.id === memoOverTodoId
-    // );
-    // let realActiveTodoIndex = todolists.allTodolists.findIndex(
-    //   (tl) => tl.id === memoActiveTodoId
-    // );
-
-    // setMemoActiveTodoOrder(todolists.allTodolists[realActiveTodoIndex].order);
-    // setMemoOverTodoOrder(todolists.allTodolists[realOverTodoIndex].order);
+    const extraActiveTodoListId =
+      active.data.current?.todolist?.id ||
+      active.data.current?.task?.todoListId;
+    const extraOverTodoListId =
+      over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
+    const activeTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraActiveTodoListId
+    )?.order;
+    const overTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraOverTodoListId
+    )?.order;
+    console.log({
+      activeTodoOrder: activeTodoOrder,
+      overTodoOrder: overTodoOrder,
+    });
+    console.log("memoTodosServerAr", memoTodosServerAr);
 
     // Region Активная таска
     // ? Над таской, в одном тудулисте
-    if (isActiveATask && isOverATask && activeTodoListId === overTodoListId) {
+    if (isActiveATask && isOverATask && activeTodoOrder === overTodoOrder) {
       console.log("OVER Над таской, в одном тудулисте");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
@@ -184,7 +192,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       });
     }
     // ? Над таской, в другом тудулисте
-    if (isActiveATask && isOverATask && activeTodoListId !== overTodoListId) {
+    if (isActiveATask && isOverATask && activeTodoOrder !== overTodoOrder) {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       console.log("OVER Над таской, в другом тудулистe");
@@ -193,8 +201,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       setMemoOverTodoId(overTodoListId.toString());
       setMemoActiveTaskId(activeTaskId);
       setMemoOverTaskId(overTaskId);
-      // setMemoActiveTodoOrder(todolists.allTodolists[realActiveTodoIndex].order);
-      // setMemoOverTodoOrder(todolists.allTodolists[realOverTodoIndex].order);
+      setMemoActiveTodoOrder(activeTodoOrder || 0);
+      setMemoOverTodoOrder(overTodoOrder || 0);
       moveTaskAcrossTodolists({
         todoListId: activeTodoListId,
         endTodoListId: overTodoListId,
@@ -209,21 +217,26 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       tasks[overTodoListId]?.length === 0
     ) {
       activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
+      overTodoListId = over.data.current?.todolist.id;
       console.log("OVER В другой пустой тудулист");
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId);
       setMemoActiveTaskId(activeTaskId);
       setMemoOverTaskId(overTaskId);
       setMemoActiveTaskCopy(active.data.current?.task);
-      removeTask({ todoListId: activeTodoListId, taskId: activeTaskId });
-      addTask({ todoListId: overTodoListId, task: active.data.current?.task });
-      moveTaskAcrossTodolists({
+      moveTaskInEmptyTodolists({
         todoListId: activeTodoListId,
         endTodoListId: overTodoListId,
         startDragId: activeTaskId,
-        endShiftId: overTodoListId,
       });
+      // if (tasks[overTodoListId]?.length !== 0) {
+      //   moveTaskAcrossTodolists({
+      //     todoListId: activeTodoListId,
+      //     endTodoListId: overTodoListId,
+      //     startDragId: activeTaskId,
+      //     endShiftId: overTaskId,
+      //   });
+      // }
     }
     // Region Активный тудулист
     if (isActiveATodolist && isOverATodolist) {
