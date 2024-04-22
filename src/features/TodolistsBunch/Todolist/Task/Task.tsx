@@ -57,8 +57,8 @@ export const Task = React.memo((props: TaskProps) => {
   });
 
   const style = {
-    // transform: CSS.Transform.toString(transform),
-    transition,
+    transform: CSS.Transform.toString(transform),
+    // transition,
   };
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked
