@@ -10,7 +10,6 @@ export const ThemeTogglerHOC = (props: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<"light" | "dark">(
     initTheme.theme ? initTheme.theme : "light"
   );
-  console.log("initTheme.theme", initTheme.theme);
   let theme = useMemo(
     () =>
       createTheme({
@@ -43,8 +42,6 @@ export const ThemeTogglerHOC = (props: { children: React.ReactNode }) => {
     }),
     []
   );
-
-  console.log(initTheme);
 
   useEffect(() => {
     // setMode(localStorage.getItem('theme') === 'light' ? 'dark': 'light' )

@@ -285,7 +285,6 @@ const fetchTasksTC = createAppAsyncThunk<
 >(`${slice.name}/fetchTasks`, async (todolistId, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-  console.log("FETCHTASKT=TC");
   try {
     const res = await tasksApi.getTasks(todolistId);
     const tasks = res.data.items;

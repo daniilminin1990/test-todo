@@ -125,7 +125,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   );
 
   const onDragStartHandler = (event: DragStartEvent) => {
-    console.log("Событие", event.active.data);
     const getTodos = async () => {
       const res = await todolistsAPI.getTodolists();
       setMemoTodosServerAr(res.data);
@@ -133,12 +132,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     getTodos();
     if (event.active.data.current?.type === "Todolist") {
       setActiveTodo(event.active.data.current.todolist);
-      console.log(event.active);
       return;
     }
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
-      console.log(event.active);
       event.active.data.current.todoListId =
         event.active.data.current.task.todoListId;
       return;
@@ -147,10 +144,12 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const onDragOverHandler = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
-    console.log(memoTodosServerAr);
-    let activeTodoListId = active.data.current?.todolist?.id;
+    console.log("Over active", active);
+    console.log("Over over", over);
+    console.log("OVER", event);
+    const activeTodoListId = active.data.current?.todolist?.id;
     const activeTaskId = active.data.current?.task?.id;
-    let overTodoListId = over.data.current?.todolist?.id;
+    const overTodoListId = over.data.current?.todolist?.id;
     const overTaskId = over.data.current?.task?.id;
     // 1 сценарий, дропаю таску на другую таску в одном или другом туду
     const isActiveATask = active.data.current?.type === "Task";
@@ -168,18 +167,13 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const overTodoOrder = memoTodosServerAr?.find(
       (tl) => tl.id === extraOverTodoListId
     )?.order;
-    console.log({
-      activeTodoOrder: activeTodoOrder,
-      overTodoOrder: overTodoOrder,
-    });
-    console.log("memoTodosServerAr", memoTodosServerAr);
 
     // Region Активная таска
     // ? Над таской, в одном тудулисте
     if (isActiveATask && isOverATask && activeTodoOrder === overTodoOrder) {
       console.log("OVER Над таской, в одном тудулисте");
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
+      const activeTodoListId = active.data.current?.task?.todoListId;
+      const overTodoListId = over.data.current?.task?.todoListId;
       // ! Когда activeTodolistId === overTodolistId
       setMemoActiveTodoId(activeTodoListId.toString());
       // setMemoOverTodoId(overTodoListId.toString());
@@ -193,8 +187,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
     // ? Над таской, в другом тудулисте
     if (isActiveATask && isOverATask && activeTodoOrder !== overTodoOrder) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
+      const activeTodoListId = active.data.current?.task?.todoListId;
+      const overTodoListId = over.data.current?.task?.todoListId;
       console.log("OVER Над таской, в другом тудулистe");
       if (activeTaskId === overTaskId) return;
       setMemoActiveTodoId(activeTodoListId);
@@ -216,8 +210,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       isOverATodolist &&
       tasks[overTodoListId]?.length === 0
     ) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.todolist.id;
+      const activeTodoListId = active.data.current?.task?.todoListId;
+      const overTodoListId = over.data.current?.todolist.id;
       console.log("OVER В другой пустой тудулист");
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId);
@@ -257,6 +251,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const onDragEndHandler = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return;
+    console.log("End active", active);
+    console.log("End over", over);
+    console.log("END", event);
     let activeTodoListId = active.data.current?.todolist?.id;
     const activeTaskId = active.data.current?.task?.id;
     let overTodoListId = over.data.current?.todolist?.id;
