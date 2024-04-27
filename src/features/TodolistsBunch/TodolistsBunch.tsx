@@ -1,6 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { FilterValuesType, todolistsActions, todolistsSelectors, todolistsThunks, TodoUIType } from "../../redux/todolistsSlice";
+import {
+  FilterValuesType,
+  todolistsActions,
+  todolistsSelectors,
+  todolistsThunks,
+  TodoUIType,
+} from "../../redux/todolistsSlice";
 import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
@@ -27,7 +33,10 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskType } from "../../api/tasks-api";
 import { Task } from "./Todolist/Task/Task";
-import { tasksSelectors, TasksWithEntityStatusType } from "../../redux/tasksSlice";
+import {
+  tasksSelectors,
+  TasksWithEntityStatusType,
+} from "../../redux/tasksSlice";
 import { todolistsAPI, TodolistType } from "../../api/todolists-api";
 
 type TodolistsBunchProps = {};
@@ -60,9 +69,15 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     moveTaskInEmptyTodolists,
   } = useActions();
 
-  const todolists = useAppSelector((state) => todolistsSelectors.todolists(state));
-  const statusAddTodo = useAppSelector((state) => appSelectors.statusTodo(state));
-  const isLoggedIn = useAppSelector((state) => loginSelectors.isLoggedIn(state));
+  const todolists = useAppSelector((state) =>
+    todolistsSelectors.todolists(state)
+  );
+  const statusAddTodo = useAppSelector((state) =>
+    appSelectors.statusTodo(state)
+  );
+  const isLoggedIn = useAppSelector((state) =>
+    loginSelectors.isLoggedIn(state)
+  );
 
   const [activeTodo, setActiveTodo] = useState<TodoUIType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -70,7 +85,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const [memoOverTodoId, setMemoOverTodoId] = useState<string | null>(null);
   const [memoActiveTaskId, setMemoActiveTaskId] = useState<string | null>(null);
   const [memoOverTaskId, setMemoOverTaskId] = useState<string | null>(null);
-  const [memoActiveTaskCopy, setMemoActiveTaskCopy] = useState<TaskType | null>(null);
+  const [memoActiveTaskCopy, setMemoActiveTaskCopy] = useState<TaskType | null>(
+    null
+  );
   const [memoTodosServerAr, setMemoTodosServerAr] = useState<TodolistType[]>();
   const [memoActiveTodoOrder, setMemoActiveTodoOrder] = useState<number>(0);
   const [memoOverTodoOrder, setMemoOverTodoOrder] = useState<number>(0);
@@ -78,27 +95,35 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const [mA, setMA] = useState<any | null>(null);
   const [mO, setMO] = useState<any | null>(null);
 
-  const todolistIds = useMemo(() => todolists.allTodolists.map((tl) => tl.id), [todolists]);
+  const todolistIds = useMemo(
+    () => todolists.allTodolists.map((tl) => tl.id),
+    [todolists]
+  );
   const tasks = useAppSelector(tasksSelectors.tasksState);
-  // console.log('TODO-UI-INDEX', todolists[0])
 
-  const changeFilter = useCallback((todoListId: string, newFilterValue: FilterValuesType) => {
-    changeTodoFilterAC({
-      todoListId: todoListId,
-      newFilterValue: newFilterValue,
-    });
-  }, []);
+  const changeFilter = useCallback(
+    (todoListId: string, newFilterValue: FilterValuesType) => {
+      changeTodoFilterAC({
+        todoListId: todoListId,
+        newFilterValue: newFilterValue,
+      });
+    },
+    []
+  );
 
   const addTodo = useCallback((newTodoTitle: string) => {
     addTodoTC(newTodoTitle);
   }, []);
 
-  const updTodoTitle = useCallback((todoListId: string, updTodoTitle: string) => {
-    updateTodoTitleTC({
-      todoListId: todoListId,
-      title: updTodoTitle,
-    });
-  }, []);
+  const updTodoTitle = useCallback(
+    (todoListId: string, updTodoTitle: string) => {
+      updateTodoTitleTC({
+        todoListId: todoListId,
+        title: updTodoTitle,
+      });
+    },
+    []
+  );
 
   const onDragStartHandler = (event: DragStartEvent) => {
     const getTodos = async () => {
@@ -112,16 +137,14 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
-      event.active.data.current.todoListId = event.active.data.current.task.todoListId;
+      event.active.data.current.todoListId =
+        event.active.data.current.task.todoListId;
       return;
     }
   };
   const onDragOverHandler = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
-    console.log("Over active", active);
-    console.log("Over over", over);
-    console.log("OVER", event);
     let activeTodoListId = active.data.current?.todolist?.id;
     const activeTaskId = active.data.current?.task?.id;
     let overTodoListId = over.data.current?.todolist?.id;
@@ -131,15 +154,21 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const isOverATask = over.data.current?.type === "Task";
     const isActiveATodolist = active.data.current?.type === "Todolist";
     const isOverATodolist = over.data.current?.type === "Todolist";
-    const extraActiveTodoListId = active.data.current?.todolist?.id || active.data.current?.task?.todoListId;
-    const extraOverTodoListId = over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
-    const activeTodoOrder = memoTodosServerAr?.find((tl) => tl.id === extraActiveTodoListId)?.order;
-    const overTodoOrder = memoTodosServerAr?.find((tl) => tl.id === extraOverTodoListId)?.order;
+    const extraActiveTodoListId =
+      active.data.current?.todolist?.id ||
+      active.data.current?.task?.todoListId;
+    const extraOverTodoListId =
+      over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
+    const activeTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraActiveTodoListId
+    )?.order;
+    const overTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraOverTodoListId
+    )?.order;
 
     // Region Активная таска
     // ? Над таской, в одном тудулисте
     if (isActiveATask && isOverATask && activeTodoOrder === overTodoOrder) {
-      console.log("OVER Над таской, в одном тудулисте");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       // ! Когда activeTodolistId === overTodolistId
@@ -157,7 +186,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     if (isActiveATask && isOverATask && activeTodoOrder !== overTodoOrder) {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
-      console.log("OVER Над таской, в другом тудулистe");
       if (activeTaskId === overTaskId) return;
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId.toString());
@@ -174,12 +202,14 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         endShiftId: overTodoListId,
       });
     }
-    console.log("МЕМО over ТудулистId", memoOverTodoId);
     // ? В другой пустой тудулист
-    if (isActiveATask && isOverATodolist && tasks[overTodoListId]?.length === 0) {
+    if (
+      isActiveATask &&
+      isOverATodolist &&
+      tasks[overTodoListId]?.length === 0
+    ) {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.todolist.id;
-      console.log("OVER В другой пустой тудулист");
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId);
       setMemoActiveTaskId(activeTaskId);
@@ -218,9 +248,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const onDragEndHandler = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return;
-    console.log("End active", active);
-    console.log("End over", over);
-    console.log("END", event);
     let activeTodoListId = active.data.current?.todolist?.id;
     const activeTaskId = active.data.current?.task?.id;
     let overTodoListId = over.data.current?.todolist?.id;
@@ -230,20 +257,30 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const isOverATask = over.data.current?.type === "Task";
     const isActiveATodolist = active.data.current?.type === "Todolist";
     const isOverATodolist = over.data.current?.type === "Todolist";
-    const extraActiveTodoListId = active.data.current?.todolist?.id || active.data.current?.task?.todoListId;
-    const extraOverTodoListId = over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
-    const activeTodoOrder = memoTodosServerAr?.find((tl) => tl.id === extraActiveTodoListId)?.order;
-    const overTodoOrder = memoTodosServerAr?.find((tl) => tl.id === extraOverTodoListId)?.order;
+    const extraActiveTodoListId =
+      active.data.current?.todolist?.id ||
+      active.data.current?.task?.todoListId;
+    const extraOverTodoListId =
+      over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
+    const activeTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraActiveTodoListId
+    )?.order;
+    const overTodoOrder = memoTodosServerAr?.find(
+      (tl) => tl.id === extraOverTodoListId
+    )?.order;
     // Region Активная таска
     // ? Над таской, в одном тудулисте
     if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
-      console.log("END Над таской, в одном тудулисте");
-      activeTodoListId = memoTodosServerAr?.find((tl) => tl.order === activeTodoOrder)?.id;
-      overTodoListId = memoTodosServerAr?.find((tl) => tl.order === overTodoOrder)?.id;
+      activeTodoListId = memoTodosServerAr?.find(
+        (tl) => tl.order === activeTodoOrder
+      )?.id;
+      overTodoListId = memoTodosServerAr?.find(
+        (tl) => tl.order === overTodoOrder
+      )?.id;
       // ! Когда activeTodolistId === overTodolistId
       // Поделено, чтобы на UI работало норм
       reorderTasksSoloTodoDnDTC({
-        todoListId: activeTodoListId,
+        todoListId: activeTask?.todoListId || "",
         startDragId: activeTaskId,
         endShiftId: memoOverTask?.id || overTaskId,
       }).then(() => {
@@ -254,8 +291,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     if (isActiveATask && isOverATask && memoActiveTodoId !== memoOverTodoId) {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
-      // if (memoActiveTodoId === null) return;
-      console.log("END Над таской, в другом тудулистe");
       const activeCopy: TaskType = active.data.current?.task;
       // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
       deleteTaskTC({
@@ -291,10 +326,12 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // });
     }
     // ? В другой пустой тудулист
-    if (isActiveATask && isOverATodolist && tasks[overTodoListId]?.length === 0) {
+    if (
+      isActiveATask &&
+      isOverATodolist &&
+      tasks[overTodoListId]?.length === 0
+    ) {
       activeTodoListId = active.data.current?.task?.todoListId;
-      // overTodoListId = over.data.current?.task?.todoListId;
-      console.log("END В другой пустой тудулист");
       const activeCopy = memoActiveTaskCopy;
       // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
       deleteTaskTC({
@@ -315,7 +352,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       const endShiftId = memoOverTodoId;
       if (activeTodo) {
         reorderTodolistTC({ endShiftId, startDragId: memoActiveTodoId || "" });
-        // reorderTodolist({ endShiftId, startDragId: activeTodo.id });
       }
     }
 
@@ -340,7 +376,13 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }
 
   return (
-    <DndContext onDragStart={onDragStartHandler} onDragOver={onDragOverHandler} onDragEnd={onDragEndHandler} sensors={sensors} collisionDetection={closestCorners}>
+    <DndContext
+      onDragStart={onDragStartHandler}
+      onDragOver={onDragOverHandler}
+      onDragEnd={onDragEndHandler}
+      sensors={sensors}
+      collisionDetection={closestCorners}
+    >
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
       </Grid>
@@ -384,7 +426,15 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
               />
             </Grid>
           )}
-          {activeTask && <Task key={activeTask.id} taskId={activeTask.id} tIsDone={activeTask.status} oldTitle={activeTask.title} todoListId={activeTask.todoListId} />}
+          {activeTask && (
+            <Task
+              key={activeTask.id}
+              taskId={activeTask.id}
+              tIsDone={activeTask.status}
+              oldTitle={activeTask.title}
+              todoListId={activeTask.todoListId}
+            />
+          )}
         </DragOverlay>,
         document.body
       )}

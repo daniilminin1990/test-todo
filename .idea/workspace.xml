@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="PIZDA NE POLUCHAYETSYA">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor moveTodos done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,6 +318,8 @@
       <workItem from="1714041483631" duration="4556000" />
       <workItem from="1714061537826" duration="646000" />
       <workItem from="1714062426620" duration="1806000" />
+      <workItem from="1714256857972" duration="149000" />
+      <workItem from="1714257029169" duration="1593000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -534,6 +537,7 @@
     <MESSAGE value="LOGIC DONE! Need final refactor" />
     <MESSAGE value="figuring out what to do to normal drag" />
     <MESSAGE value="PIZDA NE POLUCHAYETSYA" />
-    <option name="LAST_COMMIT_MESSAGE" value="PIZDA NE POLUCHAYETSYA" />
+    <MESSAGE value="refactor moveTodos done" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor moveTodos done" />
   </component>
 </project>
