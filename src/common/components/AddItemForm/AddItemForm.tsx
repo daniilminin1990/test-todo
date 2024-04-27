@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { getStyles } from "../../../styles";
 import { ServerResponseStatusType } from "../../../redux/appSlice";
+import { AxiosError } from "axios";
 
 export type AddItemFormProps = {
   callback: (newTitle: string) => Promise<any>;
@@ -19,8 +20,8 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         .then((res) => {
           setNewTitle("");
         })
-        .catch((err: ServerResponseStatusType) => {
-          setError(err);
+        .catch((err) => {
+          setError("Smth gone wrong");
         });
     } else {
       setNewTitle("");
@@ -43,6 +44,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         error={!!error}
         // label="Type title"
         label={error ? error : "Type smth"}
+        // helperText={error ? error : "Type smth"}
         variant="outlined"
         value={newTitle}
         onChange={onNewTitleChangeHandler}

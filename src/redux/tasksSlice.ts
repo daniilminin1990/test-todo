@@ -225,7 +225,7 @@ const addTaskTC = createAppAsyncThunk<{ task: TaskType }, CreateTaskArgs>(`${sli
       return { task };
     } else {
       handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
-      return rejectWithValue(null);
+      return rejectWithValue(res.data);
     }
   } catch (e) {
     handleServerNetworkError(e, dispatch);

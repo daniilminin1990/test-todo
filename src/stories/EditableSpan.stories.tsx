@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
-import EdiatbleSpan, {
-  EdiatbleSpanProps,
-} from "../common/components/EditableSpan/EdiatbleSpan";
+import EdiatbleSpan, { EdiatbleSpanProps } from "../common/components/EditableSpan/EdiatbleSpan";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 
 const meta: Meta<typeof EdiatbleSpan> = {
@@ -65,13 +63,7 @@ export const EdiatbleSpanStory = () => {
     <>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {edit ? (
-        <input
-          onBlur={swapHandler}
-          value={updTitle}
-          onChange={onChangeHandler}
-          autoFocus
-          onKeyDown={onKeyDownHandler}
-        />
+        <input onBlur={swapHandler} value={updTitle} onChange={onChangeHandler} autoFocus onKeyDown={onKeyDownHandler} />
       ) : (
         <span onDoubleClick={swapHandler}>{updTitle}</span>
       )}
