@@ -282,7 +282,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       reorderTasksSoloTodoDnDTC({
         todoListId: activeTask?.todoListId || "",
         startDragId: activeTaskId,
-        endShiftId: memoOverTask?.id || overTaskId,
+        endShiftId: overTaskId,
       }).then(() => {
         fetchTasksTC(activeTodoListId);
       });
@@ -349,10 +349,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
     // Region Активный тудулист
     if (isActiveATodolist && isOverATodolist) {
-      const endShiftId = memoOverTodoId;
-      if (activeTodo) {
-        reorderTodolistTC({ endShiftId, startDragId: memoActiveTodoId || "" });
-      }
+      const startDragId = activeTodoListId;
+      const endShiftId = overTodoListId;
+      reorderTodolistTC({ endShiftId, startDragId });
     }
 
     setActiveTodo(null);
