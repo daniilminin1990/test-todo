@@ -2,9 +2,10 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { getStyles } from "../../../styles";
+import { ServerResponseStatusType } from "../../../redux/appSlice";
 
 export type AddItemFormProps = {
-  callback: (newTitle: string) => void;
+  callback: (newTitle: string) => Promise<any>;
   disabled?: boolean;
 };
 
@@ -13,9 +14,14 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
   const [error, setError] = useState<string | null>(null);
   const onClickAddItemHandler = () => {
     if (newTitle.trim() !== "") {
-      props.callback(newTitle.trim());
-      setNewTitle("");
-      setError("");
+      props
+        .callback(newTitle.trim())
+        .then((res) => {
+          setNewTitle("");
+        })
+        .catch((err: ServerResponseStatusType) => {
+          setError(err);
+        });
     } else {
       setNewTitle("");
       setError("Title is required");

@@ -4,37 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="going back to not use dndkit">
-      <change afterPath="$PROJECT_DIR$/src/__tests__/todolists-tasks.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__tests__/tosolists/todolistsReducer.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/login-api.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/tasks-api.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/todolists-api.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/FilterTasksButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/TodolistTitle/TodolistTitle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/auth/lib/useLogin.ts" afterDir="false" />
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor dragEnd for task in empty">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/login-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/login-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/createModelTask.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/createModelTask.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/Login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/ui/Login/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/types/BaseResponseType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/types/BaseResponseType.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stories/Task.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/appReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/tasks/tasksReducers.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/AddItemForm.stories.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,8 +170,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.test" />
+        <item itemvalue="npm.start" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
         <item itemvalue="Jest.All Tests" />
@@ -332,6 +309,7 @@
       <workItem from="1714150703138" duration="5000" />
       <workItem from="1714201499847" duration="6982000" />
       <workItem from="1714210216428" duration="360000" />
+      <workItem from="1714241088842" duration="2815000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />

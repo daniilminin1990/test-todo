@@ -80,7 +80,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // End
 
   const addTodo = useCallback((newTodoTitle: string) => {
-    addTodoTC(newTodoTitle);
+    return addTodoTC(newTodoTitle).unwrap();
   }, []);
 
   if (!isLoggedIn) {

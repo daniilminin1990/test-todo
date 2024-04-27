@@ -1,8 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  AddItemForm,
-  AddItemFormProps,
-} from "../common/components/AddItemForm/AddItemForm";
+import { AddItemForm, AddItemFormProps } from "../common/components/AddItemForm/AddItemForm";
 import TextField from "@mui/material/TextField";
 import { action } from "@storybook/addon-actions";
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
@@ -16,11 +13,11 @@ const meta: Meta<typeof AddItemForm> = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    callback: {
-      description: "add newTitle for tl or task",
-    },
-  },
+  // argTypes: {
+  //   callback: {
+  //     description: "add newTitle for tl or task",
+  //   },
+  // },
 };
 export default meta;
 
@@ -28,9 +25,9 @@ export default meta;
 export type Story = StoryObj<typeof AddItemForm>;
 
 export const AddItemFormExample: Story = {
-  args: {
-    callback: action("Add this todo/task title"),
-  },
+  // args: {
+  //   callback: action("Add this todo/task title"),
+  // },
 };
 
 // Вид с ошибкой
@@ -73,11 +70,7 @@ export const AddItemFormError = (props: AddItemFormProps) => {
         onKeyDown={onEnterAddItem}
         className={error ? "error" : ""}
       />
-      <Button
-        onClick={onClickAddItemHandler}
-        variant="contained"
-        style={getStyles(props.disabled)}
-      >
+      <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)}>
         +
       </Button>
       {/*{error && <div className={'error-message'}>Title is required</div>}*/}

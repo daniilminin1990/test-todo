@@ -5,6 +5,7 @@ import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { tasksThunks } from "./tasksSlice";
 import { createAppAsyncThunk, dragAndDropIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
 import { ReorderTodoListArgs, TodolistType, UpdateTodoArgs } from "../api/todolists-api.types";
+import { AxiosError } from "axios";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -233,7 +234,7 @@ const addTodoTC = createAppAsyncThunk<
     } else {
       // handleServerAppError(res.data, dispatch)
       handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
-      return rejectWithValue(null);
+      return rejectWithValue(res.data);
     }
   } catch (e) {
     handleServerNetworkError(e, dispatch);

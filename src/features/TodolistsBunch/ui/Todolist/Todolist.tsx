@@ -56,10 +56,10 @@ export const Todolist = React.memo(({ todoList }: Props) => {
 
   const addTask = useCallback(
     (newTaskTitle: string) => {
-      addTaskTC({
+      return addTaskTC({
         todoListId: todoList.id,
         title: newTaskTitle,
-      });
+      }).unwrap();
     },
     [todoList.id]
   );
