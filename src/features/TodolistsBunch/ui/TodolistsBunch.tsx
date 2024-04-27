@@ -1,51 +1,33 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { RootReducerType, useAppSelector } from "../../store/store";
-import {
-  FilterValuesType,
-  todolistsSelectors,
-} from "../../redux/todolistsSlice";
+import { RootReducerType, useAppSelector } from "../../../store/store";
+import { FilterValuesType, todolistsSelectors } from "../../../redux/todolistsSlice";
 import { ClassNameMap, Grid, Pagination, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { appSelectors, appSlice } from "../../redux/appSlice";
-import { loginSelectors } from "../../redux/loginSlice";
-import { AddItemForm } from "../../common/components";
-import { useActions } from "../../common/hooks/useActions";
+import { appSelectors, appSlice } from "../../../redux/appSlice";
+import { loginSelectors } from "../../../redux/loginSlice";
+import { AddItemForm } from "../../../common/components";
+import { useActions } from "../../../common/hooks/useActions";
 import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
 import { grey, yellow } from "@mui/material/colors";
 import { CSSProperties } from "@mui/material/styles/createMixins";
 import { createStyles, Theme } from "@material-ui/core/styles";
-import { MyPagination } from "../../common/components/MyPagination/MyPagination";
+import { MyPagination } from "../../../common/components/MyPagination/MyPagination";
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // const dispatch = useAppDispatch();
-  const {
-    reorderTodolistTC,
-    reorderTask,
-    reorderTasksTC,
-    changeTodoFilter: changeTodoFilterAC,
-    addTodoTC,
-    updateTodoTitleTC,
-  } = useActions();
+  const { reorderTodolistTC, reorderTask, reorderTasksTC, changeTodoFilter: changeTodoFilterAC, addTodoTC, updateTodoTitleTC } = useActions();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const todolists = useAppSelector((state) =>
-    todolistsSelectors.todolists(state)
-  );
-  const statusAddTodo = useAppSelector((state) =>
-    appSelectors.statusTodo(state)
-  );
-  const isLoggedIn = useAppSelector((state) =>
-    loginSelectors.isLoggedIn(state)
-  );
-  const searchQuery = useSelector<RootReducerType, string>(
-    (state) => state.app.searchQuery
-  );
+  const todolists = useAppSelector((state) => todolistsSelectors.todolists(state));
+  const statusAddTodo = useAppSelector((state) => appSelectors.statusTodo(state));
+  const isLoggedIn = useAppSelector((state) => loginSelectors.isLoggedIn(state));
+  const searchQuery = useSelector<RootReducerType, string>((state) => state.app.searchQuery);
 
   // Paginaton
   const [page, setPage] = useState<number>(1);
@@ -55,10 +37,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const theme: any = useTheme();
 
   useEffect(() => {
-    const searchQueryParams: { search?: string } =
-      searchQuery !== "" ? { search: searchQuery } : {};
-    const pageQueryParams: { pageQ?: string } =
-      page.toString() !== "1" ? { pageQ: page.toString() } : {};
+    const searchQueryParams: { search?: string } = searchQuery !== "" ? { search: searchQuery } : {};
+    const pageQueryParams: { pageQ?: string } = page.toString() !== "1" ? { pageQ: page.toString() } : {};
     const allQuery = { ...searchQueryParams, ...pageQueryParams };
     setSearchParams(allQuery);
   }, [page, searchQuery]);
@@ -78,10 +58,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // Region
   const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>("");
 
-  function dragStartHandler(
-    e: React.DragEvent<HTMLDivElement>,
-    startDragId: string
-  ) {
+  function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
     setTodoListIdToDrag(startDragId);
     console.log("DRAGGING-ID", startDragId);
   }
@@ -102,38 +79,15 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
   // End
 
-  const changeFilter = useCallback(
-    (todoListId: string, newFilterValue: FilterValuesType) => {
-      changeTodoFilterAC({
-        todoListId: todoListId,
-        newFilterValue: newFilterValue,
-      });
-    },
-    []
-  );
-
   const addTodo = useCallback((newTodoTitle: string) => {
     addTodoTC(newTodoTitle);
   }, []);
-
-  const updTodoTitle = useCallback(
-    (todoListId: string, updTodoTitle: string) => {
-      updateTodoTitleTC({
-        todoListId: todoListId,
-        title: updTodoTitle,
-      });
-    },
-    []
-  );
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
 
-  const displayedTodolists = todolists.slice(
-    (Number(page) - 1) * pageCount,
-    Number(page) * pageCount
-  );
+  const displayedTodolists = todolists.slice((Number(page) - 1) * pageCount, Number(page) * pageCount);
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
@@ -141,11 +95,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       </Grid>
       <Grid container spacing={3} justifyContent={"space-evenly"}>
         {displayedTodolists
-          .filter((e) =>
-            searchParams.get("search")
-              ? e.title.includes(searchParams.get("search") ?? "")
-              : e
-          )
+          .filter((e) => (searchParams.get("search") ? e.title.includes(searchParams.get("search") ?? "") : e))
           .map((tl) => {
             return (
               <Grid
@@ -158,18 +108,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                 onDragOver={(e) => dragOverHandler(e)}
                 onDrop={(e) => dropHandler(e, tl.id)}
               >
-                <Todolist
-                  key={tl.id}
-                  todoListId={tl.id}
-                  todoTitle={tl.title}
-                  tasksFilter={tl.filter}
-                  changeFilter={changeFilter}
-                  updTodoTitle={updTodoTitle}
-                  entityStatus={tl.entityStatus}
-                  disabled={tl.entityStatus}
-                  showTasks={tl.showTasks}
-                  todolist={tl}
-                />
+                <Todolist key={tl.id} todoList={tl} />
               </Grid>
             );
           })}

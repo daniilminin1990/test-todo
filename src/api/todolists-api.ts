@@ -1,13 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { instance } from "../common/instance/instance";
 import { ResponseType } from "../common/types";
-
-export type TodolistType = {
-  id: string;
-  title: string;
-  addedDate: string;
-  order: number;
-};
+import { ReorderTodoListArgs, TodolistType, UpdateTodoArgs } from "./todolists-api.types";
 
 export const todolistsAPI = {
   getTodolists() {
@@ -15,11 +9,7 @@ export const todolistsAPI = {
     return instance.get<Array<TodolistType>>("todo-lists");
   },
   createTodolist(title: string) {
-    return instance.post<
-      ResponseType<{ item: TodolistType }>,
-      AxiosResponse<ResponseType<{ item: TodolistType }>>,
-      { title: string }
-    >("todo-lists", { title });
+    return instance.post<ResponseType<{ item: TodolistType }>, AxiosResponse<ResponseType<{ item: TodolistType }>>, { title: string }>("todo-lists", { title });
   },
   deleteTodolist(id: string) {
     return instance.delete<ResponseType>(`todo-lists/${id}`);
@@ -32,19 +22,6 @@ export const todolistsAPI = {
     });
   },
   reorderTodolist(args: ReorderTodoListArgs) {
-    return instance.put<ResponseType>(
-      `todo-lists/${args.startDragId}/reorder`,
-      { putAfterItemId: args.endShiftId }
-    );
+    return instance.put<ResponseType>(`todo-lists/${args.startDragId}/reorder`, { putAfterItemId: args.endShiftId });
   },
-};
-
-export type UpdateTodoArgs = {
-  todoListId: string;
-  title: string;
-};
-
-export type ReorderTodoListArgs = {
-  startDragId: string;
-  endShiftId: string | null;
 };

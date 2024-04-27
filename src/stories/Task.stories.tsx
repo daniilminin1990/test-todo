@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
-import { Task } from "../features/TodolistsBunch/Todolist/Task/Task";
+import { Task } from "../features/TodolistsBunch/ui/Todolist/Task/Task";
 import { useState } from "react";
-import { TaskStatuses } from "../common/enums/enums";
+import { TaskPriorities, TaskStatuses } from "../common/enums";
+import { ServerResponseStatusType } from "../redux/appSlice";
 
 const meta: Meta<typeof Task> = {
   title: "TODOLIST/Task",
@@ -12,28 +12,62 @@ const meta: Meta<typeof Task> = {
     layout: "centered",
   },
   args: {
-    tIsDone: TaskStatuses.New, // Состояние по умолчанию
-    oldTitle: "Title",
-    taskId: "taskId", // Это слово я увижу в toolbar в control
-    onChange: action("Change task status"), // Меняю статус - показывает этот текст в actions
-    onClick: action("Delete task"),
-    updTaskTitle: action("Change task title"),
+    task: {
+      title: "Чет написано",
+      status: TaskStatuses.New,
+      id: "asdasd",
+      entityStatus: "success" as ServerResponseStatusType,
+      todoListId: "todoListId",
+      order: 0,
+      addedDate: "",
+      description: "",
+      startDate: "",
+      priority: TaskPriorities.High,
+      deadline: "",
+    },
+    // tIsDone: TaskStatuses.New, // Состояние по умолчанию
+    // oldTitle: "Title",
+    // taskId: "taskId", // Это слово я увижу в toolbar в control
   },
   argTypes: {
-    tIsDone: {
-      type: "boolean", // В toolbar меню даст контроль из true в false
-      description: "if true - task is done and it should be greyish",
+    task: {
+      title: "Чет написано",
+      status: TaskStatuses.New,
+      id: "asdasd",
+      entityStatus: "success" as ServerResponseStatusType,
+      todoListId: "todoListId",
+      order: 0,
+      addedDate: "",
+      description: "",
+      startDate: "",
+      priority: TaskPriorities.High,
+      deadline: "",
     },
-    oldTitle: {
-      type: "string",
-      description: "Shows the title",
-    },
-    onChange: { description: "Change task status" }, // Меняю статус - показывает этот текст в actions,
-    onClick: { description: "Adds title on click" },
-    updTaskTitle: { description: "Update taskTitle" },
+    // tIsDone: {
+    //   type: "boolean", // В toolbar меню даст контроль из true в false
+    //   description: "if true - task is done and it should be greyish",
+    // },
+    // oldTitle: {
+    //   type: "string",
+    //   description: "Shows the title",
+    // },
   },
 };
 export default meta;
+
+const task = {
+  title: "Чет написано",
+  status: TaskStatuses.New,
+  id: "asdasd",
+  entityStatus: "success" as ServerResponseStatusType,
+  todoListId: "todoListId",
+  order: 0,
+  addedDate: "",
+  description: "",
+  startDate: "",
+  priority: TaskPriorities.High,
+  deadline: "",
+};
 
 // Чекбокс нет
 export type Story = StoryObj<typeof Task>;
@@ -43,8 +77,7 @@ export const TaskExampleNoCheck: Story = {};
 // Чекбокс есть
 export const TaskCheck: Story = {
   args: {
-    oldTitle: "Алиллуйя", // Это слово я увижу в toolbar в control
-    tIsDone: TaskStatuses.Completed,
+    task,
   },
 };
 
@@ -56,14 +89,5 @@ export const TaskToDelete = () => {
     setTIsDone(tIsDone ? TaskStatuses.Completed : TaskStatuses.New);
   };
 
-  return (
-    <Task
-      oldTitle={"Чет написано"}
-      tIsDone={tIsDone}
-      taskId={"asdasd"}
-      onChange={onChange}
-      onClick={action("onclickAction")}
-      updTaskTitle={action("updateTasktion")}
-    />
-  );
+  return <Task todoListId={"todoListId"} task={{ ...task, status: tIsDone }} />;
 };

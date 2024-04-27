@@ -1,9 +1,4 @@
-import {
-  appActions,
-  AppInitialState,
-  appSlice,
-  ServerResponseStatusType,
-} from "../redux/appSlice";
+import { appActions, AppInitialState, appSlice, ServerResponseStatusType } from "../../redux/appSlice";
 let startState: AppInitialState;
 beforeEach(() => {
   startState = {
@@ -17,17 +12,11 @@ beforeEach(() => {
 });
 
 test("correct error should be set", () => {
-  const endState = appSlice(
-    startState,
-    appActions.setAppError({ error: "test error" })
-  );
+  const endState = appSlice(startState, appActions.setAppError({ error: "test error" }));
   expect(endState.error).toBe("test error");
 });
 
 test("correct status should be set", () => {
-  const endState = appSlice(
-    startState,
-    appActions.setAppStatus({ appStatus: "loading" })
-  );
+  const endState = appSlice(startState, appActions.setAppStatus({ appStatus: "loading" }));
   expect(endState.addStatus).toBe("loading");
 });

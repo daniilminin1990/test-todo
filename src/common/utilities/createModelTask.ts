@@ -1,14 +1,11 @@
-import { TaskType } from "../../api/tasks-api";
 import { TaskPriorities, TaskStatuses } from "../enums/enums";
+import { TaskType } from "../../api/tasks-api.types";
 
 // Утилитная функция для изменения таски, т.е. могут на изменение придти title или Status ну и может Priority
 type ModelForUpdateType = {
   [key: string]: string | TaskStatuses | TaskPriorities;
 };
-export const createModelTask = (
-  task: TaskType,
-  utilityModel: ModelForUpdateType
-) => {
+export const createModelTask = (task: TaskType, utilityModel: ModelForUpdateType) => {
   return {
     status: task.status,
     startDate: task.deadline,

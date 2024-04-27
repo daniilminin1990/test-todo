@@ -5,11 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="going back to not use dndkit">
+      <change afterPath="$PROJECT_DIR$/src/__tests__/todolists-tasks.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__tests__/tosolists/todolistsReducer.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/login-api.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/tasks-api.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/todolists-api.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/FilterTasksButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/TodolistTitle/TodolistTitle.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/auth/lib/useLogin.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/SearchAppBar/SearchAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/SearchAppBar/SearchAppBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/testsReducers/appReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/testsReducers/appReducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/login-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/login-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/utilities/createModelTask.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/createModelTask.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/Login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/ui/Login/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stories/Task.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testsReducers/appReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testsReducers/tasksReducers.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/tasks/tasksReducers.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolists-tasks.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testsReducers/todolistsReducer.test.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +46,7 @@
       <list>
         <option value="JavaScript File" />
         <option value="TypeScript File" />
+        <option value="CSS File" />
         <option value="TypeScript JSX File" />
       </list>
     </option>
@@ -45,7 +71,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/daniilminin1990/test-todo.git&quot;,
-    &quot;accountId&quot;: &quot;b8252bb0-2605-42da-906c-d73d563e04de&quot;
+    &quot;accountId&quot;: &quot;71183d9c-39da-40a7-8515-43d259133ec0&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -71,7 +97,8 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/long-term-projects-it-incubator/native-js/9-lesson&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/long-term-projects-it-incubator/test-todo/src/api&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -86,13 +113,16 @@
     &quot;npm.storybook.executor&quot;: &quot;Run&quot;,
     &quot;npm.test.executor&quot;: &quot;Run&quot;,
     &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\long-term-projects-it-incubator\\test-todo\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Subversion&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\long-term-projects-it-incubator\\test-todo\\node_modules\\typescript\\lib&quot;,
     &quot;ts.rename.search.for.dynamic.occurrences&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\api" />
+    </key>
     <key name="es6.move.members.recent.items">
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\handleServerAppError.ts" />
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\utilities\handleServerNetworkError.ts" />
@@ -101,11 +131,11 @@
       <recent name="D:\IT программирование\Работа\Git repos\Обучение IT-incubator\Frontend\Преподавание\test-todo\src\AddItemForm.tsx" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\long-term-projects-it-incubator\test-todo\src\common\enums" />
-      <recent name="D:\long-term-projects-it-incubator\test-todo\src\common\types" />
-      <recent name="D:\long-term-projects-it-incubator\test-todo\src\common" />
-      <recent name="D:\long-term-projects-it-incubator\test-todo\src\common\components" />
-      <recent name="D:\long-term-projects-it-incubator\test-todo\src\redux" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\features\TodolistsBunch\ui\Todolist" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\__tests__" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\app" />
+      <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\tosolists" />
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
@@ -299,6 +329,9 @@
       <workItem from="1713093862409" duration="457000" />
       <workItem from="1713162443042" duration="26236000" />
       <workItem from="1713523063365" duration="2281000" />
+      <workItem from="1714150703138" duration="5000" />
+      <workItem from="1714201499847" duration="6982000" />
+      <workItem from="1714210216428" duration="360000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />

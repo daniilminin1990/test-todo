@@ -1,8 +1,8 @@
-import { tasksSlice, TaskStateType, tasksThunks } from "../redux/tasksSlice";
+import { tasksSlice, TaskStateType, tasksThunks } from "../../redux/tasksSlice";
 
-import { todolistsThunks } from "../redux/todolistsSlice";
-import { ActionTypeForTest } from "../common/types/ActionTypeForTest";
-import { TaskStatuses } from "../common/enums/enums";
+import { todolistsThunks } from "../../redux/todolistsSlice";
+import { ActionTypeForTest } from "../../common/types/ActionTypeForTest";
+import { TaskStatuses } from "../../common/enums/enums";
 
 let startState: TaskStateType = {};
 
@@ -94,10 +94,7 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  type DeleteTaskActionType = Omit<
-    ReturnType<typeof tasksThunks.deleteTaskTC.fulfilled>,
-    "meta"
-  >;
+  type DeleteTaskActionType = Omit<ReturnType<typeof tasksThunks.deleteTaskTC.fulfilled>, "meta">;
   const action: DeleteTaskActionType = {
     type: tasksThunks.deleteTaskTC.fulfilled.type,
     payload: {
@@ -141,10 +138,7 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  type UpdateTaskActionType = Omit<
-    ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>,
-    "meta"
-  >;
+  type UpdateTaskActionType = Omit<ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>, "meta">;
 
   const action: UpdateTaskActionType = {
     type: tasksThunks.updateTaskTC.fulfilled.type,
@@ -165,10 +159,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  type UpdateTaskActionType = Omit<
-    ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>,
-    "meta"
-  >;
+  type UpdateTaskActionType = Omit<ReturnType<typeof tasksThunks.updateTaskTC.fulfilled>, "meta">;
   const action: UpdateTaskActionType = {
     type: tasksThunks.updateTaskTC.fulfilled.type,
     payload: {
@@ -192,10 +183,7 @@ test("title of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  type AddTodoType = Omit<
-    ReturnType<typeof todolistsThunks.addTodoTC.fulfilled>,
-    "meta"
-  >;
+  type AddTodoType = Omit<ReturnType<typeof todolistsThunks.addTodoTC.fulfilled>, "meta">;
   let newTodolist = {
     id: "asdasdffdagwhfhdfh",
     title: "new todolist",
@@ -224,10 +212,7 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  type DeleteTodoType = Omit<
-    ReturnType<typeof todolistsThunks.deleteTodoTC.fulfilled>,
-    "meta"
-  >;
+  type DeleteTodoType = Omit<ReturnType<typeof todolistsThunks.deleteTodoTC.fulfilled>, "meta">;
   const action: DeleteTodoType = {
     type: todolistsThunks.deleteTodoTC.fulfilled.type,
     payload: {
@@ -242,10 +227,7 @@ test("property with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-  type FetchTodosType = Omit<
-    ReturnType<typeof todolistsThunks.fetchTodolistsTC.fulfilled>,
-    "meta"
-  >;
+  type FetchTodosType = Omit<ReturnType<typeof todolistsThunks.fetchTodolistsTC.fulfilled>, "meta">;
 
   const action: FetchTodosType = {
     type: todolistsThunks.fetchTodolistsTC.fulfilled.type,

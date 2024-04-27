@@ -1,21 +1,10 @@
-import {
-  CreateTaskArgs,
-  DeleteTaskArgs,
-  ReorderTasksArgs,
-  tasksApi,
-  TaskType,
-  UpdateTaskType,
-} from "../api/tasks-api";
+import { tasksApi } from "../api/tasks-api";
 import { appActions, ServerResponseStatusType } from "./appSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { todolistsActions, todolistsThunks } from "./todolistsSlice";
-import {
-  createAppAsyncThunk,
-  dragAndDropIdChanger,
-  handleServerAppError,
-  handleServerNetworkError,
-} from "../common/utilities";
+import { createAppAsyncThunk, dragAndDropIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
+import { CreateTaskArgs, DeleteTaskArgs, ReorderTasksArgs, TaskType, UpdateTaskType } from "../api/tasks-api.types";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[];
@@ -64,12 +53,8 @@ const slice = createSlice({
     },
     reorderTask(state, action: PayloadAction<ReorderTasksArgs>) {
       const { todoListId, startDragId, endShiftId } = action.payload;
-      const dragIndex = state[todoListId].findIndex(
-        (t) => t.id === startDragId
-      );
-      const targetIndex = state[todoListId].findIndex(
-        (t) => t.id === endShiftId
-      );
+      const dragIndex = state[todoListId].findIndex((t) => t.id === startDragId);
+      const targetIndex = state[todoListId].findIndex((t) => t.id === endShiftId);
       if (dragIndex > -1 && targetIndex > -1) {
         const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
         state[todoListId].splice(targetIndex, 0, draggedItem);
@@ -117,19 +102,13 @@ const slice = createSlice({
         }
       })
       .addCase(deleteTaskTC.fulfilled, (state, action) => {
-        const id = state[action.payload.todoListId].findIndex(
-          (t) => t.id === action.payload.taskId
-        );
+        const id = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
         if (id > -1) state[action.payload.todoListId].splice(id, 1);
       })
       .addCase(reorderTasksTC.fulfilled, (state, action) => {
         const { todoListId, startDragId, endShiftId } = action.payload;
-        const dragIndex = state[todoListId].findIndex(
-          (t) => t.id === startDragId
-        );
-        const targetIndex = state[todoListId].findIndex(
-          (t) => t.id === endShiftId
-        );
+        const dragIndex = state[todoListId].findIndex((t) => t.id === startDragId);
+        const targetIndex = state[todoListId].findIndex((t) => t.id === endShiftId);
         if (dragIndex > -1 && targetIndex > -1) {
           const draggedItem = state[todoListId].splice(dragIndex, 1)[0];
           state[todoListId].splice(targetIndex, 0, draggedItem);
@@ -139,8 +118,7 @@ const slice = createSlice({
   },
   selectors: {
     tasksState: (sliceState) => sliceState as TaskStateType,
-    tasksById: (sliceState, todoId: string) =>
-      sliceState[todoId] as TasksWithEntityStatusType[],
+    tasksById: (sliceState, todoId: string) => sliceState[todoId] as TasksWithEntityStatusType[],
   },
 });
 
@@ -150,10 +128,7 @@ export const tasksSlice = slice.reducer;
 export const tasksSelectors = slice.selectors;
 
 //! Thunk
-const fetchTasksTC = createAppAsyncThunk<
-  { todolistId: string; tasks: TaskType[] },
-  string
->(`${slice.name}/fetchTasks`, async (todolistId, thunkAPI) => {
+const fetchTasksTC = createAppAsyncThunk<{ todolistId: string; tasks: TaskType[] }, string>(`${slice.name}/fetchTasks`, async (todolistId, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   console.log("FETCHTASKT=TC");
@@ -187,42 +162,39 @@ const fetchTasksTC = createAppAsyncThunk<
 //   })
 // }
 
-const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(
-  `${slice.name}/deleteTask`,
-  async (args, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(`${slice.name}/deleteTask`, async (args, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI;
+  dispatch(
+    tasksActions.updateTaskEntityStatus({
+      todoListId: args.todoListId,
+      taskId: args.taskId,
+      entityStatus: "loading",
+    })
+  );
+  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  console.log("DELETETASKT=TC");
+  try {
+    const res = await tasksApi.deleteTask(args);
+    if (res.data.resultCode === 0) {
+      return { todoListId: args.todoListId, taskId: args.taskId };
+    } else {
+      handleServerAppError(res.data, dispatch, "Something wrong, try later");
+      return rejectWithValue(null);
+    }
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
+    return rejectWithValue(null);
+  } finally {
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.taskId,
-        entityStatus: "loading",
+        entityStatus: "success",
       })
     );
-    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-    console.log("DELETETASKT=TC");
-    try {
-      const res = await tasksApi.deleteTask(args);
-      if (res.data.resultCode === 0) {
-        return { todoListId: args.todoListId, taskId: args.taskId };
-      } else {
-        handleServerAppError(res.data, dispatch, "Something wrong, try later");
-        return rejectWithValue(null);
-      }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      return rejectWithValue(null);
-    } finally {
-      dispatch(
-        tasksActions.updateTaskEntityStatus({
-          todoListId: args.todoListId,
-          taskId: args.taskId,
-          entityStatus: "success",
-        })
-      );
-      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-    }
+    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   }
-);
+});
 // export const _deleteTaskTC = (todoListId: string, taskId: string) => (dispatch: Dispatch) => {
 //   // dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
 //   dispatch(tasksActions.updateTaskEntityStatus({todoListId, taskId, entityStatus: 'loading'}))
@@ -242,33 +214,26 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(
 //       dispatch(tasksActions.updateTaskEntityStatus({todoListId, taskId, entityStatus: 'success'}))
 //     })
 // }
-const addTaskTC = createAppAsyncThunk<{ task: TaskType }, CreateTaskArgs>(
-  `${slice.name}/addTask`,
-  async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
-    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-    try {
-      const res = await tasksApi.createTask(arg);
-      if (res.data.resultCode === 0) {
-        const task = res.data.data.item;
-        dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-        return { task };
-      } else {
-        handleServerAppError(
-          res.data,
-          dispatch,
-          "Oops! Something gone wrong. Length should be less 100 symbols"
-        );
-        return rejectWithValue(null);
-      }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      return rejectWithValue(null);
-    } finally {
+const addTaskTC = createAppAsyncThunk<{ task: TaskType }, CreateTaskArgs>(`${slice.name}/addTask`, async (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI;
+  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  try {
+    const res = await tasksApi.createTask(arg);
+    if (res.data.resultCode === 0) {
+      const task = res.data.data.item;
       dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      return { task };
+    } else {
+      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
+      return rejectWithValue(null);
     }
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
+    return rejectWithValue(null);
+  } finally {
+    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   }
-);
+});
 // export const _addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
 //   tasksApi.createTask(todoId, newTaskTitle)
@@ -287,62 +252,54 @@ const addTaskTC = createAppAsyncThunk<{ task: TaskType }, CreateTaskArgs>(
 //       dispatch(appActions.setAppStatusTask({statusTask: 'success'}))
 //     })
 // }
-const updateTaskTC = createAppAsyncThunk<
-  { todoListId: string; taskId: string; model: UpdateTaskType },
-  { todoListId: string; taskId: string; model: Partial<UpdateTaskType> }
->(`${slice.name}/updateTask`, async (args, thunkAPI) => {
-  const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const state = getState();
-  const task = state.tasks[args.todoListId].find((tl) => tl.id === args.taskId);
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-  dispatch(
-    tasksActions.updateTaskEntityStatus({
-      todoListId: args.todoListId,
-      taskId: args.taskId,
-      entityStatus: "loading",
-    })
-  );
-  console.log("UPDATETASK=TC");
-
-  if (!task) {
-    throw new Error("Task not found in the state");
-  }
-
-  const apiModel: UpdateTaskType = { ...task, ...args.model };
-  try {
-    const res = await tasksApi.updateTask(
-      args.todoListId,
-      args.taskId,
-      apiModel
-    );
-    if (res.data.resultCode === 0) {
-      return {
-        todoListId: args.todoListId,
-        taskId: args.taskId,
-        model: apiModel,
-      };
-    } else {
-      handleServerAppError(
-        res.data,
-        dispatch,
-        "Oops! Something gone wrong. Length should be less than 100 symbols"
-      );
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
-  } finally {
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+const updateTaskTC = createAppAsyncThunk<{ todoListId: string; taskId: string; model: UpdateTaskType }, { todoListId: string; taskId: string; model: Partial<UpdateTaskType> }>(
+  `${slice.name}/updateTask`,
+  async (args, thunkAPI) => {
+    const { dispatch, rejectWithValue, getState } = thunkAPI;
+    const state = getState();
+    const task = state.tasks[args.todoListId].find((tl) => tl.id === args.taskId);
+    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.taskId,
-        entityStatus: "success",
+        entityStatus: "loading",
       })
     );
+    console.log("UPDATETASK=TC");
+
+    if (!task) {
+      throw new Error("Task not found in the state");
+    }
+
+    const apiModel: UpdateTaskType = { ...task, ...args.model };
+    try {
+      const res = await tasksApi.updateTask(args.todoListId, args.taskId, apiModel);
+      if (res.data.resultCode === 0) {
+        return {
+          todoListId: args.todoListId,
+          taskId: args.taskId,
+          model: apiModel,
+        };
+      } else {
+        handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+        return rejectWithValue(null);
+      }
+    } catch (e) {
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
+    } finally {
+      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      dispatch(
+        tasksActions.updateTaskEntityStatus({
+          todoListId: args.todoListId,
+          taskId: args.taskId,
+          entityStatus: "success",
+        })
+      );
+    }
   }
-});
+);
 
 // export const _updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
 //   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
@@ -371,67 +328,60 @@ const updateTaskTC = createAppAsyncThunk<
 //     })
 // }
 
-const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
-  `${slice.name}/reorderTasks`,
-  async (args, thunkAPI) => {
-    const { dispatch, rejectWithValue, getState } = thunkAPI;
-    const tasks = getState().tasks[args.todoListId];
-    const idToServer = dragAndDropIdChanger(tasks, args);
-    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(`${slice.name}/reorderTasks`, async (args, thunkAPI) => {
+  const { dispatch, rejectWithValue, getState } = thunkAPI;
+  const tasks = getState().tasks[args.todoListId];
+  const idToServer = dragAndDropIdChanger(tasks, args);
+  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  dispatch(
+    tasksActions.updateTaskEntityStatus({
+      todoListId: args.todoListId,
+      taskId: args.startDragId,
+      entityStatus: "loading",
+    })
+  );
+  dispatch(
+    tasksActions.updateTaskEntityStatus({
+      todoListId: args.todoListId,
+      taskId: args.endShiftId ? args.endShiftId : "",
+      entityStatus: "loading",
+    })
+  );
+
+  try {
+    const res = await tasksApi.reorderTasks({
+      todoListId: args.todoListId,
+      startDragId: args.startDragId,
+      endShiftId: idToServer,
+    });
+    if (res.data.resultCode === 0) {
+      // dispatch(fetchTasksTC(args.todoListId))
+      return args;
+    } else {
+      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+      return rejectWithValue(null);
+    }
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
+    return rejectWithValue(null);
+  } finally {
+    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.startDragId,
-        entityStatus: "loading",
+        entityStatus: "success",
       })
     );
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.endShiftId ? args.endShiftId : "",
-        entityStatus: "loading",
+        entityStatus: "success",
       })
     );
-
-    try {
-      const res = await tasksApi.reorderTasks({
-        todoListId: args.todoListId,
-        startDragId: args.startDragId,
-        endShiftId: idToServer,
-      });
-      if (res.data.resultCode === 0) {
-        // dispatch(fetchTasksTC(args.todoListId))
-        return args;
-      } else {
-        handleServerAppError(
-          res.data,
-          dispatch,
-          "Oops! Something gone wrong. Length should be less than 100 symbols"
-        );
-        return rejectWithValue(null);
-      }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      return rejectWithValue(null);
-    } finally {
-      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-      dispatch(
-        tasksActions.updateTaskEntityStatus({
-          todoListId: args.todoListId,
-          taskId: args.startDragId,
-          entityStatus: "success",
-        })
-      );
-      dispatch(
-        tasksActions.updateTaskEntityStatus({
-          todoListId: args.todoListId,
-          taskId: args.endShiftId ? args.endShiftId : "",
-          entityStatus: "success",
-        })
-      );
-    }
   }
-);
+});
 
 export const tasksThunks = {
   fetchTasksTC,
