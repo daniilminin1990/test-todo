@@ -1,9 +1,9 @@
 import { Dispatch, UnknownAction } from "redux";
 import { loginAPI } from "../api/login-api";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 import { loginActions } from "./loginSlice";
 import { todolistsThunks } from "./todolistsSlice";
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "../common/utilities";
+import { createAppAsyncThunk } from "../common/utilities";
 import { tasksThunks } from "./tasksSlice";
 
 export type ServerResponseStatusType = "idle" | "success" | "loading" | "failed";
@@ -52,16 +52,22 @@ const slice = createSlice({
       .addCase(tasksThunks.reorderTaskTC.rejected, (state, action) => {
         console.log("ERROR");
         state.statusTask = "success";
+      })
+      .addMatcher(isPending, (state, action) => {
+        state.statusTodo = "loading";
+        state.addStatus = "loading";
+        state.statusTask = "loading";
+      })
+      .addMatcher(isRejected, (state, action) => {
+        state.statusTodo = "failed";
+        state.addStatus = "failed";
+        state.statusTask = "failed";
+      })
+      .addMatcher(isFulfilled, (state, action) => {
+        state.statusTodo = "success";
+        state.addStatus = "success";
+        state.statusTask = "success";
       });
-    // .addMatcher(
-    //   (action: UnknownAction) => {
-    //     return false;
-    //     // return action.type.endsWith("/pending");
-    //   },
-    //   (state, action) => {
-    //     state.statusTodo = "loading";
-    //   }
-    // );
   },
   selectors: {
     selectAddStatus: (sliceState) => sliceState.addStatus,
@@ -90,15 +96,16 @@ const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, undefined>(`${sli
       dispatch(todolistsThunks.fetchTodolistsTC());
       return { value: true };
     } else {
-      handleServerAppError(res.data, dispatch, "It seems that something wrong", false);
+      // handleServerAppError(res.data, dispatch, "It seems that something wrong", false);
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
-  } finally {
-    // dispatch(appActions.setAppStatus({appStatus: 'success'}))
   }
+  // finally {
+  // dispatch(appActions.setAppStatus({appStatus: 'success'}))
+  // }
 });
 
 export const appThunks = { initialiseMeTC };

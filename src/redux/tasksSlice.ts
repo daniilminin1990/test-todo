@@ -3,7 +3,7 @@ import { appActions, ServerResponseStatusType } from "./appSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { todolistsActions, todolistsThunks } from "./todolistsSlice";
-import { createAppAsyncThunk, dndUniversalIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
+import { createAppAsyncThunk, dndUniversalIdChanger } from "../common/utilities";
 import { CreateTaskArgs, DeleteTaskArgs, ReorderTasksArgs, TaskType, UpdateTaskType } from "../api/tasks-api.types";
 import { dndIdChangerForTaskAcrossTodos } from "../common/utilities/dragAndDropIdChangerFunctions";
 
@@ -204,18 +204,19 @@ const fetchTasksTC = createAppAsyncThunk<
   string
 >(`${slice.name}/fetchTasks`, async (todolistId, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   console.log("FETCHTASKT=TC");
   try {
     const res = await tasksApi.getTasks(todolistId);
     const tasks = res.data.items;
     return { todolistId: todolistId, tasks };
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
-  } finally {
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   }
+  // finally {
+  //   dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+  // }
 });
 
 // export const _fetchTasksTC = (todoId: string) => (dispatch: Dispatch) => {
@@ -245,18 +246,18 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(`${slic
       entityStatus: "loading",
     })
   );
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   console.log("DELETETASKT=TC");
   try {
     const res = await tasksApi.deleteTask(args);
     if (res.data.resultCode === 0) {
       return { todoListId: args.todoListId, taskId: args.taskId };
     } else {
-      handleServerAppError(res.data, dispatch, "Something wrong, try later");
+      // handleServerAppError(res.data, dispatch, "Something wrong, try later");
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   } finally {
     dispatch(
@@ -266,7 +267,7 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(`${slic
         entityStatus: "success",
       })
     );
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+    // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   }
 });
 // export const _deleteTaskTC = (todoListId: string, taskId: string) => (dispatch: Dispatch) => {
@@ -295,23 +296,24 @@ const addTaskTC = createAppAsyncThunk<
   CreateTaskArgs
 >(`${slice.name}/addTask`, async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   try {
     const res = await tasksApi.createTask(arg);
     if (res.data.resultCode === 0) {
       const task = res.data.data.item;
-      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
       return { task };
     } else {
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
       return rejectWithValue(res.data);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
-  } finally {
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   }
+  // finally {
+  //   dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+  // }
 });
 const addTaskDnDTC = createAppAsyncThunk<
   {
@@ -325,14 +327,14 @@ const addTaskDnDTC = createAppAsyncThunk<
     if (res.data.resultCode === 0) {
       const task = res.data.data.item;
       console.log(task);
-      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
       return { task };
     } else {
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   }
 });
@@ -365,7 +367,7 @@ const updateTaskTC = createAppAsyncThunk<
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const state = getState();
   const task = state.tasks[args.todoListId].find((tl) => tl.id === args.taskId);
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
     tasksActions.updateTaskEntityStatus({
       todoListId: args.todoListId,
@@ -389,14 +391,14 @@ const updateTaskTC = createAppAsyncThunk<
         model: apiModel,
       };
     } else {
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   } finally {
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+    // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
@@ -447,11 +449,11 @@ const reorderTaskTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(`${slice.
     if (res.data.resultCode === 0) {
       return undefined;
     } else {
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   }
 });
@@ -479,11 +481,11 @@ const reorderTaskAcrossTodosTC = createAppAsyncThunk<
     if (res.data.resultCode === 0) {
       return undefined;
     } else {
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
       return rejectWithValue(null);
     }
   } catch (e) {
-    handleServerNetworkError(e, dispatch);
+    // handleServerNetworkError(e, dispatch);
     return rejectWithValue(null);
   }
 });

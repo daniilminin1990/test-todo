@@ -13,5 +13,5 @@ export const handleServerAppError = <T>(data: BasicResponseType<T>, dispatch: Di
       dispatch(appActions.setAppError({ error: errorText }));
     }
   }
-  dispatch(appActions.setAppStatus({ appStatus: "failed" }));
+  // dispatch(appActions.setAppStatus({ appStatus: "failed" }));
 };
