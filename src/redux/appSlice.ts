@@ -59,10 +59,18 @@ const slice = createSlice({
         state.statusTask = "loading";
       })
       .addMatcher(isRejected, (state, action: any) => {
-        state.error = action.error.message;
         state.statusTodo = "failed";
         state.addStatus = "failed";
         state.statusTask = "failed";
+        if (action.payload) {
+          // 1 variant (в лоб)
+          if (action.type === "todo/addTodolist/rejected") return;
+          // 2 variant (предпочтительный)
+          if (action.type === todolistsThunks.addTodoTC.rejected.type) return;
+          state.error = action.payload.messages[0];
+        } else {
+          state.error = action.error.message ? action.error.message : "Some error occurred";
+        }
       })
       .addMatcher(isFulfilled, (state, action) => {
         state.statusTodo = "success";

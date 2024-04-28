@@ -189,11 +189,12 @@ const deleteTodoTC = createAppAsyncThunk<{ todoListId: string }, string>(`${slic
       return { todoListId };
     } else {
       // handleServerAppError(res.data, dispatch, "Something wrong, try later");
-      return rejectWithValue(null);
+      return rejectWithValue(res.data);
     }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
+    // catch (e) {
+    //   // handleServerNetworkError(e, dispatch);
+    //   return rejectWithValue(null);
+    // }
   } finally {
     // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
     dispatch(

@@ -13,6 +13,6 @@ import { BasicResponseType } from "../types";
 //       dispatch(appActions.setAppError({ error: errorText }));
 //     }
 //   }
-//   // dispatch(appActions.setAppStatus({ appStatus: "failed" }));
-//   //@prettier-ignore
+// dispatch(appActions.setAppStatus({ appStatus: "failed" }));
+//@prettier-ignore
 // };

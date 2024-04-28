@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-4 addMatchers removed handleServerAppError and handleServerNetworkError. Also removed app statueses">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/createAppAsyncThunk.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/createAppAsyncThunk.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abyrvalg.zip" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
@@ -313,7 +311,8 @@
       <workItem from="1714210216428" duration="360000" />
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
-      <workItem from="1714312400186" duration="25645000" />
+      <workItem from="1714312400186" duration="25797000" />
+      <workItem from="1714341793532" duration="2583000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -451,7 +450,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714340320622</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason">
+      <option name="closed" value="true" />
+      <created>1714341608578</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1714341608578</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,6 +493,7 @@
     <MESSAGE value="add isBlockDragMode to prevent stackOverFlow and contributed it to AddItemForm and EditableSpan. Also applied this state to Task and TodoList useSortable as disabled value" />
     <MESSAGE value="5-4 addMatchers first half" />
     <MESSAGE value="5-4 addMatchers removed handleServerAppError and handleServerNetworkError. Also removed app statueses" />
-    <option name="LAST_COMMIT_MESSAGE" value="5-4 addMatchers removed handleServerAppError and handleServerNetworkError. Also removed app statueses" />
+    <MESSAGE value="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason" />
+    <option name="LAST_COMMIT_MESSAGE" value="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason" />
   </component>
 </project>
