@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor still getting stackOverflow. Changed collision detection">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="add isBlockDragMode to prevent stackOverFlow and contributed it to AddItemForm and EditableSpan. Also applied this state to Task and TodoList useSortable as disabled value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/auth/ui/Login/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/auth/ui/Login/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +116,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\tosolists" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.deploy">
+  <component name="RunManager" selected="npm.start">
     <configuration name="correct task should be deleted from correct array" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -172,8 +173,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
@@ -313,7 +314,7 @@
       <workItem from="1714210216428" duration="360000" />
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
-      <workItem from="1714312400186" duration="7156000" />
+      <workItem from="1714312400186" duration="21400000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -427,7 +428,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714319157286</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add isBlockDragMode to prevent stackOverFlow and contributed it to AddItemForm and EditableSpan. Also applied this state to Task and TodoList useSortable as disabled value">
+      <option name="closed" value="true" />
+      <created>1714320165708</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1714320165708</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -459,6 +468,7 @@
     <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
     <MESSAGE value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
     <MESSAGE value="refactor still getting stackOverflow. Changed collision detection" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor still getting stackOverflow. Changed collision detection" />
+    <MESSAGE value="add isBlockDragMode to prevent stackOverFlow and contributed it to AddItemForm and EditableSpan. Also applied this state to Task and TodoList useSortable as disabled value" />
+    <option name="LAST_COMMIT_MESSAGE" value="add isBlockDragMode to prevent stackOverFlow and contributed it to AddItemForm and EditableSpan. Also applied this state to Task and TodoList useSortable as disabled value" />
   </component>
 </project>

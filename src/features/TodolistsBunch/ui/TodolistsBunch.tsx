@@ -86,13 +86,15 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   }, []);
 
   if (!isLoggedIn) {
+    console.log("!isLoggedIn");
+    console.log(isLoggedIn);
     return <Navigate to={"/login"} />;
   }
 
   const displayedTodolists = todolists.slice((Number(page) - 1) * pageCount, Number(page) * pageCount);
   return (
     <DndContextHOC>
-      <Grid container style={{ padding: "20px" }}>
+      <Grid container style={{ padding: "20px" }} alignItems={"center"}>
         <AddItemForm callback={addTodo} />
       </Grid>
       <Grid container spacing={3} justifyContent={"space-evenly"}>

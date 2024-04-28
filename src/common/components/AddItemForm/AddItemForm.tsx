@@ -24,8 +24,11 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         .then((res) => {
           setNewTitle("");
         })
+        // .catch((err) => {
+        //   setError(err.messages[0]);
+        // });
         .catch((err) => {
-          setError("Smth gone wrong");
+          setError(err.messages[0]);
         });
     } else {
       setNewTitle("");
@@ -56,7 +59,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <TextField
         id="outlined-basic"
         error={!!error}
@@ -71,6 +74,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         disabled={props.disabled}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
+        sx={{ width: "80%" }}
       />
       <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)} disabled={props.disabled}>
         +

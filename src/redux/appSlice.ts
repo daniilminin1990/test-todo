@@ -1,4 +1,4 @@
-import { Dispatch } from "redux";
+import { Dispatch, UnknownAction } from "redux";
 import { loginAPI } from "../api/login-api";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginActions } from "./loginSlice";
@@ -32,9 +32,6 @@ const slice = createSlice({
     setAppError(state, action: PayloadAction<{ error: null | string }>) {
       state.error = action.payload.error;
     },
-    // changeInitialized(state, action: PayloadAction<{value: boolean}>){
-    //   state.isInitialized = action.payload.value
-    // }
     setSearchQuery(state, action: PayloadAction<{ searchQuery: string }>) {
       console.log("appSlice", action.payload.searchQuery);
       state.searchQuery = action.payload.searchQuery;
@@ -56,6 +53,15 @@ const slice = createSlice({
         console.log("ERROR");
         state.statusTask = "success";
       });
+    // .addMatcher(
+    //   (action: UnknownAction) => {
+    //     return false;
+    //     // return action.type.endsWith("/pending");
+    //   },
+    //   (state, action) => {
+    //     state.statusTodo = "loading";
+    //   }
+    // );
   },
   selectors: {
     selectAddStatus: (sliceState) => sliceState.addStatus,
@@ -78,6 +84,7 @@ const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, undefined>(`${sli
   const { dispatch, rejectWithValue } = thunkAPI;
   try {
     const res = await loginAPI.initialiseMe();
+    console.log(res);
     if (res.data.resultCode === 0) {
       dispatch(loginActions.setIsLoggedInAC({ value: true }));
       dispatch(todolistsThunks.fetchTodolistsTC());

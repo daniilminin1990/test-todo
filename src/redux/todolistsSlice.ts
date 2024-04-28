@@ -154,6 +154,9 @@ const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, void
   } finally {
     dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   }
+  // finally {
+  //   dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // }
 });
 // export const _fetchTodolistsTC = () => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
@@ -244,7 +247,7 @@ const addTodoTC = createAppAsyncThunk<
       // dispatch(addAppStatusAC('success'))
     } else {
       // handleServerAppError(res.data, dispatch)
-      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
+      handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols", false);
       return rejectWithValue(res.data);
     }
   } catch (e) {
@@ -294,6 +297,9 @@ const updateTodoTitleTC = createAppAsyncThunk<UpdateTodoArgs, UpdateTodoArgs>(`$
   } finally {
     dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   }
+  // finally {
+  //   dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // }
 });
 // export const _updateTodoTitleTC = (todoListId: string, newTodotitle: string) => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
