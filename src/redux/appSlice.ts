@@ -58,7 +58,8 @@ const slice = createSlice({
         state.addStatus = "loading";
         state.statusTask = "loading";
       })
-      .addMatcher(isRejected, (state, action) => {
+      .addMatcher(isRejected, (state, action: any) => {
+        state.error = action.error.message;
         state.statusTodo = "failed";
         state.addStatus = "failed";
         state.statusTask = "failed";

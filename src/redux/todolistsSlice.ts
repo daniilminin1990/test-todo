@@ -138,22 +138,23 @@ const slice = createSlice({
 const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, void>(`${slice.name}/fetchTodolists`, async (_, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   // dispatch(appActions.setAppTodoStatus({ statusTodo: "loading" }));
-  try {
-    const res = await todolistsAPI.getTodolists();
-    res.data.forEach((tl) => {
-      dispatch(tasksThunks.fetchTasksTC(tl.id)).then(() => {
-        // dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
-        dispatch(todolistsActions.showTasks({ todoListId: tl.id }));
-      });
+  // try {
+  const res = await todolistsAPI.getTodolists();
+  res.data.forEach((tl) => {
+    dispatch(tasksThunks.fetchTasksTC(tl.id)).then(() => {
+      // dispatch(appActions.setAppTodoStatus({statusTodo: 'success'}))
+      dispatch(todolistsActions.showTasks({ todoListId: tl.id }));
     });
-    return { todolists: res.data };
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    // dispatch(appActions.setAppTodoStatus({ statusTodo: "failed" }));
-    return rejectWithValue(null);
-  } finally {
-    // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
-  }
+  });
+  return { todolists: res.data };
+  // } catch (e) {
+  // handleServerNetworkError(e, dispatch);
+  // dispatch(appActions.setAppTodoStatus({ statusTodo: "failed" }));
+  // return rejectWithValue(null);
+  // }
+  // finally {
+  // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // }
   // finally {
   //   dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   // }

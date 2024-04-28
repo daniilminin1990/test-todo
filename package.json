@@ -14,7 +14,7 @@
     "@material-ui/styled-engine-sc": "^5.0.0-beta.5",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
-    "@reduxjs/toolkit": "^2.2.2",
+    "@reduxjs/toolkit": "^2.2.3",
     "@storybook/addon-actions": "^8.0.9",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
