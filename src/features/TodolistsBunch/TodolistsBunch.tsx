@@ -314,6 +314,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
             title: activeCopy.title,
           }).then((res) => {
             if (res.payload?.task.id) {
+              console.log(tasks);
               //! 3 делаем на созданную таску реордер и ререндер
               // End Нужно сделать смену этой санки на SoloDndTC, и для endShiftId использовать функцию dragAndDropIdChangerByOrder (ПОМЕНЯТЬ НАЗВАНИЕ)
               reorderTasksDnDByOrderTC({

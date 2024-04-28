@@ -53,18 +53,55 @@ export function dragAndDropIdChangerByOrder(
     console.log("!== 0 && !== tasks.length - 1");
     return tasks[endIndex - 1].id;
   }
-  // }
-
-  // if (endIndex > 0 && endIndex === tasks.length - 2) {
-  //   console.log({ firstIf: tasks[endIndex - 1], length: tasks.length });
-  //   return tasks[endIndex - 1].id;
-  // } else if (endIndex === tasks.length - 1) {
-  //   console.log({ secondIf: tasks[endIndex - 1], length: tasks.length });
-  //   return args.endShiftId;
-  // } else {
-  //   return null;
-  // }
 }
+
+export function _dragAndDropIdChangerByOrder(
+  tasks: TasksWithEntityStatusType[],
+  args: {
+    todoListId: string;
+    startDragId: string;
+    startOrder: number;
+    endShiftId: string;
+  }
+) {
+  const endIndex = tasks.findIndex(
+    (item, index) => item.id === args.endShiftId && index >= 0
+  );
+
+  if (endIndex === -1) {
+    return null;
+  }
+
+  if (tasks.length <= 2) {
+    if (endIndex === 0) {
+      return tasks[1].id;
+    } else {
+      return tasks[0].id;
+    }
+  } else {
+    if (endIndex === 0) {
+      return null;
+    } else if (endIndex === tasks.length) {
+      return tasks[endIndex].id;
+    } else {
+      console.log(tasks);
+      console.log(tasks[endIndex - 1].id);
+      return tasks[endIndex - 1].id;
+    }
+  }
+}
+
+// }
+
+// if (endIndex > 0 && endIndex === tasks.length - 2) {
+//   console.log({ firstIf: tasks[endIndex - 1], length: tasks.length });
+//   return tasks[endIndex - 1].id;
+// } else if (endIndex === tasks.length - 1) {
+//   console.log({ secondIf: tasks[endIndex - 1], length: tasks.length });
+//   return args.endShiftId;
+// } else {
+//   return null;
+// }
 
 export function dndOrderFinder(
   tasks: TasksWithEntityStatusType[],

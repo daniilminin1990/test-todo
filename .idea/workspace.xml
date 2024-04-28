@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor onDragEnd, works correct. One bug between todos at the start of array">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="add comments what to do next&#10;refactor dragAndDropIdChanger.ts BUT SOMETIMES WORKS INCORRECT FOR ARRAY.length LESS THAN 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
@@ -319,6 +319,7 @@
       <workItem from="1714062426620" duration="1806000" />
       <workItem from="1714256857972" duration="149000" />
       <workItem from="1714257029169" duration="8772000" />
+      <workItem from="1714267203007" duration="1381000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
