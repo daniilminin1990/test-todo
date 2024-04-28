@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="rolled back, cleaned console and comments">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor move task in 1 todo works perfect">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,7 +319,7 @@
       <workItem from="1714061537826" duration="646000" />
       <workItem from="1714062426620" duration="1806000" />
       <workItem from="1714256857972" duration="149000" />
-      <workItem from="1714257029169" duration="2013000" />
+      <workItem from="1714257029169" duration="5886000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -503,7 +505,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714258724749</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="refactor move task in 1 todo works perfect">
+      <option name="closed" value="true" />
+      <created>1714259097008</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1714259097008</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -545,6 +555,7 @@
     <MESSAGE value="PIZDA NE POLUCHAYETSYA" />
     <MESSAGE value="refactor moveTodos done" />
     <MESSAGE value="rolled back, cleaned console and comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="rolled back, cleaned console and comments" />
+    <MESSAGE value="refactor move task in 1 todo works perfect" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor move task in 1 todo works perfect" />
   </component>
 </project>

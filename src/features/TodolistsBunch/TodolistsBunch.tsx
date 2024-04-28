@@ -67,6 +67,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     changeIsBlockTodosToDrag,
     changeIsBlockTasksToDrag,
     moveTaskInEmptyTodolists,
+    sortTasksByOrder,
   } = useActions();
 
   const todolists = useAppSelector((state) =>
@@ -257,26 +258,26 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     const isOverATask = over.data.current?.type === "Task";
     const isActiveATodolist = active.data.current?.type === "Todolist";
     const isOverATodolist = over.data.current?.type === "Todolist";
-    const extraActiveTodoListId =
-      active.data.current?.todolist?.id ||
-      active.data.current?.task?.todoListId;
-    const extraOverTodoListId =
-      over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
-    const activeTodoOrder = memoTodosServerAr?.find(
-      (tl) => tl.id === extraActiveTodoListId
-    )?.order;
-    const overTodoOrder = memoTodosServerAr?.find(
-      (tl) => tl.id === extraOverTodoListId
-    )?.order;
+    // const extraActiveTodoListId =
+    //   active.data.current?.todolist?.id ||
+    //   active.data.current?.task?.todoListId;
+    // const extraOverTodoListId =
+    //   over.data.current?.todolist?.id || over.data.current?.task?.todoListId;
+    // const activeTodoOrder = memoTodosServerAr?.find(
+    //   (tl) => tl.id === extraActiveTodoListId
+    // )?.order;
+    // const overTodoOrder = memoTodosServerAr?.find(
+    //   (tl) => tl.id === extraOverTodoListId
+    // )?.order;
     // Region Активная таска
     // ? Над таской, в одном тудулисте
     if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
-      activeTodoListId = memoTodosServerAr?.find(
-        (tl) => tl.order === activeTodoOrder
-      )?.id;
-      overTodoListId = memoTodosServerAr?.find(
-        (tl) => tl.order === overTodoOrder
-      )?.id;
+      // activeTodoListId = memoTodosServerAr?.find(
+      //   (tl) => tl.order === activeTodoOrder
+      // )?.id;
+      // overTodoListId = memoTodosServerAr?.find(
+      //   (tl) => tl.order === overTodoOrder
+      // )?.id;
       // ! Когда activeTodolistId === overTodolistId
       // Поделено, чтобы на UI работало норм
       reorderTasksSoloTodoDnDTC({
@@ -284,7 +285,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         startDragId: activeTaskId,
         endShiftId: overTaskId,
       }).then(() => {
-        fetchTasksTC(activeTodoListId);
+        fetchTasksTC(activeTask?.todoListId || "");
       });
     }
     // ? Над таской, в другом тудулисте
@@ -292,38 +293,39 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       const activeCopy: TaskType = active.data.current?.task;
+      // Чтобы нормально на UI отрисовалось перемещение
+      reorderTask({
+        todoListId: overTodoListId,
+        startDragId: activeTaskId,
+        endShiftId: overTaskId,
+      });
       // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
       deleteTaskTC({
         todoListId: activeTask?.todoListId || "",
-        taskId: activeTaskId || "",
+        taskId: activeTaskId,
       }).then(() => {
         //! 2 создаем в новом тудулисте новую
-        if (memoOverTodoId) {
+        if (overTodoListId) {
           addTaskDnDTC({
-            todoListId: memoOverTodoId,
+            todoListId: overTodoListId,
             title: activeCopy.title,
           }).then((res) => {
             if (res.payload?.task.id) {
               //! 3 делаем на созданную таску реордер и ререндер
               reorderTasksDnDByOrderTC({
-                todoListId: memoOverTodoId,
+                todoListId: overTodoListId,
                 startDragId: res.payload.task.id,
+                // End Я НЕ РАБОТАЮ ТУТ С STARTORDER
                 startOrder: res.payload.task.order,
-                endShiftId: memoOverTaskId || "",
+                endShiftId: overTaskId,
               }).then(() => {
-                fetchTasksTC(memoOverTodoId);
-                fetchTasksTC(memoActiveTodoId || "");
+                fetchTasksTC(overTodoListId);
+                fetchTasksTC(activeTodoListId);
               });
             }
           });
         }
       });
-      // moveTaskAcrossTodolists({
-      //   todoListId: memoActiveTodoId,
-      //   endTodoListId: overTodoListId,
-      //   startDragId: memoActiveTaskId || "",
-      //   endShiftId: overTodoListId,
-      // });
     }
     // ? В другой пустой тудулист
     if (
@@ -339,9 +341,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
         taskId: activeTaskId,
       }).then(() => {
         //! 2 создаем в новом тудулисте новую
-        if (memoOverTodoId && activeCopy) {
+        if (activeCopy) {
           addTaskTC({
-            todoListId: memoOverTodoId || "",
+            todoListId: overTodoListId,
             title: activeCopy.title,
           });
         }

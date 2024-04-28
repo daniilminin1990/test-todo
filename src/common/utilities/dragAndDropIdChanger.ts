@@ -35,20 +35,14 @@ export function dragAndDropIdChangerByOrder(
     endShiftId: string;
   }
 ) {
-  // А нужен ли мне тут запрос на сервер??? -- нет, его нужно делать в dragSTART!
-
-  const startIndex = tasks.findIndex(
-    (item, index) => item.id === args.startDragId && index >= 0
-  );
   const endIndex = tasks.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
-  console.log("startIndex", startIndex);
-  console.log("endIndex", endIndex);
 
   if (endIndex === 0) {
     return null;
-  } else if (endIndex === tasks.length - 1) {
+    // } else if (endIndex === tasks.length - 1) {
+  } else if (endIndex === tasks.length) {
     return args.endShiftId;
   } else {
     return tasks[endIndex - 1].id;
