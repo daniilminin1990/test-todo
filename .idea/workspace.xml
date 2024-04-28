@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="global refactor made dnd useing dndKit">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor title ResponseType -&gt; BasicResponseType">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/login-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/login-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/login-api.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/login-api.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/tasks-api.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/tasks-api.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/todolists-api.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/todolists-api.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/types/BaseResponseType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/types/BaseResponseType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/types/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/createAppAsyncThunk.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/createAppAsyncThunk.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +110,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\tosolists" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="npm.deploy">
     <configuration name="correct task should be deleted from correct array" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -177,8 +167,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
@@ -318,7 +308,7 @@
       <workItem from="1714210216428" duration="360000" />
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
-      <workItem from="1714312400186" duration="3135000" />
+      <workItem from="1714312400186" duration="6079000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -408,7 +398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714314782579</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="refactor title ResponseType -&gt; BasicResponseType">
+      <option name="closed" value="true" />
+      <created>1714315711971</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714315711971</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,6 +435,7 @@
     <MESSAGE value="going back to not use dndkit" />
     <MESSAGE value="temp cannot resolve catch" />
     <MESSAGE value="global refactor made dnd useing dndKit" />
-    <option name="LAST_COMMIT_MESSAGE" value="global refactor made dnd useing dndKit" />
+    <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor title ResponseType -&gt; BasicResponseType" />
   </component>
 </project>
