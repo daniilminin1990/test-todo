@@ -8,6 +8,7 @@ beforeEach(() => {
     error: null,
     isInitialized: false,
     searchQuery: "",
+    isBlockDragMode: false,
   };
 });
 

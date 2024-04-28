@@ -11,13 +11,14 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Skeleton from "@mui/material/Skeleton";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
-import { ServerResponseStatusType } from "../../../../redux/appSlice";
+import { appSelectors, ServerResponseStatusType } from "../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../common/enums/enums";
 import { useActions } from "../../../../common/hooks/useActions";
 import { FilterTasksButton } from "./FilterTasksButton";
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useSelector } from "react-redux";
 
 type Props = {
   todolist: TodoUIType;
@@ -27,6 +28,7 @@ export const Todolist = React.memo(({ todolist }: Props) => {
   const { addTaskTC, reorderTaskTC, deleteTaskTC, updateTaskTC, deleteTodoTC, changeTodoFilter, updateTodoTitleTC } = useActions();
 
   let allTodoTasks = useAppSelector((state) => tasksSelectors.tasksById(state, todolist.id));
+  const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
 
   // // Region
   // const [taskIdToDrag, setTaskIdToDrag] = useState<string>("");
@@ -63,6 +65,7 @@ export const Todolist = React.memo(({ todolist }: Props) => {
       type: "Todolist",
       todolist,
     },
+    disabled: isBlockDragMode,
   });
 
   const style = {

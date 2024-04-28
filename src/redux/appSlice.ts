@@ -17,6 +17,7 @@ const slice = createSlice({
     error: null as null | string,
     isInitialized: false,
     searchQuery: "" as string,
+    isBlockDragMode: true,
   },
   reducers: {
     setAppTodoStatus(state, action: PayloadAction<{ statusTodo: ServerResponseStatusType }>) {
@@ -37,6 +38,9 @@ const slice = createSlice({
     setSearchQuery(state, action: PayloadAction<{ searchQuery: string }>) {
       console.log("appSlice", action.payload.searchQuery);
       state.searchQuery = action.payload.searchQuery;
+    },
+    changeBlockDragMode(state, action: PayloadAction<{ isBlockDragMode: boolean }>) {
+      state.isBlockDragMode = action.payload.isBlockDragMode;
     },
   },
   extraReducers: (builder) => {
@@ -60,6 +64,7 @@ const slice = createSlice({
     isInitialized: (sliceState) => sliceState.isInitialized,
     error: (sliceState) => sliceState.error,
     searchQuery: (sliceState) => sliceState.searchQuery,
+    isBlockDragMode: (sliceState) => sliceState.isBlockDragMode,
   },
 });
 

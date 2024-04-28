@@ -2,7 +2,7 @@ import React, { ChangeEvent, useCallback } from "react";
 import EdiatbleSpan from "../../../../../common/components/EditableSpan/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { ServerResponseStatusType } from "../../../../../redux/appSlice";
+import { appSelectors, ServerResponseStatusType } from "../../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../../common/enums/enums";
 import { styled } from "styled-components";
 import { useActions } from "../../../../../common/hooks/useActions";
@@ -11,6 +11,7 @@ import s from "./Task.module.css";
 import { useAppSelector } from "../../../../../store/store";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useSelector } from "react-redux";
 
 type Props = {
   todoListId: string;
@@ -20,12 +21,14 @@ type Props = {
 export const Task = ({ task, todoListId }: Props) => {
   const { deleteTaskTC, updateTaskTC } = useActions();
   const tasks = useAppSelector(tasksSelectors.tasksState)[todoListId];
+  const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
     id: task.id,
     data: {
       type: "Task",
       task: tasks[tasks.findIndex((t) => t.id === task.id)],
     },
+    disabled: isBlockDragMode,
   });
   const style = {
     transform: CSS.Transform.toString(transform),

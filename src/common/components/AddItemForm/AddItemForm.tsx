@@ -1,9 +1,11 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { getStyles } from "../../../styles";
-import { ServerResponseStatusType } from "../../../redux/appSlice";
+import { appActions, appSelectors, ServerResponseStatusType } from "../../../redux/appSlice";
 import { AxiosError } from "axios";
+import { useAppDispatch } from "../../../store/store";
+import { useSelector } from "react-redux";
 
 export type AddItemFormProps = {
   callback: (newTitle: string) => Promise<any>;
@@ -13,6 +15,8 @@ export type AddItemFormProps = {
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
   const [newTitle, setNewTitle] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
   const onClickAddItemHandler = () => {
     if (newTitle.trim() !== "") {
       props
@@ -32,10 +36,24 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
     const titleTyping = e.currentTarget.value;
     setNewTitle(titleTyping);
     titleTyping.length !== 0 && setError("");
+    dispatch(appActions.changeBlockDragMode({ isBlockDragMode: true }));
   };
   const onEnterKeyAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === "Enter" && onClickAddItemHandler();
   };
+
+  const onFocusHandler = () => {
+    dispatch(appActions.changeBlockDragMode({ isBlockDragMode: true }));
+  };
+  const onBlurHandler = () => {
+    dispatch(appActions.changeBlockDragMode({ isBlockDragMode: false }));
+  };
+
+  useEffect(() => {
+    if (newTitle === "") {
+      dispatch(appActions.changeBlockDragMode({ isBlockDragMode: false }));
+    }
+  }, []);
 
   return (
     <div>
@@ -51,6 +69,8 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         onKeyDown={onEnterKeyAddItem}
         className={error ? "error" : ""}
         disabled={props.disabled}
+        onFocus={onFocusHandler}
+        onBlur={onBlurHandler}
       />
       <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)} disabled={props.disabled}>
         +

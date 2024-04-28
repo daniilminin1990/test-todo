@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor still getting stackOverflow. Changed collision detection">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/__tests__/app/appReducer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/EditableSpan/EdiatbleSpan.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +313,7 @@
       <workItem from="1714210216428" duration="360000" />
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
-      <workItem from="1714312400186" duration="6280000" />
+      <workItem from="1714312400186" duration="7156000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -414,7 +419,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714319064165</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="refactor still getting stackOverflow. Changed collision detection">
+      <option name="closed" value="true" />
+      <created>1714319157286</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714319157286</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -445,6 +458,7 @@
     <MESSAGE value="global refactor made dnd useing dndKit" />
     <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
     <MESSAGE value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
+    <MESSAGE value="refactor still getting stackOverflow. Changed collision detection" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor still getting stackOverflow. Changed collision detection" />
   </component>
 </project>
