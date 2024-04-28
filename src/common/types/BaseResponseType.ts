@@ -1,4 +1,4 @@
-export type ResponseType<D = {}> = {
+export type BasicResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;
   data: D;

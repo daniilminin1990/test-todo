@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { instance } from "../common/instance/instance";
-import { ResponseType } from "../common/types";
+import { BasicResponseType } from "../common/types";
 
 export type LoginParamsType = {
   email: string;

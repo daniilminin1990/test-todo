@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { instance } from "../common/instance/instance";
-import { ResponseType } from "../common/types";
+import { BasicResponseType } from "../common/types";
 
 export type TodolistType = {
   id: string;

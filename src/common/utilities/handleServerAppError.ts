@@ -1,14 +1,9 @@
-// Функция для обработки ошибок от ответов от сервера. НУЖЕН ДЖЕНЕРИК, потому что у наса ResponseType от сервера дженериковый
+// Функция для обработки ошибок от ответов от сервера. НУЖЕН ДЖЕНЕРИК, потому что у наса BasicResponseType от сервера дженериковый
 import { Dispatch } from "redux";
 import { appActions } from "../../redux/appSlice";
-import { ResponseType } from "../types";
+import { BasicResponseType } from "../types";
 
-export const handleServerAppError = <T>(
-  data: ResponseType<T>,
-  dispatch: Dispatch,
-  errorText: string,
-  showGlobalError: boolean = true
-) => {
+export const handleServerAppError = <T>(data: BasicResponseType<T>, dispatch: Dispatch, errorText: string, showGlobalError: boolean = true) => {
   if (showGlobalError) {
     if (data.messages.length) {
       // Если придет текст ошибки с сервера (МЫ НЕ ПРОВЕРЯЕМ НА 100 символов, это делает сервер)

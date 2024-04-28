@@ -1,5 +1,5 @@
 import { TaskPriorities, TaskStatuses } from "../common/enums/enums";
-import { ResponseType } from "../common/types";
+import { BasicResponseType } from "../common/types";
 import { instance } from "../common/instance/instance";
 
 export type UpdateTaskType = {

@@ -1,1 +1,1 @@
-export type { ResponseType } from "./BaseResponseType";
+export type { BasicResponseType } from "./BaseResponseType";

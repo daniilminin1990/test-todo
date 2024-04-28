@@ -6,7 +6,7 @@ import { tasksThunks } from "./tasksSlice";
 import { createAppAsyncThunk, dndUniversalIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
 import { ReorderTodoListArgs, TodolistType, UpdateTodoArgs } from "../api/todolists-api.types";
 import { AxiosError } from "axios";
-import { ResponseType } from "../common/types";
+import { BasicResponseType } from "../common/types";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
