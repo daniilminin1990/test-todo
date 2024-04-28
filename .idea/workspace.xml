@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="add comments what to do next&#10;refactor dragAndDropIdChanger.ts BUT SOMETIMES WORKS INCORRECT FOR ARRAY.length LESS THAN 2">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor onDragEnd + need refactor dran and drop id changer or turn off handleServerNetworkError">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -521,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714263148171</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="refactor onDragEnd + need refactor dran and drop id changer or turn off handleServerNetworkError">
+      <option name="closed" value="true" />
+      <created>1714292130927</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1714292130927</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +546,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="." />
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
@@ -564,6 +570,7 @@
     <MESSAGE value="rolled back, cleaned console and comments" />
     <MESSAGE value="refactor move task in 1 todo works perfect" />
     <MESSAGE value="refactor onDragEnd, works correct. One bug between todos at the start of array" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor onDragEnd, works correct. One bug between todos at the start of array" />
+    <MESSAGE value="refactor onDragEnd + need refactor dran and drop id changer or turn off handleServerNetworkError" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor onDragEnd + need refactor dran and drop id changer or turn off handleServerNetworkError" />
   </component>
 </project>

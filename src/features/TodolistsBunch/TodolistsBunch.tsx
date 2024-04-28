@@ -320,7 +320,10 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                 startDragId: res.payload.task.id,
                 // End Я НЕ РАБОТАЮ ТУТ С STARTORDER
                 startOrder: res.payload.task.order,
-                endShiftId: overTaskId,
+                endShiftId: activeTaskId,
+                // Тут активная таск Id, иначе если ставить over,то будет ругаться т.к. я не знаю почему, у меня были ошибки,
+                // Вероятно потому что мы тут создали таску, и она является активной, именно ее нужно воспринимать как ту,
+                // чей Id мы должны отправлять на сервер, нам не нужно менять ордер у over таски
               }).then(() => {
                 fetchTasksTC(overTodoListId);
                 fetchTasksTC(memoActiveTodoId || "");
