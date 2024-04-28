@@ -1,12 +1,11 @@
 // Общая
 import { TasksWithEntityStatusType } from "../../redux/tasksSlice";
 
-export function dragAndDropIdChanger<
+export function dndUniversalIdChanger<
   T extends { id: string },
   R extends {
     startDragId: string;
     endShiftId: string | null;
-    startOrder?: number;
   }
 >(array: T[], args: R) {
   const startIndex = array.findIndex(
@@ -26,32 +25,20 @@ export function dragAndDropIdChanger<
     return null;
   }
 }
-export function dragAndDropIdChangerByOrder(
-  tasks: TasksWithEntityStatusType[],
-  args: {
-    todoListId: string;
-    startDragId: string;
-    startOrder: number;
-    endShiftId: string;
-  }
-) {
-  const endIndex = tasks.findIndex(
+export function dndIdChangerForTaskAcrossTodos(args: {
+  tasks: TasksWithEntityStatusType[];
+  endShiftId: string;
+}) {
+  const endIndex = args.tasks.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
-  // if(tasks.length <= 2){
-  //   console.log('Оппа')
-  //   return tasks[endIndex].id
-  // } else {
-  console.log(tasks);
-  console.log(endIndex);
   if (endIndex === 0) {
     return null;
     // } else if (endIndex === tasks.length - 1) {
-  } else if (endIndex === tasks.length) {
-    return tasks[endIndex].id;
+  } else if (endIndex === args.tasks.length) {
+    return args.tasks[endIndex].id;
   } else {
-    console.log("!== 0 && !== tasks.length - 1");
-    return tasks[endIndex - 1].id;
+    return args.tasks[endIndex - 1].id;
   }
 }
 

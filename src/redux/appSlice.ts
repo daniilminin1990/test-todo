@@ -51,9 +51,12 @@ const slice = createSlice({
     // changeInitialized(state, action: PayloadAction<{value: boolean}>){
     //   state.isInitialized = action.payload.value
     // },
-    changeBlockDragMode(state, action: PayloadAction<{ isBlockDragMode: boolean }>){
+    changeBlockDragMode(
+      state,
+      action: PayloadAction<{ isBlockDragMode: boolean }>
+    ) {
       state.isBlockDragMode = action.payload.isBlockDragMode;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,10 +66,6 @@ const slice = createSlice({
       // НУЖНО ЧТОБЫ ПРИЛОЖЕНИЕ НЕ МОРГАЛО, ЕСЛИ ЗАЛОГИНЕН И ПЕРЕЗАГРУЖАЕШЬ СТРАНИЦУ
       .addCase(initialiseMeTC.rejected, (state, action) => {
         state.isInitialized = true;
-      })
-      .addCase(tasksThunks.reorderTasksTC.rejected, (state, action) => {
-        console.log("ERROR");
-        state.statusTask = "success";
       });
   },
   selectors: {
@@ -75,7 +74,7 @@ const slice = createSlice({
     statusTask: (sliceState) => sliceState.statusTask,
     isInitialized: (sliceState) => sliceState.isInitialized,
     error: (sliceState) => sliceState.error,
-    isBlockDragMode: (sliceState) => sliceState.isBlockDragMode
+    isBlockDragMode: (sliceState) => sliceState.isBlockDragMode,
   },
 });
 

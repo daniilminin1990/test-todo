@@ -65,13 +65,8 @@ export const Todolist = React.memo(
       todolistsSelectors.todolistById(state, props.todoListId)
     );
 
-    const {
-      deleteTaskTC,
-      addTaskTC,
-      updateTaskTC,
-      deleteTodoTC,
-      reorderTasksTC,
-    } = useActions();
+    const { deleteTaskTC, addTaskTC, updateTaskTC, deleteTodoTC } =
+      useActions();
 
     let allTodoTasks = useAppSelector((state) =>
       tasksSelectors.tasksById(state, props.todoListId)

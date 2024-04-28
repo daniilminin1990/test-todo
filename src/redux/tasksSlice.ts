@@ -12,12 +12,12 @@ import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { todolistsActions, todolistsThunks } from "./todolistsSlice";
 import {
   createAppAsyncThunk,
-  dragAndDropIdChanger,
+  dndUniversalIdChanger,
   handleServerAppError,
   handleServerNetworkError,
 } from "../common/utilities";
 import { dragAndDropIdChangerKIT } from "../common/utilities/dragAndDropIdChangerKIT";
-import { dragAndDropIdChangerByOrder } from "../common/utilities/dragAndDropIdChanger";
+import { dndIdChangerForTaskAcrossTodos } from "../common/utilities/dragAndDropIdChangerFunctions";
 
 export type TaskStateType = {
   [todoListId: string]: TasksWithEntityStatusType[];
@@ -263,24 +263,7 @@ const slice = createSlice({
           (t) => t.id === action.payload.taskId
         );
         if (id > -1) state.allTasks[action.payload.todoListId].splice(id, 1);
-      })
-      .addCase(reorderTasksTC.fulfilled, (state, action) => {
-        const { todoListId, startDragId, endShiftId } = action.payload;
-        const dragIndex = state.allTasks[todoListId].findIndex(
-          (t) => t.id === startDragId
-        );
-        const targetIndex = state.allTasks[todoListId].findIndex(
-          (t) => t.id === endShiftId
-        );
-        if (dragIndex > -1 && targetIndex > -1) {
-          const draggedItem = state.allTasks[todoListId].splice(
-            dragIndex,
-            1
-          )[0];
-          state.allTasks[todoListId].splice(targetIndex, 0, draggedItem);
-        }
-      })
-      .addCase(reorderTasksTC.rejected, (state, action) => {});
+      });
   },
   selectors: {
     tasksState: (sliceState) => sliceState.allTasks as TaskStateType,
@@ -435,67 +418,6 @@ const updateTaskTC = createAppAsyncThunk<
   }
 });
 
-const reorderTasksTC = createAppAsyncThunk<ReorderTasksArgs, ReorderTasksArgs>(
-  `${slice.name}/reorderTasks`,
-  async (args, thunkAPI) => {
-    const { dispatch, rejectWithValue, getState } = thunkAPI;
-    const tasks = getState().tasks.allTasks[args.todoListId];
-    const idToServer = dragAndDropIdChanger(tasks, args);
-    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-    dispatch(
-      tasksActions.updateTaskEntityStatus({
-        todoListId: args.todoListId,
-        taskId: args.startDragId,
-        entityStatus: "loading",
-      })
-    );
-    dispatch(
-      tasksActions.updateTaskEntityStatus({
-        todoListId: args.todoListId,
-        taskId: args.endShiftId ? args.endShiftId : "",
-        entityStatus: "loading",
-      })
-    );
-
-    try {
-      const res = await tasksApi.reorderTasks({
-        todoListId: args.todoListId,
-        startDragId: args.startDragId,
-        endShiftId: idToServer,
-      });
-      if (res.data.resultCode === 0) {
-        // dispatch(fetchTasksTC(args.todoListId))
-        return args;
-      } else {
-        handleServerAppError(
-          res.data,
-          dispatch,
-          "Oops! Something gone wrong. Length should be less than 100 symbols"
-        );
-        return rejectWithValue(null);
-      }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      return rejectWithValue(null);
-    } finally {
-      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-      dispatch(
-        tasksActions.updateTaskEntityStatus({
-          todoListId: args.todoListId,
-          taskId: args.startDragId,
-          entityStatus: "success",
-        })
-      );
-      dispatch(
-        tasksActions.updateTaskEntityStatus({
-          todoListId: args.todoListId,
-          taskId: args.endShiftId ? args.endShiftId : "",
-          entityStatus: "success",
-        })
-      );
-    }
-  }
-);
 // Region
 // !  Thunks for Drag and Drop to prevent rerender
 // Do not need only for deleteTaskThunk
@@ -527,80 +449,83 @@ const addTaskDnDTC = createAppAsyncThunk<{ task: TaskType }, CreateTaskArgs>(
   }
 );
 
-const reorderTasksSoloTodoDnDTC = createAppAsyncThunk<
-  undefined,
-  ReorderTasksArgs
->(`${slice.name}/reorderTasksSoloTodoDnDTC`, async (args, thunkAPI) => {
-  const { dispatch, rejectWithValue, getState } = thunkAPI;
-  const tasks = getState().tasks.allTasks[args.todoListId];
-  const idToServer = dragAndDropIdChanger(tasks, args);
-  dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-  dispatch(
-    tasksActions.updateTaskEntityStatus({
-      todoListId: args.todoListId,
-      taskId: args.startDragId,
-      entityStatus: "loading",
-    })
-  );
-  dispatch(
-    tasksActions.updateTaskEntityStatus({
-      todoListId: args.todoListId,
-      taskId: args.endShiftId ? args.endShiftId : "",
-      entityStatus: "loading",
-    })
-  );
-
-  try {
-    const res = await tasksApi.reorderTasks({
-      todoListId: args.todoListId,
-      startDragId: args.startDragId,
-      endShiftId: idToServer,
-    });
-    if (res.data.resultCode === 0) {
-      // dispatch(fetchTasksTC(args.todoListId))
-      return undefined;
-    } else {
-      handleServerAppError(
-        res.data,
-        dispatch,
-        "Oops! Something gone wrong. Length should be less than 100 symbols"
-      );
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
-  } finally {
-    dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+const reorderTaskTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(
+  `${slice.name}/reorderTasksSoloTodoDnDTC`,
+  async (args, thunkAPI) => {
+    const { dispatch, rejectWithValue, getState } = thunkAPI;
+    const tasks = getState().tasks.allTasks[args.todoListId];
+    const idToServer = dndUniversalIdChanger(tasks, args);
+    dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.startDragId,
-        entityStatus: "success",
+        entityStatus: "loading",
       })
     );
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
         taskId: args.endShiftId ? args.endShiftId : "",
-        entityStatus: "success",
+        entityStatus: "loading",
       })
     );
-  }
-});
 
-const reorderTasksDnDByOrderTC = createAppAsyncThunk<
+    try {
+      const res = await tasksApi.reorderTasks({
+        todoListId: args.todoListId,
+        startDragId: args.startDragId,
+        endShiftId: idToServer,
+      });
+      if (res.data.resultCode === 0) {
+        // dispatch(fetchTasksTC(args.todoListId))
+        return undefined;
+      } else {
+        handleServerAppError(
+          res.data,
+          dispatch,
+          "Oops! Something gone wrong. Length should be less than 100 symbols"
+        );
+        return rejectWithValue(null);
+      }
+    } catch (e) {
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
+    } finally {
+      dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+      dispatch(
+        tasksActions.updateTaskEntityStatus({
+          todoListId: args.todoListId,
+          taskId: args.startDragId,
+          entityStatus: "success",
+        })
+      );
+      dispatch(
+        tasksActions.updateTaskEntityStatus({
+          todoListId: args.todoListId,
+          taskId: args.endShiftId ? args.endShiftId : "",
+          entityStatus: "success",
+        })
+      );
+    }
+  }
+);
+
+const reorderTaskAcrossTodos = createAppAsyncThunk<
   undefined,
   {
     todoListId: string;
-    startOrder: number;
     startDragId: string;
     endShiftId: string;
   }
 >(`${slice.name}/reorderTasksDnDByOrderTC`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const tasks = getState().tasks.allTasks[args.todoListId];
-  const idToServer = dragAndDropIdChangerByOrder(tasks, args);
+  const idToServer = dndIdChangerForTaskAcrossTodos({
+    tasks,
+    endShiftId: args.endShiftId,
+  });
+
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
     tasksActions.updateTaskEntityStatus({
@@ -663,10 +588,9 @@ export const tasksThunks = {
   addTaskTC,
   updateTaskTC,
   deleteTaskTC,
-  reorderTasksTC,
   addTaskDnDTC,
-  reorderTasksSoloTodoDnDTC,
-  reorderTasksDnDByOrderTC,
+  reorderTaskTC,
+  reorderTaskAcrossTodos,
 };
 
 // ================================================

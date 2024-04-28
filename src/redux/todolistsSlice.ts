@@ -10,7 +10,7 @@ import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { tasksThunks } from "./tasksSlice";
 import {
   createAppAsyncThunk,
-  dragAndDropIdChanger,
+  dndUniversalIdChanger,
   handleServerAppError,
   handleServerNetworkError,
 } from "../common/utilities";
@@ -418,7 +418,7 @@ const reorderTodolistTC = createAppAsyncThunk<
       entityStatus: "loading",
     })
   );
-  const idToServer = dragAndDropIdChanger(todolists, args);
+  const idToServer = dndUniversalIdChanger(todolists, args);
   try {
     const res = await todolistsAPI.reorderTodolist({
       startDragId: args.startDragId,

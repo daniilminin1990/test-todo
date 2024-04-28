@@ -38,6 +38,7 @@ import {
   TasksWithEntityStatusType,
 } from "../../redux/tasksSlice";
 import { todolistsAPI, TodolistType } from "../../api/todolists-api";
+import { dndIdChangerForTaskAcrossTodos } from "../../common/utilities/dragAndDropIdChangerFunctions";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
@@ -51,8 +52,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     addTaskDnDTC,
     deleteTaskTC,
     reorderTask,
-    reorderTasksSoloTodoDnDTC,
-    reorderTasksDnDByOrderTC,
+    reorderTaskTC,
+    reorderTaskAcrossTodos,
     moveTaskAcrossTodolists,
     fetchTasksTC,
     addTaskTC,
@@ -182,7 +183,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       setMemoOverTodoId(overTodoListId);
       setMemoActiveTodoId(activeTodoListId);
       if (activeTodo) {
-        // reorderTodolistTC({ endShiftId: overTodoListId, startDragId: activeTodo.id });
         reorderTodolist({
           endShiftId: overTodoListId,
           startDragId: activeTodo.id,
@@ -207,13 +207,11 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // Сравниваем по memoActive потому что в противном случае работает некорректно
     // Из-за того, что dndKit думает изначально что actvieTodoId === overTodoId
     if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
-      // End Нужно для endShiftId использовать функцию dragAndDropIdChanger
-      reorderTasksSoloTodoDnDTC({
+      // End Нужно для endShiftId использовать функцию dndUniversalIdChanger
+      reorderTaskTC({
         todoListId: activeTask?.todoListId || "",
         startDragId: activeTaskId,
         endShiftId: overTaskId,
-      }).then(() => {
-        fetchTasksTC(activeTask?.todoListId || "");
       });
     }
     // ? Над таской, в другом тудулисте
@@ -242,11 +240,9 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
               console.log(tasks);
               //! 3 делаем на созданную таску реордер и ререндер
               // End Нужно сделать смену этой санки на SoloDndTC, и для endShiftId использовать функцию dragAndDropIdChangerByOrder (ПОМЕНЯТЬ НАЗВАНИЕ)
-              reorderTasksDnDByOrderTC({
+              reorderTaskAcrossTodos({
                 todoListId: overTodoListId,
                 startDragId: res.payload.task.id,
-                // End Я НЕ РАБОТАЮ ТУТ С STARTORDER
-                startOrder: res.payload.task.order,
                 endShiftId: activeTaskId,
                 // Тут активная таск Id, иначе если ставить over,то будет ругаться т.к. я не знаю почему, у меня были ошибки,
                 // Вероятно потому что мы тут создали таску, и она является активной, именно ее нужно воспринимать как ту,
