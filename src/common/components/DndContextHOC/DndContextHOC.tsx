@@ -1,4 +1,4 @@
-import { closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCenter, closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { useActions } from "../../hooks/useActions";
 import { useAppSelector } from "../../../store/store";
 import { todolistsSelectors, TodoUIType } from "../../../redux/todolistsSlice";

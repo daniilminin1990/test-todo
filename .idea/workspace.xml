@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor title ResponseType -&gt; BasicResponseType">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +308,7 @@
       <workItem from="1714210216428" duration="360000" />
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
-      <workItem from="1714312400186" duration="6079000" />
+      <workItem from="1714312400186" duration="6280000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -406,7 +406,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714315711971</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need">
+      <option name="closed" value="true" />
+      <created>1714319064165</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714319064165</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -436,6 +444,7 @@
     <MESSAGE value="temp cannot resolve catch" />
     <MESSAGE value="global refactor made dnd useing dndKit" />
     <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor title ResponseType -&gt; BasicResponseType" />
+    <MESSAGE value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
   </component>
 </project>
