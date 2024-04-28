@@ -38,15 +38,23 @@ export function dragAndDropIdChangerByOrder(
   const endIndex = tasks.findIndex(
     (item, index) => item.id === args.endShiftId && index >= 0
   );
-
+  // if(tasks.length <= 2){
+  //   console.log('Оппа')
+  //   return tasks[endIndex].id
+  // } else {
+  console.log(tasks);
+  console.log(endIndex);
   if (endIndex === 0) {
     return null;
     // } else if (endIndex === tasks.length - 1) {
   } else if (endIndex === tasks.length) {
-    return args.endShiftId;
+    return tasks[endIndex].id;
   } else {
+    console.log("!== 0 && !== tasks.length - 1");
     return tasks[endIndex - 1].id;
   }
+  // }
+
   // if (endIndex > 0 && endIndex === tasks.length - 2) {
   //   console.log({ firstIf: tasks[endIndex - 1], length: tasks.length });
   //   return tasks[endIndex - 1].id;

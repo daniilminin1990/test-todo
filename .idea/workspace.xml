@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor move task in 1 todo works perfect">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor onDragEnd, works correct. One bug between todos at the start of array">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +318,7 @@
       <workItem from="1714061537826" duration="646000" />
       <workItem from="1714062426620" duration="1806000" />
       <workItem from="1714256857972" duration="149000" />
-      <workItem from="1714257029169" duration="5886000" />
+      <workItem from="1714257029169" duration="8772000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -513,7 +512,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714259097008</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="refactor onDragEnd, works correct. One bug between todos at the start of array">
+      <option name="closed" value="true" />
+      <created>1714263148171</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1714263148171</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,7 +538,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor removed title node in ThemeToggler" />
     <MESSAGE value="." />
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
@@ -556,6 +562,7 @@
     <MESSAGE value="refactor moveTodos done" />
     <MESSAGE value="rolled back, cleaned console and comments" />
     <MESSAGE value="refactor move task in 1 todo works perfect" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor move task in 1 todo works perfect" />
+    <MESSAGE value="refactor onDragEnd, works correct. One bug between todos at the start of array" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor onDragEnd, works correct. One bug between todos at the start of array" />
   </component>
 </project>

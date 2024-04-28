@@ -271,7 +271,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // )?.order;
     // Region Активная таска
     // ? Над таской, в одном тудулисте
-    if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
+    if (isActiveATask && isOverATask && memoActiveTodoId === overTodoListId) {
       // activeTodoListId = memoTodosServerAr?.find(
       //   (tl) => tl.order === activeTodoOrder
       // )?.id;
@@ -280,6 +280,8 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // )?.id;
       // ! Когда activeTodolistId === overTodolistId
       // Поделено, чтобы на UI работало норм
+      console.log("1111111111111111111111");
+      // End Нужно для endShiftId использовать функцию dragAndDropIdChanger
       reorderTasksSoloTodoDnDTC({
         todoListId: activeTask?.todoListId || "",
         startDragId: activeTaskId,
@@ -290,6 +292,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
     // ? Над таской, в другом тудулисте
     if (isActiveATask && isOverATask && memoActiveTodoId !== memoOverTodoId) {
+      console.log("22222222222222222222222222222");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       const activeCopy: TaskType = active.data.current?.task;
@@ -312,6 +315,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
           }).then((res) => {
             if (res.payload?.task.id) {
               //! 3 делаем на созданную таску реордер и ререндер
+              // End Нужно сделать смену этой санки на SoloDndTC, и для endShiftId использовать функцию dragAndDropIdChangerByOrder (ПОМЕНЯТЬ НАЗВАНИЕ)
               reorderTasksDnDByOrderTC({
                 todoListId: overTodoListId,
                 startDragId: res.payload.task.id,
@@ -320,7 +324,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
                 endShiftId: overTaskId,
               }).then(() => {
                 fetchTasksTC(overTodoListId);
-                fetchTasksTC(activeTodoListId);
+                fetchTasksTC(memoActiveTodoId || "");
               });
             }
           });
