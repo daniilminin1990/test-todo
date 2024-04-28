@@ -600,7 +600,6 @@ const reorderTasksDnDByOrderTC = createAppAsyncThunk<
 >(`${slice.name}/reorderTasksDnDByOrderTC`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const tasks = getState().tasks.allTasks[args.todoListId];
-  // const idToServer = dragAndDropIdChanger(tasks, args);
   const idToServer = dragAndDropIdChangerByOrder(tasks, args);
   dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
   dispatch(
@@ -625,7 +624,6 @@ const reorderTasksDnDByOrderTC = createAppAsyncThunk<
       endShiftId: idToServer,
     });
     if (res.data.resultCode === 0) {
-      // dispatch(fetchTasksTC(args.todoListId))
       return undefined;
     } else {
       handleServerAppError(

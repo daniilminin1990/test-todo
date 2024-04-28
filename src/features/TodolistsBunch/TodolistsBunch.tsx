@@ -271,7 +271,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     // )?.order;
     // Region Активная таска
     // ? Над таской, в одном тудулисте
-    if (isActiveATask && isOverATask && memoActiveTodoId === overTodoListId) {
+    if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
       // activeTodoListId = memoTodosServerAr?.find(
       //   (tl) => tl.order === activeTodoOrder
       // )?.id;
@@ -280,7 +280,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       // )?.id;
       // ! Когда activeTodolistId === overTodolistId
       // Поделено, чтобы на UI работало норм
-      console.log("1111111111111111111111");
       // End Нужно для endShiftId использовать функцию dragAndDropIdChanger
       reorderTasksSoloTodoDnDTC({
         todoListId: activeTask?.todoListId || "",
@@ -292,7 +291,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
     }
     // ? Над таской, в другом тудулисте
     if (isActiveATask && isOverATask && memoActiveTodoId !== memoOverTodoId) {
-      console.log("22222222222222222222222222222");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       const activeCopy: TaskType = active.data.current?.task;
