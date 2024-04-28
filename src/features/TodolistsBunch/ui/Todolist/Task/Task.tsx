@@ -6,8 +6,11 @@ import { ServerResponseStatusType } from "../../../../../redux/appSlice";
 import { TaskStatuses } from "../../../../../common/enums/enums";
 import { styled } from "styled-components";
 import { useActions } from "../../../../../common/hooks/useActions";
-import { TasksWithEntityStatusType } from "../../../../../redux/tasksSlice";
+import { tasksSelectors, TasksWithEntityStatusType } from "../../../../../redux/tasksSlice";
 import s from "./Task.module.css";
+import { useAppSelector } from "../../../../../store/store";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
   todoListId: string;
@@ -16,6 +19,18 @@ type Props = {
 
 export const Task = ({ task, todoListId }: Props) => {
   const { deleteTaskTC, updateTaskTC } = useActions();
+  const tasks = useAppSelector(tasksSelectors.tasksState)[todoListId];
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: task.id,
+    data: {
+      type: "Task",
+      task: tasks[tasks.findIndex((t) => t.id === task.id)],
+    },
+  });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    // transition,
+  };
 
   const onChangeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
@@ -40,8 +55,12 @@ export const Task = ({ task, todoListId }: Props) => {
 
   const isTaskCompleted = task.status === TaskStatuses.Completed;
 
+  if (isDragging) {
+    const styleIfDragging = { opacity: 0.3, border: "mistyrose 2px solid", backgroundColor: "lightgreen", minHeight: "40px" };
+    return <li className={isTaskCompleted ? s.isDone : ""} ref={setNodeRef} style={{ ...style, ...styleIfDragging }} {...attributes} {...listeners} />;
+  }
   return (
-    <li className={isTaskCompleted ? s.isDone : ""}>
+    <li className={isTaskCompleted ? s.isDone : ""} ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <input type="checkbox" checked={isTaskCompleted} onChange={onChangeTaskStatusHandler} disabled={task.entityStatus === "loading"} />
       <EdiatbleSpan oldTitle={task.title} callback={onUpdTaskTitleHandler} disabled={task.entityStatus === "loading"} />
       <IconButton aria-label="delete" onClick={onRemoveTaskHandler} disabled={task.entityStatus === "loading"}>

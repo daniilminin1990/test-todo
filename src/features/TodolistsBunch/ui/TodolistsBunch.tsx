@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RootReducerType, useAppSelector } from "../../../store/store";
 import { FilterValuesType, todolistsSelectors } from "../../../redux/todolistsSlice";
 import { ClassNameMap, Grid, Pagination, Paper } from "@mui/material";
@@ -16,11 +16,12 @@ import { createStyles, Theme } from "@material-ui/core/styles";
 import { MyPagination } from "../../../common/components/MyPagination/MyPagination";
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
+import { SortableContext } from "@dnd-kit/sortable";
+import { DndContextHOC } from "../../../common/components/DndContextHOC/DndContextHOC";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
-  // const dispatch = useAppDispatch();
-  const { reorderTodolistTC, reorderTask, reorderTasksTC, changeTodoFilter: changeTodoFilterAC, addTodoTC, updateTodoTitleTC } = useActions();
+  const { addTodoTC } = useActions();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -28,6 +29,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const statusAddTodo = useAppSelector((state) => appSelectors.statusTodo(state));
   const isLoggedIn = useAppSelector((state) => loginSelectors.isLoggedIn(state));
   const searchQuery = useSelector<RootReducerType, string>((state) => state.app.searchQuery);
+  const todolistIds = useMemo(() => todolists.map((tl) => tl.id), [todolists]);
 
   // Paginaton
   const [page, setPage] = useState<number>(1);
@@ -55,29 +57,29 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       },
     },
   };
-  // Region
-  const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>("");
-
-  function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
-    setTodoListIdToDrag(startDragId);
-    console.log("DRAGGING-ID", startDragId);
-  }
-
-  function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
-
-  function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-  }
-
-  function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
-    e.preventDefault();
-    reorderTodolistTC({
-      endShiftId: endShiftId,
-      startDragId: todoListIdToDrag,
-    });
-  }
-
-  // End
+  // // Region
+  // const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>("");
+  //
+  // function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
+  //   setTodoListIdToDrag(startDragId);
+  //   console.log("DRAGGING-ID", startDragId);
+  // }
+  //
+  // function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
+  //
+  // function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
+  //   e.preventDefault();
+  // }
+  //
+  // function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
+  //   e.preventDefault();
+  //   reorderTodolistTC({
+  //     endShiftId: endShiftId,
+  //     startDragId: todoListIdToDrag,
+  //   });
+  // }
+  //
+  // // End
 
   const addTodo = useCallback((newTodoTitle: string) => {
     return addTodoTC(newTodoTitle).unwrap();
@@ -89,29 +91,22 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
   const displayedTodolists = todolists.slice((Number(page) - 1) * pageCount, Number(page) * pageCount);
   return (
-    <>
+    <DndContextHOC>
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
       </Grid>
       <Grid container spacing={3} justifyContent={"space-evenly"}>
-        {displayedTodolists
-          .filter((e) => (searchParams.get("search") ? e.title.includes(searchParams.get("search") ?? "") : e))
-          .map((tl) => {
-            return (
-              <Grid
-                item
-                key={tl.id}
-                draggable={true}
-                onDragStart={(e) => dragStartHandler(e, tl.id)}
-                onDragLeave={(e) => dragEndHandler(e)}
-                onDragEnd={(e) => dragEndHandler(e)}
-                onDragOver={(e) => dragOverHandler(e)}
-                onDrop={(e) => dropHandler(e, tl.id)}
-              >
-                <Todolist key={tl.id} todoList={tl} />
-              </Grid>
-            );
-          })}
+        <SortableContext items={todolistIds}>
+          {displayedTodolists
+            .filter((e) => (searchParams.get("search") ? e.title.includes(searchParams.get("search") ?? "") : e))
+            .map((tl) => {
+              return (
+                <Grid item key={tl.id}>
+                  <Todolist key={tl.id} todolist={tl} />
+                </Grid>
+              );
+            })}
+        </SortableContext>
       </Grid>
       <Stack spacing={2} direction={"column"} sx={{ marginTop: "20px" }}>
         <Box
@@ -131,6 +126,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
           />
         </Box>
       </Stack>
-    </>
+    </DndContextHOC>
   );
 };

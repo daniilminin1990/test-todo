@@ -3,7 +3,7 @@ import { appActions, ServerResponseStatusType } from "./appSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodos } from "../common/actions/common.actions";
 import { tasksThunks } from "./tasksSlice";
-import { createAppAsyncThunk, dragAndDropIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
+import { createAppAsyncThunk, dndUniversalIdChanger, handleServerAppError, handleServerNetworkError } from "../common/utilities";
 import { ReorderTodoListArgs, TodolistType, UpdateTodoArgs } from "../api/todolists-api.types";
 import { AxiosError } from "axios";
 import { ResponseType } from "../common/types";
@@ -77,6 +77,16 @@ const slice = createSlice({
     //     state.splice(targetIndex, 0, draggedItem);
     //   }
     // },
+    reorderTodolist(state, action: PayloadAction<ReorderTodoListArgs>) {
+      const { startDragId, endShiftId } = action.payload;
+      const dragIndex = state.findIndex((el) => el.id === startDragId);
+      const targetIndex = state.findIndex((el) => el.id === endShiftId);
+
+      if (dragIndex > -1 && targetIndex > -1) {
+        const draggedItem = state.splice(dragIndex, 1)[0];
+        state.splice(targetIndex, 0, draggedItem);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -324,7 +334,7 @@ const reorderTodolistTC = createAppAsyncThunk<
       entityStatus: "loading",
     })
   );
-  const idToServer = dragAndDropIdChanger(todolists, args);
+  const idToServer = dndUniversalIdChanger(todolists, args);
   try {
     const res = await todolistsAPI.reorderTodolist({
       startDragId: args.startDragId,
