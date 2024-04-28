@@ -1,64 +1,20 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import {
-  FilterValuesType,
-  todolistsActions,
-  todolistsSelectors,
-  todolistsThunks,
-  TodoUIType,
-} from "../../redux/todolistsSlice";
-import { Grid, Paper } from "@mui/material";
+import React, { useCallback, useMemo } from "react";
+import { useAppSelector } from "../../store/store";
+import { todolistsSelectors } from "../../redux/todolistsSlice";
+import { Grid } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
 import { appSelectors } from "../../redux/appSlice";
 import { loginSelectors } from "../../redux/loginSlice";
 import { AddItemForm } from "../../common/components";
 import { useActions } from "../../common/hooks/useActions";
-import {
-  CollisionDetection,
-  DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  DragStartEvent,
-  PointerSensor,
-  closestCenter,
-  pointerWithin,
-  rectIntersection,
-  useSensor,
-  useSensors,
-  closestCorners,
-} from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
-import { createPortal } from "react-dom";
-import { TaskType } from "../../api/tasks-api";
-import { Task } from "./Todolist/Task/Task";
-import {
-  tasksSelectors,
-  TasksWithEntityStatusType,
-} from "../../redux/tasksSlice";
-import { todolistsAPI, TodolistType } from "../../api/todolists-api";
-import { dndIdChangerForTaskAcrossTodos } from "../../common/utilities/dragAndDropIdChangerFunctions";
+import { DndContextHOC } from "../../common/components/DndContextHOC/DndContextHOC";
 
 type TodolistsBunchProps = {};
 export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   // const dispatch = useAppDispatch();
-  const {
-    changeTodoFilter: changeTodoFilterAC,
-    updateTodoTitleTC,
-    reorderTodolist,
-    reorderTodolistTC,
-    addTodoTC,
-    addTaskDnDTC,
-    deleteTaskTC,
-    reorderTask,
-    reorderTaskTC,
-    reorderTaskAcrossTodos,
-    moveTaskAcrossTodolists,
-    fetchTasksTC,
-    addTaskTC,
-    moveTaskInEmptyTodolists,
-  } = useActions();
+  const { addTodoTC } = useActions();
 
   const todolists = useAppSelector((state) =>
     todolistsSelectors.todolists(state)
@@ -69,246 +25,21 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   const isLoggedIn = useAppSelector((state) =>
     loginSelectors.isLoggedIn(state)
   );
-
-  const [activeTodo, setActiveTodo] = useState<TodoUIType | null>(null);
-  const [activeTask, setActiveTask] = useState<TaskType | null>(null);
-  const [memoActiveTodoId, setMemoActiveTodoId] = useState<string | null>(null);
-  const [memoOverTodoId, setMemoOverTodoId] = useState<string | null>(null);
-  const [memoActiveTaskCopy, setMemoActiveTaskCopy] = useState<TaskType | null>(
-    null
-  );
-
   const todolistIds = useMemo(
     () => todolists.allTodolists.map((tl) => tl.id),
     [todolists]
-  );
-  const tasks = useAppSelector(tasksSelectors.tasksState);
-
-  const changeFilter = useCallback(
-    (todoListId: string, newFilterValue: FilterValuesType) => {
-      changeTodoFilterAC({
-        todoListId: todoListId,
-        newFilterValue: newFilterValue,
-      });
-    },
-    []
   );
 
   const addTodo = useCallback((newTodoTitle: string) => {
     addTodoTC(newTodoTitle);
   }, []);
 
-  const updTodoTitle = useCallback(
-    (todoListId: string, updTodoTitle: string) => {
-      updateTodoTitleTC({
-        todoListId: todoListId,
-        title: updTodoTitle,
-      });
-    },
-    []
-  );
-
-  const onDragStartHandler = (event: DragStartEvent) => {
-    if (event.active.data.current?.type === "Todolist") {
-      setActiveTodo(event.active.data.current.todolist);
-      return;
-    }
-    if (event.active.data.current?.type === "Task") {
-      setActiveTask(event.active.data.current.task);
-      event.active.data.current.todoListId =
-        event.active.data.current.task.todoListId;
-      return;
-    }
-  };
-  const onDragOverHandler = (event: DragOverEvent) => {
-    const { active, over } = event;
-    if (!over) return;
-    let activeTodoListId = active.data.current?.todolist?.id;
-    const activeTaskId = active.data.current?.task?.id;
-    let overTodoListId = over.data.current?.todolist?.id;
-    const overTaskId = over.data.current?.task?.id;
-    // 1 сценарий, дропаю таску на другую таску в одном или другом туду
-    const isActiveATask = active.data.current?.type === "Task";
-    const isOverATask = over.data.current?.type === "Task";
-    const isActiveATodolist = active.data.current?.type === "Todolist";
-    const isOverATodolist = over.data.current?.type === "Todolist";
-
-    // Region Активная таска
-    // ? Над таской, в одном тудулисте
-    if (isActiveATask && isOverATask && activeTodoListId === overTodoListId) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
-      // ! Когда activeTodolistId === overTodolistId
-      reorderTask({
-        todoListId: activeTodoListId,
-        startDragId: activeTaskId,
-        endShiftId: overTaskId,
-      });
-    }
-    // ? Над таской, в другом тудулисте
-    if (isActiveATask && isOverATask && activeTodoListId !== overTodoListId) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
-      if (activeTaskId === overTaskId) return;
-      setMemoActiveTodoId(activeTodoListId);
-      setMemoOverTodoId(overTodoListId.toString());
-      moveTaskAcrossTodolists({
-        todoListId: activeTodoListId,
-        endTodoListId: overTodoListId,
-        startDragId: activeTaskId,
-        endShiftId: overTodoListId,
-      });
-    }
-    // ? В другой пустой тудулист
-    if (
-      isActiveATask &&
-      isOverATodolist &&
-      tasks[overTodoListId]?.length === 0
-    ) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.todolist.id;
-      setMemoActiveTodoId(activeTodoListId);
-      setMemoOverTodoId(overTodoListId);
-      setMemoActiveTaskCopy(active.data.current?.task);
-      moveTaskInEmptyTodolists({
-        todoListId: activeTodoListId,
-        endTodoListId: overTodoListId,
-        startDragId: activeTaskId,
-      });
-    }
-    // Region Активный тудулист
-    if (isActiveATodolist && isOverATodolist) {
-      activeTodoListId = active?.data.current?.todolist.id;
-      overTodoListId = over?.data.current?.todolist.id;
-      setMemoOverTodoId(overTodoListId);
-      setMemoActiveTodoId(activeTodoListId);
-      if (activeTodo) {
-        reorderTodolist({
-          endShiftId: overTodoListId,
-          startDragId: activeTodo.id,
-        });
-      }
-    }
-  };
-
-  const onDragEndHandler = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over) return;
-    let activeTodoListId = active.data.current?.todolist?.id;
-    const activeTaskId = active.data.current?.task?.id;
-    let overTodoListId = over.data.current?.todolist?.id;
-    const overTaskId = over.data.current?.task?.id;
-    const isActiveATask = active.data.current?.type === "Task";
-    const isOverATask = over.data.current?.type === "Task";
-    const isActiveATodolist = active.data.current?.type === "Todolist";
-    const isOverATodolist = over.data.current?.type === "Todolist";
-    // Region Активная таска
-    // ? Над таской, в одном тудулисте
-    // Сравниваем по memoActive потому что в противном случае работает некорректно
-    // Из-за того, что dndKit думает изначально что actvieTodoId === overTodoId
-    if (isActiveATask && isOverATask && memoActiveTodoId === memoOverTodoId) {
-      // End Нужно для endShiftId использовать функцию dndUniversalIdChanger
-      reorderTaskTC({
-        todoListId: activeTask?.todoListId || "",
-        startDragId: activeTaskId,
-        endShiftId: overTaskId,
-      });
-    }
-    // ? Над таской, в другом тудулисте
-    if (isActiveATask && isOverATask && memoActiveTodoId !== memoOverTodoId) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      overTodoListId = over.data.current?.task?.todoListId;
-      const activeCopy: TaskType = active.data.current?.task;
-      // Чтобы нормально на UI отрисовалось перемещение
-      reorderTask({
-        todoListId: overTodoListId,
-        startDragId: activeTaskId,
-        endShiftId: overTaskId,
-      });
-      // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
-      deleteTaskTC({
-        todoListId: activeTask?.todoListId || "",
-        taskId: activeTaskId,
-      }).then(() => {
-        //! 2 создаем в новом тудулисте новую
-        if (overTodoListId) {
-          addTaskDnDTC({
-            todoListId: overTodoListId,
-            title: activeCopy.title,
-          }).then((res) => {
-            if (res.payload?.task.id) {
-              console.log(tasks);
-              //! 3 делаем на созданную таску реордер и ререндер
-              // End Нужно сделать смену этой санки на SoloDndTC, и для endShiftId использовать функцию dragAndDropIdChangerByOrder (ПОМЕНЯТЬ НАЗВАНИЕ)
-              reorderTaskAcrossTodos({
-                todoListId: overTodoListId,
-                startDragId: res.payload.task.id,
-                endShiftId: activeTaskId,
-                // Тут активная таск Id, иначе если ставить over,то будет ругаться т.к. я не знаю почему, у меня были ошибки,
-                // Вероятно потому что мы тут создали таску, и она является активной, именно ее нужно воспринимать как ту,
-                // чей Id мы должны отправлять на сервер, нам не нужно менять ордер у over таски
-              }).then(() => {
-                fetchTasksTC(overTodoListId);
-                fetchTasksTC(memoActiveTodoId || "");
-              });
-            }
-          });
-        }
-      });
-    }
-    // ? В другой пустой тудулист
-    if (
-      isActiveATask &&
-      isOverATodolist &&
-      tasks[overTodoListId]?.length === 0
-    ) {
-      activeTodoListId = active.data.current?.task?.todoListId;
-      const activeCopy = memoActiveTaskCopy;
-      // ! 1 удаляем с сервера active таску БЕЗ AddCase, его нужно отключить, сделать reducer и вообще таски через редьюсер и сервер добавлять
-      deleteTaskTC({
-        todoListId: activeTask?.todoListId || "",
-        taskId: activeTaskId,
-      }).then(() => {
-        //! 2 создаем в новом тудулисте новую
-        if (activeCopy) {
-          addTaskTC({
-            todoListId: overTodoListId,
-            title: activeCopy.title,
-          });
-        }
-      });
-    }
-    // Region Активный тудулист
-    if (isActiveATodolist && isOverATodolist) {
-      const startDragId = activeTodoListId;
-      const endShiftId = overTodoListId;
-      reorderTodolistTC({ endShiftId, startDragId });
-    }
-
-    setActiveTodo(null);
-    setActiveTask(null);
-    setMemoActiveTodoId(null);
-    setMemoOverTodoId(null);
-  };
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 5 },
-    })
-  );
-
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
 
   return (
-    <DndContext
-      onDragStart={onDragStartHandler}
-      onDragOver={onDragOverHandler}
-      onDragEnd={onDragEndHandler}
-      sensors={sensors}
-      collisionDetection={closestCorners}
-    >
+    <DndContextHOC>
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm callback={addTodo} />
       </Grid>
@@ -317,53 +48,12 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
           {todolists.allTodolists.map((tl) => {
             return (
               <Grid item key={tl.id}>
-                <Todolist
-                  key={tl.id}
-                  todoListId={tl.id}
-                  todoTitle={tl.title}
-                  tasksFilter={tl.filter}
-                  changeFilter={changeFilter}
-                  updTodoTitle={updTodoTitle}
-                  entityStatus={tl.entityStatus}
-                  disabled={tl.entityStatus}
-                  showTasks={tl.showTasks}
-                  todolist={tl}
-                />
+                <Todolist key={tl.id} todolist={tl} />
               </Grid>
             );
           })}
         </SortableContext>
       </Grid>
-      {createPortal(
-        <DragOverlay>
-          {activeTodo && (
-            <Grid item>
-              <Todolist
-                key={activeTodo.id}
-                todoListId={activeTodo.id}
-                todoTitle={activeTodo.title}
-                tasksFilter={activeTodo.filter}
-                changeFilter={changeFilter}
-                updTodoTitle={updTodoTitle}
-                entityStatus={activeTodo.entityStatus}
-                disabled={activeTodo.entityStatus}
-                showTasks={activeTodo.showTasks}
-                todolist={activeTodo}
-              />
-            </Grid>
-          )}
-          {activeTask && (
-            <Task
-              key={activeTask.id}
-              taskId={activeTask.id}
-              tIsDone={activeTask.status}
-              oldTitle={activeTask.title}
-              todoListId={activeTask.todoListId}
-            />
-          )}
-        </DragOverlay>,
-        document.body
-      )}
-    </DndContext>
+    </DndContextHOC>
   );
 };

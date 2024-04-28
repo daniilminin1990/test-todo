@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useCallback } from "react";
 import EdiatbleSpan from "../../../../common/components/EditableSpan/EdiatbleSpan";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -17,22 +17,19 @@ import {
 } from "../../../../redux/tasksSlice";
 import { TaskType } from "../../../../api/tasks-api";
 import { useSelector } from "react-redux";
+import { useActions } from "../../../../common/hooks/useActions";
 
 export type TaskProps = {
   todoListId: string;
-  taskId: string;
-  tIsDone: TaskStatuses;
-  oldTitle: string;
-  entityStatus?: ServerResponseStatusType;
-  onChange?: (taskId: string, checked: TaskStatuses) => void;
-  onClick?: (taskId: string) => void;
-  updTaskTitle?: (taskId: string, updTaskTitle: string) => void;
+  task: TasksWithEntityStatusType;
 };
 
-export const Task = React.memo((props: TaskProps) => {
+export const Task = React.memo(({ task, todoListId }: TaskProps) => {
   const tasks = useAppSelector((state) =>
-    tasksSelectors.tasksById(state, props.todoListId)
+    tasksSelectors.tasksById(state, todoListId)
   );
+
+  const { updateTaskTC, deleteTaskTC } = useActions();
   const isBlockTasksToDrag = useAppSelector(tasksSelectors.tasksState);
   const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);
   // const isTaskDragging =
@@ -48,10 +45,10 @@ export const Task = React.memo((props: TaskProps) => {
     transition,
     isDragging,
   } = useSortable({
-    id: props.taskId,
+    id: task.id,
     data: {
       type: "Task",
-      task: tasks[tasks.findIndex((t) => t.id === props.taskId)],
+      task: tasks[tasks.findIndex((t) => t.id === task.id)],
     },
     disabled: isBlockDragMode && isBlockTasksToDrag,
   });
@@ -60,27 +57,30 @@ export const Task = React.memo((props: TaskProps) => {
     transform: CSS.Transform.toString(transform),
     // transition,
   };
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let checkToGo = e.currentTarget.checked
       ? TaskStatuses.Completed
       : TaskStatuses.New;
-    if (props.onChange) {
-      props.onChange(props.taskId, checkToGo);
-    }
+    updateTaskTC({
+      todoListId,
+      taskId: task.id,
+      model: { status: checkToGo },
+    });
   };
   const onClickHandler = () => {
-    if (props.onClick) {
-      props.onClick(props.taskId);
-    }
+    deleteTaskTC({ todoListId, taskId: task.id });
   };
 
   const updTaskTitleHandler = (updTaskTitle: string) => {
-    if (props.updTaskTitle) {
-      props.updTaskTitle(props.taskId, updTaskTitle);
-    }
+    updateTaskTC({
+      todoListId,
+      taskId: task.id,
+      model: { title: updTaskTitle },
+    });
   };
 
-  const taskCompleted = props.tIsDone === TaskStatuses.Completed;
+  const taskCompleted = task.status === TaskStatuses.Completed;
 
   if (isDragging) {
     return (
@@ -110,17 +110,17 @@ export const Task = React.memo((props: TaskProps) => {
         type="checkbox"
         checked={taskCompleted}
         onChange={onChangeHandler}
-        disabled={props.entityStatus === "loading"}
+        disabled={task.entityStatus === "loading"}
       />
       <EdiatbleSpan
-        oldTitle={props.oldTitle}
+        oldTitle={task.title}
         callback={updTaskTitleHandler}
-        disabled={props.entityStatus === "loading"}
+        disabled={task.entityStatus === "loading"}
       />
       <IconButton
         aria-label="delete"
         onClick={onClickHandler}
-        disabled={props.entityStatus === "loading"}
+        disabled={task.entityStatus === "loading"}
       >
         <DeleteIcon />
       </IconButton>

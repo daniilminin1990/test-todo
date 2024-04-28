@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor onDragEnd IT FINALLY WORKS PERFECT">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor HUGE DnD functions optimisation,&#10;remove unnecessary thunks in tasksSlice&#10;rename thunks and functions">
+      <change afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChanger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/dragAndDropIdChangerFunctions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Task/Task.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stories/Task.stories.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/stories/Task.stories.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -541,7 +539,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714292735402</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="refactor HUGE DnD functions optimisation,&#10;remove unnecessary thunks in tasksSlice&#10;rename thunks and functions">
+      <option name="closed" value="true" />
+      <created>1714300369311</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1714300369311</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -559,7 +565,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
     <MESSAGE value="allSettled everything is fine just thought smth doesn't work but it was just misunderstanding" />
     <MESSAGE value="refactor block todos and tasks on drag" />
@@ -584,6 +589,7 @@
     <MESSAGE value="refactor onDragEnd, works correct. One bug between todos at the start of array" />
     <MESSAGE value="refactor onDragEnd + need refactor dran and drop id changer or turn off handleServerNetworkError" />
     <MESSAGE value="refactor onDragEnd IT FINALLY WORKS PERFECT" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor onDragEnd IT FINALLY WORKS PERFECT" />
+    <MESSAGE value="refactor HUGE DnD functions optimisation,&#10;remove unnecessary thunks in tasksSlice&#10;rename thunks and functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor HUGE DnD functions optimisation,&#10;remove unnecessary thunks in tasksSlice&#10;rename thunks and functions" />
   </component>
 </project>
