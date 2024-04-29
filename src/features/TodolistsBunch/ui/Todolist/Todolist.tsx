@@ -21,7 +21,7 @@ type Props = {
 };
 
 export const Todolist = React.memo(({ todolist }: Props) => {
-  const { addTaskTC, reorderTaskTC, deleteTaskTC, updateTaskTC, deleteTodoTC, changeTodoFilter, updateTodoTitleTC } = useActions();
+  const { addTaskTC } = useActions();
 
   let allTodoTasks = useAppSelector((state) => tasksSelectors.tasksById(state, todolist.id));
   const isBlockDragMode = useSelector(appSelectors.isBlockDragMode);

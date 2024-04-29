@@ -1,7 +1,7 @@
 import { Dispatch, UnknownAction } from "redux";
 import { loginAPI } from "../api/login-api";
 import { createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
-import { loginActions, loginThunks } from "./loginSlice";
+import { loginActions } from "./loginSlice";
 import { todolistsThunks } from "./todolistsSlice";
 import { createAppAsyncThunk } from "../common/utilities";
 import { tasksThunks } from "./tasksSlice";
@@ -116,17 +116,8 @@ const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, undefined>(`${sli
     dispatch(todolistsThunks.fetchTodolistsTC());
     return { value: true };
   } else {
-    // handleServerAppError(res.data, dispatch, "It seems that something wrong", false);
     return rejectWithValue(null);
   }
-  // }
-  // catch (e) {
-  //   // handleServerNetworkError(e, dispatch);
-  //   return rejectWithValue(null);
-  // }
-  // finally {
-  // dispatch(appActions.setAppStatus({appStatus: 'success'}))
-  // }
 });
 
 export const appThunks = { initialiseMeTC };
