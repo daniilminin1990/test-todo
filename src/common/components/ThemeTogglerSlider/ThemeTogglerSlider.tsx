@@ -11,17 +11,9 @@ export const ThemeTogglerSlider = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   return (
-    <div>
-      <IconButton
-        sx={{ ml: 1 }}
-        onClick={colorMode.toggleColorMode}
-        color="inherit"
-      >
-        {theme.palette.mode === "dark" ? (
-          <Brightness7Icon sx={{ color: yellow[500] }} />
-        ) : (
-          <Brightness4Icon />
-        )}
+    <div style={{ display: "flex", justifyContent: "center", margin: "10p" }}>
+      <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+        {theme.palette.mode === "dark" ? <Brightness7Icon sx={{ color: yellow[500] }} /> : <Brightness4Icon />}
       </IconButton>
     </div>
   );

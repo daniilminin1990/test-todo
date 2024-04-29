@@ -75,9 +75,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function AppBarWithToggleLeft(props: {
-  children: React.ReactNode;
-}) {
+export default function AppBarWithToggleLeft(props: { children: React.ReactNode }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -90,9 +88,7 @@ export default function AppBarWithToggleLeft(props: {
   };
 
   // const isLoggedIn = useAppSelector(state => state.loginReducer.isLoggedIn)
-  const isLoggedIn = useAppSelector((state) =>
-    loginSelectors.isLoggedIn(state)
-  );
+  const isLoggedIn = useAppSelector((state) => loginSelectors.isLoggedIn(state));
   const dispatch = useAppDispatch();
   const logoutHandler = () => {
     localStorage.removeItem("theme");
@@ -105,13 +101,7 @@ export default function AppBarWithToggleLeft(props: {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-          >
+          <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} edge="start" sx={{ mr: 2, ...(open && { display: "none" }) }}>
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -142,42 +132,33 @@ export default function AppBarWithToggleLeft(props: {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
+          <IconButton onClick={handleDrawerClose}>{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {/*<List>*/}
+        {/*  {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (*/}
+        {/*    <ListItem key={text} disablePadding>*/}
+        {/*      <ListItemButton>*/}
+        {/*        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
+        {/*        <ListItemText primary={text} />*/}
+        {/*      </ListItemButton>*/}
+        {/*    </ListItem>*/}
+        {/*  ))}*/}
+        {/*</List>*/}
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {/*<List>*/}
+        {/*  {["All mail", "Trash", "Spam"].map((text, index) => (*/}
+        {/*    <ListItem key={text} disablePadding>*/}
+        {/*      <ListItemButton>*/}
+        {/*        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
+        {/*        <ListItemText primary={text} />*/}
+        {/*      </ListItemButton>*/}
+        {/*    </ListItem>*/}
+        {/*  ))}*/}
+        {/*</List>*/}
         <Divider />
         <ThemeTogglerSlider />
+        <Divider />
         {isLoggedIn && (
           <Button color="inherit" onClick={logoutHandler}>
             Logout

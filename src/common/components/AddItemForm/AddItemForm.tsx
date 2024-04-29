@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 export type AddItemFormProps = {
   callback: (newTitle: string) => Promise<any>;
   disabled?: boolean;
+  width?: string;
 };
 
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
@@ -59,7 +60,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
   }, []);
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ display: "flex", width: props.width }}>
       <TextField
         id="outlined-basic"
         error={!!error}
@@ -74,7 +75,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         disabled={props.disabled}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
-        sx={{ width: "80%" }}
+        sx={{ flexBasis: "100%" }}
       />
       <Button onClick={onClickAddItemHandler} variant="contained" style={getStyles(props.disabled)} disabled={props.disabled}>
         +
