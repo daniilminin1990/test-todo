@@ -237,27 +237,29 @@ const addTodoTC = createAppAsyncThunk<
 >(`${slice.name}/addTodo`, async (newTodolistTitle, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   // dispatch(appActions.setAppTodoStatus({ statusTodo: "loading" }));
-  try {
-    const res = await todolistsAPI.createTodolist(newTodolistTitle);
-    if (res.data.resultCode === 0) {
-      return {
-        newTodolist: res.data.data.item,
-        filter: "all",
-        entityStatus: "idle",
-        showTasks: true,
-      };
-      // dispatch(addAppStatusAC('success'))
-    } else {
-      // handleServerAppError(res.data, dispatch)
-      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols", false);
-      return rejectWithValue(res.data);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
-  } finally {
-    // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // try {
+  const res = await todolistsAPI.createTodolist(newTodolistTitle);
+  if (res.data.resultCode === 0) {
+    return {
+      newTodolist: res.data.data.item,
+      filter: "all",
+      entityStatus: "idle",
+      showTasks: true,
+    };
+    // dispatch(addAppStatusAC('success'))
+  } else {
+    // handleServerAppError(res.data, dispatch)
+    // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols", false);
+    return rejectWithValue(res.data);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
+  // finally {
+  // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // }
 });
 // export const _addTodoTC = (newTodotitle: string) => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppTodoStatus({statusTodo: 'loading'}))
@@ -285,20 +287,22 @@ const addTodoTC = createAppAsyncThunk<
 const updateTodoTitleTC = createAppAsyncThunk<UpdateTodoArgs, UpdateTodoArgs>(`${slice.name}/updateTodoTitle`, async (args, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   // dispatch(appActions.setAppTodoStatus({ statusTodo: "loading" }));
-  try {
-    const res = await todolistsAPI.updateTodolist(args);
-    if (res.data.resultCode === 0) {
-      return args;
-    } else {
-      // handleServerAppError(res.data, dispatch, "Length should be less 100 symbols");
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
+  // try {
+  const res = await todolistsAPI.updateTodolist(args);
+  if (res.data.resultCode === 0) {
+    return args;
+  } else {
+    // handleServerAppError(res.data, dispatch, "Length should be less 100 symbols");
     return rejectWithValue(null);
-  } finally {
-    // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   }
+  // }
+  // catch (e) {
+  // handleServerNetworkError(e, dispatch);
+  // return rejectWithValue(null);
+  // }
+  // finally {
+  // dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
+  // }
   // finally {
   //   dispatch(appActions.setAppTodoStatus({ statusTodo: "success" }));
   // }
@@ -338,7 +342,7 @@ const reorderTodolistTC = createAppAsyncThunk<
   );
   dispatch(
     todolistsActions.updateEntityStatusTodo({
-      todoId: args.endShiftId ? args.endShiftId : "",
+      todoId: args.endShiftId || "",
       entityStatus: "loading",
     })
   );
@@ -355,10 +359,11 @@ const reorderTodolistTC = createAppAsyncThunk<
       // handleServerAppError(res.data, dispatch, "I can't reorder");
       return rejectWithValue(null);
     }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
   } finally {
+    // catch (e) {
+    //   // handleServerNetworkError(e, dispatch);
+    //   return rejectWithValue(null);
+    // }
     dispatch(
       todolistsActions.updateEntityStatusTodo({
         todoId: args.startDragId,

@@ -1,7 +1,7 @@
 import { Dispatch, UnknownAction } from "redux";
 import { loginAPI } from "../api/login-api";
-import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
-import { loginActions } from "./loginSlice";
+import { createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
+import { loginActions, loginThunks } from "./loginSlice";
 import { todolistsThunks } from "./todolistsSlice";
 import { createAppAsyncThunk } from "../common/utilities";
 import { tasksThunks } from "./tasksSlice";
@@ -63,10 +63,17 @@ const slice = createSlice({
         state.addStatus = "failed";
         state.statusTask = "failed";
         if (action.payload) {
+          // Это чтобы ошибка не пкоазывалась глобально, а только в инпуте при добавлении таски или тудушки ИЛИ ПРИ ИНИЦИАЛИЗАЦИИ ПРИЛОЖЕНИЯ
           // 1 variant (в лоб)
-          if (action.type === "todo/addTodolist/rejected") return;
+          // if (action.type === "todo/addTodolist/rejected") return;
           // 2 variant (предпочтительный)
-          if (action.type === todolistsThunks.addTodoTC.rejected.type) return;
+          if (
+            action.type === todolistsThunks.addTodoTC.rejected.type ||
+            action.type === tasksThunks.addTaskTC.rejected.type ||
+            action.type === appThunks.initialiseMeTC.rejected.type
+          ) {
+            return;
+          }
           state.error = action.payload.messages[0];
         } else {
           state.error = action.error.message ? action.error.message : "Some error occurred";
@@ -76,6 +83,10 @@ const slice = createSlice({
         state.statusTodo = "success";
         state.addStatus = "success";
         state.statusTask = "success";
+      })
+      // Для initialiseMeApp можно сделать перевод в статуса из finally сюда и в success отдельным addMatcher-ом
+      .addMatcher(isAnyOf(appThunks.initialiseMeTC.rejected, appThunks.initialiseMeTC.fulfilled), (state, action) => {
+        state.isInitialized = true;
       });
   },
   selectors: {
@@ -97,21 +108,22 @@ export type AppInitialState = ReturnType<typeof slice.getInitialState>;
 
 const initialiseMeTC = createAppAsyncThunk<{ value: boolean }, undefined>(`${slice.name}/initialiseMe`, async (_, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  try {
-    const res = await loginAPI.initialiseMe();
-    console.log(res);
-    if (res.data.resultCode === 0) {
-      dispatch(loginActions.setIsLoggedInAC({ value: true }));
-      dispatch(todolistsThunks.fetchTodolistsTC());
-      return { value: true };
-    } else {
-      // handleServerAppError(res.data, dispatch, "It seems that something wrong", false);
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
+  // try {
+  const res = await loginAPI.initialiseMe();
+  console.log(res);
+  if (res.data.resultCode === 0) {
+    dispatch(loginActions.setIsLoggedInAC({ value: true }));
+    dispatch(todolistsThunks.fetchTodolistsTC());
+    return { value: true };
+  } else {
+    // handleServerAppError(res.data, dispatch, "It seems that something wrong", false);
     return rejectWithValue(null);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
   // finally {
   // dispatch(appActions.setAppStatus({appStatus: 'success'}))
   // }

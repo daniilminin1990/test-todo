@@ -247,7 +247,7 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(`${slic
     })
   );
   // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-  console.log("DELETETASKT=TC");
+  // console.log("DELETETASKT=TC");
   try {
     const res = await tasksApi.deleteTask(args);
     if (res.data.resultCode === 0) {
@@ -256,10 +256,11 @@ const deleteTaskTC = createAppAsyncThunk<DeleteTaskArgs, DeleteTaskArgs>(`${slic
       // handleServerAppError(res.data, dispatch, "Something wrong, try later");
       return rejectWithValue(null);
     }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
   } finally {
+    // catch (e) {
+    //   // handleServerNetworkError(e, dispatch);
+    //   return rejectWithValue(null);
+    // }
     dispatch(
       tasksActions.updateTaskEntityStatus({
         todoListId: args.todoListId,
@@ -297,20 +298,21 @@ const addTaskTC = createAppAsyncThunk<
 >(`${slice.name}/addTask`, async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
-  try {
-    const res = await tasksApi.createTask(arg);
-    if (res.data.resultCode === 0) {
-      const task = res.data.data.item;
-      // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-      return { task };
-    } else {
-      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
-      return rejectWithValue(res.data);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
+  // try {
+  const res = await tasksApi.createTask(arg);
+  if (res.data.resultCode === 0) {
+    const task = res.data.data.item;
+    // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+    return { task };
+  } else {
+    // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
+    return rejectWithValue(res.data);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
   // finally {
   //   dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
   // }
@@ -322,21 +324,21 @@ const addTaskDnDTC = createAppAsyncThunk<
   CreateTaskArgs
 >(`${slice.name}/addTaskDnDTC`, async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  try {
-    const res = await tasksApi.createTask(arg);
-    if (res.data.resultCode === 0) {
-      const task = res.data.data.item;
-      console.log(task);
-      // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
-      return { task };
-    } else {
-      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
+  // try {
+  const res = await tasksApi.createTask(arg);
+  if (res.data.resultCode === 0) {
+    const task = res.data.data.item;
+    // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+    return { task };
+  } else {
+    // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less 100 symbols");
     return rejectWithValue(null);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
 });
 // export const _addTaskTC = (todoId: string, newTaskTitle: string) => (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
@@ -394,10 +396,11 @@ const updateTaskTC = createAppAsyncThunk<
       // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
       return rejectWithValue(null);
     }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
   } finally {
+    // catch (e) {
+    //   // handleServerNetworkError(e, dispatch);
+    //   return rejectWithValue(null);
+    // }
     // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
@@ -426,7 +429,7 @@ const updateTaskDnDTC = createAppAsyncThunk<
       entityStatus: "loading",
     })
   );
-  console.log("UPDATETASK=TC");
+  // console.log("UPDATETASK=TC");
 
   if (!args.task) {
     throw new Error("Task not found in the state");
@@ -445,10 +448,11 @@ const updateTaskDnDTC = createAppAsyncThunk<
       // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
       return rejectWithValue(null);
     }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
-    return rejectWithValue(null);
   } finally {
+    // catch (e) {
+    //   // handleServerNetworkError(e, dispatch);
+    //   return rejectWithValue(null);
+    // }
     // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
     dispatch(
       tasksActions.updateTaskEntityStatus({
@@ -491,22 +495,23 @@ const reorderTaskTC = createAppAsyncThunk<undefined, ReorderTasksArgs>(`${slice.
   const { dispatch, rejectWithValue, getState } = thunkAPI;
   const tasks = getState().tasks[args.todoListId];
   const idToServer = dndUniversalIdChanger(tasks, args);
-  try {
-    const res = await tasksApi.reorderTasks({
-      todoListId: args.todoListId,
-      startDragId: args.startDragId,
-      endShiftId: idToServer,
-    });
-    if (res.data.resultCode === 0) {
-      return undefined;
-    } else {
-      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
+  // try {
+  const res = await tasksApi.reorderTasks({
+    todoListId: args.todoListId,
+    startDragId: args.startDragId,
+    endShiftId: idToServer,
+  });
+  if (res.data.resultCode === 0) {
+    return undefined;
+  } else {
+    // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
     return rejectWithValue(null);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
 });
 
 const reorderTaskAcrossTodosTC = createAppAsyncThunk<
@@ -523,22 +528,23 @@ const reorderTaskAcrossTodosTC = createAppAsyncThunk<
     tasks,
     endShiftId: args.endShiftId,
   });
-  try {
-    const res = await tasksApi.reorderTasks({
-      todoListId: args.todoListId,
-      startDragId: args.startDragId,
-      endShiftId: idToServer,
-    });
-    if (res.data.resultCode === 0) {
-      return undefined;
-    } else {
-      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
-      return rejectWithValue(null);
-    }
-  } catch (e) {
-    // handleServerNetworkError(e, dispatch);
+  // try {
+  const res = await tasksApi.reorderTasks({
+    todoListId: args.todoListId,
+    startDragId: args.startDragId,
+    endShiftId: idToServer,
+  });
+  if (res.data.resultCode === 0) {
+    return undefined;
+  } else {
+    // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
     return rejectWithValue(null);
   }
+  // }
+  // catch (e) {
+  //   // handleServerNetworkError(e, dispatch);
+  //   return rejectWithValue(null);
+  // }
 });
 
 export const tasksThunks = {
