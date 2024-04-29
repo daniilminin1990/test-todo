@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-4 refactor tasks and todosSlices and added logic to show error for addtask and addtodo">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor ERASE COMMENTS">
+      <change afterPath="$PROJECT_DIR$/src/redux/dndSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/loginSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/loginSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/hooks/useActions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/hooks/useActions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,9 +20,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
-        <option value="TypeScript File" />
         <option value="CSS File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -315,7 +313,7 @@
       <workItem from="1714252386849" duration="3586000" />
       <workItem from="1714312400186" duration="25797000" />
       <workItem from="1714341793532" duration="5245000" />
-      <workItem from="1714377416305" duration="6390000" />
+      <workItem from="1714377416305" duration="8232000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -485,7 +483,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714383367742</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="refactor ERASE COMMENTS">
+      <option name="closed" value="true" />
+      <created>1714383854053</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1714383854053</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -524,6 +530,7 @@
     <MESSAGE value="5-4 addMatchers error handling in addMatchers. Base lection finished. Need to do by myself rest" />
     <MESSAGE value="refactor DndContextHO add logic to copy inner data, add tasksSlice updateTaskDnDTC because it is different logic" />
     <MESSAGE value="5-4 refactor tasks and todosSlices and added logic to show error for addtask and addtodo" />
-    <option name="LAST_COMMIT_MESSAGE" value="5-4 refactor tasks and todosSlices and added logic to show error for addtask and addtodo" />
+    <MESSAGE value="refactor ERASE COMMENTS" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor ERASE COMMENTS" />
   </component>
 </project>

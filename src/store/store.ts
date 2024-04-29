@@ -4,6 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { appSlice, appThunks } from "../redux/appSlice";
 import { loginSlice } from "../redux/loginSlice";
 import { configureStore } from "@reduxjs/toolkit";
+import { dndSlice } from "../redux/dndSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     tasks: tasksSlice,
     app: appSlice,
     login: loginSlice,
+    dnd: dndSlice,
   },
 });
 // ВОТ ЭТОТ НОРМ, НЕ РУГАЕТСЯ!
