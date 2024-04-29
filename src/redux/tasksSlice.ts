@@ -409,6 +409,57 @@ const updateTaskTC = createAppAsyncThunk<
   }
 });
 
+const updateTaskDnDTC = createAppAsyncThunk<
+  { todoListId: string; taskId: string; model: UpdateTaskType },
+  {
+    todoListId: string;
+    task: TaskType;
+    model: Partial<UpdateTaskType>;
+  }
+>(`${slice.name}/updateTask`, async (args, thunkAPI) => {
+  const { dispatch, rejectWithValue, getState } = thunkAPI;
+  // dispatch(appActions.setAppStatusTask({ statusTask: "loading" }));
+  dispatch(
+    tasksActions.updateTaskEntityStatus({
+      todoListId: args.todoListId,
+      taskId: args.task.id,
+      entityStatus: "loading",
+    })
+  );
+  console.log("UPDATETASK=TC");
+
+  if (!args.task) {
+    throw new Error("Task not found in the state");
+  }
+
+  const apiModel: UpdateTaskType = { ...args.task, ...args.model };
+  try {
+    const res = await tasksApi.updateTask(args.todoListId, args.task.id, apiModel);
+    if (res.data.resultCode === 0) {
+      return {
+        todoListId: args.todoListId,
+        taskId: args.task.id,
+        model: apiModel,
+      };
+    } else {
+      // handleServerAppError(res.data, dispatch, "Oops! Something gone wrong. Length should be less than 100 symbols");
+      return rejectWithValue(null);
+    }
+  } catch (e) {
+    // handleServerNetworkError(e, dispatch);
+    return rejectWithValue(null);
+  } finally {
+    // dispatch(appActions.setAppStatusTask({ statusTask: "success" }));
+    dispatch(
+      tasksActions.updateTaskEntityStatus({
+        todoListId: args.todoListId,
+        taskId: args.task.id,
+        entityStatus: "success",
+      })
+    );
+  }
+});
+
 // export const _updateTaskTC = (todoListId: string, taskId: string, utilityModel: UpdateTaskUtilityType) => (dispatch: Dispatch, getState: () => RootReducerType) => {
 //   dispatch(appActions.setAppStatusTask({statusTask: 'loading'}))
 //   dispatch(tasksActions.updateTaskEntityStatus({todoId: todoListId, taskId, entityStatus: 'loading'}))
@@ -494,6 +545,7 @@ export const tasksThunks = {
   fetchTasksTC,
   addTaskTC,
   updateTaskTC,
+  updateTaskDnDTC,
   deleteTaskTC,
   reorderTaskTC,
   addTaskDnDTC,

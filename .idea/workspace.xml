@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="5-4 addMatchers error handling in addMatchers. Base lection finished. Need to do by myself rest">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/abyrvalg.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/utilities/handleServerAppError.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/appSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/appSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/todolistsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/tasksSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/tasksSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,7 +310,8 @@
       <workItem from="1714241088842" duration="3711000" />
       <workItem from="1714252386849" duration="3586000" />
       <workItem from="1714312400186" duration="25797000" />
-      <workItem from="1714341793532" duration="2583000" />
+      <workItem from="1714341793532" duration="5245000" />
+      <workItem from="1714377416305" duration="3906000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -458,7 +457,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714341608578</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="5-4 addMatchers error handling in addMatchers. Base lection finished. Need to do by myself rest">
+      <option name="closed" value="true" />
+      <created>1714345835863</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1714345835863</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,6 +501,7 @@
     <MESSAGE value="5-4 addMatchers first half" />
     <MESSAGE value="5-4 addMatchers removed handleServerAppError and handleServerNetworkError. Also removed app statueses" />
     <MESSAGE value="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason" />
-    <option name="LAST_COMMIT_MESSAGE" value="5-4 addMatchers problems with handleServerAppError and createAppAsyncThunk. For no reason" />
+    <MESSAGE value="5-4 addMatchers error handling in addMatchers. Base lection finished. Need to do by myself rest" />
+    <option name="LAST_COMMIT_MESSAGE" value="5-4 addMatchers error handling in addMatchers. Base lection finished. Need to do by myself rest" />
   </component>
 </project>
