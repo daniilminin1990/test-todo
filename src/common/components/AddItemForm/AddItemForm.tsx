@@ -11,6 +11,7 @@ export type AddItemFormProps = {
   callback: (newTitle: string) => Promise<any>;
   disabled?: boolean;
   width?: string;
+  placeholderText: string;
 };
 
 export const AddItemForm = React.memo((props: AddItemFormProps) => {
@@ -65,7 +66,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         id="outlined-basic"
         error={!!error}
         // label="Type title"
-        label={error ? error : "Type smth"}
+        label={error ? error : `Type title for ${props.placeholderText}`}
         // helperText={error ? error : "Type smth"}
         variant="outlined"
         value={newTitle}

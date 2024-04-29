@@ -62,7 +62,7 @@ export const Todolist = React.memo(({ todolist }: Props) => {
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Paper elevation={6} style={{ padding: "30px", borderRadius: "10px" }}>
         <TodolistTitle todoList={todolist} />
-        <AddItemForm callback={addTask} disabled={todolist.entityStatus === "loading"} />
+        <AddItemForm callback={addTask} disabled={todolist.entityStatus === "loading"} placeholderText={"task"} />
         {allTodoTasks.length !== 0 ? (
           <SortableContext items={tasksIds}>
             <ul>

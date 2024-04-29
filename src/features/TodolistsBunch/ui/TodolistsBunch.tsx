@@ -95,7 +95,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
   return (
     <DndContextHOC>
       <Grid container style={{ padding: "20px" }} alignItems={"center"}>
-        <AddItemForm callback={addTodo} width={"100%"} />
+        <AddItemForm callback={addTodo} width={"100%"} placeholderText={"todolist-card"} />
       </Grid>
       <Grid container spacing={3} justifyContent={"space-evenly"}>
         <SortableContext items={todolistIds}>

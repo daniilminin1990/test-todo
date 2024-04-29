@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC all useState transferred to new dndSlice to prevent stackoverflow. It seems like works">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor styles for AddItemForm">
       <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AppBarWithToggle/AppBarWithToggle.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/components/ThemeTogglerSlider/ThemeTogglerSlider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/ThemeTogglerSlider/ThemeTogglerSlider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,7 +313,7 @@
       <workItem from="1714341793532" duration="5245000" />
       <workItem from="1714377416305" duration="10041000" />
       <workItem from="1714396913268" duration="658000" />
-      <workItem from="1714400056919" duration="3092000" />
+      <workItem from="1714400056919" duration="3243000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -502,7 +499,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714385673654</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="refactor styles for AddItemForm">
+      <option name="closed" value="true" />
+      <created>1714404111346</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1714404111346</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,6 +548,7 @@
     <MESSAGE value="5-4 refactor tasks and todosSlices and added logic to show error for addtask and addtodo" />
     <MESSAGE value="refactor ERASE COMMENTS" />
     <MESSAGE value="refactor DndContextHOC all useState transferred to new dndSlice to prevent stackoverflow. It seems like works" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC all useState transferred to new dndSlice to prevent stackoverflow. It seems like works" />
+    <MESSAGE value="refactor styles for AddItemForm" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor styles for AddItemForm" />
   </component>
 </project>
