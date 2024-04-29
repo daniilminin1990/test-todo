@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor styles for AddItemForm">
-      <change beforePath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/AddItemForm/AddItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor styles for AddItemForm2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/TodolistsBunch.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -313,7 +312,7 @@
       <workItem from="1714341793532" duration="5245000" />
       <workItem from="1714377416305" duration="10041000" />
       <workItem from="1714396913268" duration="658000" />
-      <workItem from="1714400056919" duration="3243000" />
+      <workItem from="1714400056919" duration="3570000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -507,7 +506,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714404111346</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="refactor styles for AddItemForm2">
+      <option name="closed" value="true" />
+      <created>1714404346675</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1714404346675</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -549,6 +556,7 @@
     <MESSAGE value="refactor ERASE COMMENTS" />
     <MESSAGE value="refactor DndContextHOC all useState transferred to new dndSlice to prevent stackoverflow. It seems like works" />
     <MESSAGE value="refactor styles for AddItemForm" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor styles for AddItemForm" />
+    <MESSAGE value="refactor styles for AddItemForm2" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor styles for AddItemForm2" />
   </component>
 </project>

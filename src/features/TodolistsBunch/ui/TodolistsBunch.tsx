@@ -33,7 +33,7 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
 
   // Paginaton
   const [page, setPage] = useState<number>(1);
-  const [pageCount, setPageCount] = useState(4);
+  const [pageCount, setPageCount] = useState(6);
   const [query, setQuery] = useState("");
 
   const theme: any = useTheme();
@@ -57,29 +57,6 @@ export const TodolistsBunch: React.FC<TodolistsBunchProps> = () => {
       },
     },
   };
-  // // Region
-  // const [todoListIdToDrag, setTodoListIdToDrag] = useState<string>("");
-  //
-  // function dragStartHandler(e: React.DragEvent<HTMLDivElement>, startDragId: string) {
-  //   setTodoListIdToDrag(startDragId);
-  //   console.log("DRAGGING-ID", startDragId);
-  // }
-  //
-  // function dragEndHandler(e: React.DragEvent<HTMLDivElement>) {}
-  //
-  // function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
-  //   e.preventDefault();
-  // }
-  //
-  // function dropHandler(e: React.DragEvent<HTMLDivElement>, endShiftId: string) {
-  //   e.preventDefault();
-  //   reorderTodolistTC({
-  //     endShiftId: endShiftId,
-  //     startDragId: todoListIdToDrag,
-  //   });
-  // }
-  //
-  // // End
 
   const addTodo = useCallback((newTodoTitle: string) => {
     return addTodoTC(newTodoTitle).unwrap();
