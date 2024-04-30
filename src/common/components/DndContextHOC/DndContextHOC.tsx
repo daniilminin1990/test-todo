@@ -1,4 +1,17 @@
-import { closestCenter, closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+  closestCenter,
+  closestCorners,
+  CollisionDetection,
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  PointerSensor,
+  UniqueIdentifier,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { useActions } from "../../hooks/useActions";
 import { useAppSelector } from "../../../store/store";
 import { todolistsSelectors, TodoUIType } from "../../../redux/todolistsSlice";
@@ -11,8 +24,37 @@ import { Todolist } from "../../../features/TodolistsBunch/ui/Todolist/Todolist"
 import { Task } from "../../../features/TodolistsBunch/ui/Todolist/Task/Task";
 import { dndActions, dndSelectors } from "../../../redux/dndSlice";
 import { useSelector } from "react-redux";
+import { pointerWithin, rectIntersection } from "@dnd-kit/core";
+
+const customCollisionDetection: CollisionDetection = (args) => {
+  // Проверяем, является ли перетаскиваемый элемент Todolist
+  const isDraggingTodolist = args.active.data.current?.type === "Todolist";
+
+  // Если перетаскиваемый элемент является Todolist, то мы не ищем столкновений с Task
+  if (isDraggingTodolist) {
+    // Фильтруем результаты pointerWithin, исключая столкновения с Task
+    const pointerCollisions = pointerWithin(args).filter((entry) => {
+      return entry.data?.current?.type !== "Task";
+    });
+
+    if (pointerCollisions.length > 0) {
+      return pointerCollisions;
+    }
+
+    return []; // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
+  }
+
+  // Если перетаскиваемый элемент не является Todolist, применяем стандартное поведение
+  const pointerCollisions = pointerWithin(args);
+  if (pointerCollisions.length > 0) {
+    return pointerCollisions;
+  }
+
+  return rectIntersection(args);
+};
 
 type Props = {};
+
 export const DndContextHOC = (props: { children: React.ReactNode }) => {
   const activeTodo = useSelector(dndSelectors.activeTodo);
   const activeTask = useSelector(dndSelectors.activeTask);
@@ -70,6 +112,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     // Region Активная таска
     // ? Над таской, в одном тудулисте
     if (isActiveATask && isOverATask && activeTodoListId === overTodoListId) {
+      console.log("Над таской, в одном тудулисте");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       // ! Когда activeTodolistId === overTodolistId
@@ -81,6 +124,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     }
     // ? Над таской, в другом тудулисте
     if (isActiveATask && isOverATask && activeTodoListId !== overTodoListId) {
+      console.log("Над таской, в другом тудулисте");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       if (activeTaskId === overTaskId) return;
@@ -95,6 +139,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     }
     // ? В другой пустой тудулист
     if (isActiveATask && isOverATodolist && tasks[overTodoListId]?.length === 0) {
+      console.log("В другой пустой тудулист");
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.todolist.id;
       setMemoActiveTodoId(activeTodoListId);
@@ -108,6 +153,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     }
     // Region Активный тудулист
     if (isActiveATodolist && isOverATodolist) {
+      console.log("Активный тудулист");
       activeTodoListId = active?.data.current?.todolist.id;
       overTodoListId = over?.data.current?.todolist.id;
       setMemoOverTodoId(overTodoListId);
@@ -233,7 +279,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     })
   );
   return (
-    <DndContext onDragStart={onDragStartHandler} onDragOver={onDragOverHandler} onDragEnd={onDragEndHandler} sensors={sensors} collisionDetection={closestCorners}>
+    <DndContext onDragStart={onDragStartHandler} onDragOver={onDragOverHandler} onDragEnd={onDragEndHandler} sensors={sensors} collisionDetection={customCollisionDetection}>
       {props.children}
       {createPortal(
         <DragOverlay>
