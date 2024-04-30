@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor TodolistsBunch page count">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
@@ -313,7 +313,8 @@
       <workItem from="1714377416305" duration="10041000" />
       <workItem from="1714396913268" duration="658000" />
       <workItem from="1714400056919" duration="3570000" />
-      <workItem from="1714483278026" duration="1725000" />
+      <workItem from="1714483278026" duration="2255000" />
+      <workItem from="1714516164117" duration="152000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -515,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714404346675</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow">
+      <option name="closed" value="true" />
+      <created>1714485180126</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1714485180126</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +542,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor removed title node in ThemeToggler" />
     <MESSAGE value="." />
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
@@ -558,6 +566,7 @@
     <MESSAGE value="refactor DndContextHOC all useState transferred to new dndSlice to prevent stackoverflow. It seems like works" />
     <MESSAGE value="refactor styles for AddItemForm" />
     <MESSAGE value="refactor styles for AddItemForm2" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor styles for AddItemForm2" />
+    <MESSAGE value="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow" />
   </component>
 </project>
