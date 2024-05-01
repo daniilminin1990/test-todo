@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TodoUIType } from "./todolistsSlice";
 import { TasksWithEntityStatusType } from "./tasksSlice";
 import { TaskType } from "../api/tasks-api.types";
@@ -8,7 +8,7 @@ type initStateType = {
   activeTask: TasksWithEntityStatusType | null;
   memoActiveTodoId: string | null;
   memoOverTodoId: string | null;
-  memoActiveTaskCopy: TaskType | null;
+  memoActiveTaskCopy: TaskType | null | undefined;
 };
 
 const slice = createSlice({
@@ -35,6 +35,16 @@ const slice = createSlice({
     },
     setMemoActiveTaskCopy: (state, action) => {
       state.memoActiveTaskCopy = action.payload;
+    },
+    setMemoData: (
+      state,
+      action: PayloadAction<{
+        memoActiveTodoId: string | null;
+        memoOverTodoId: string | null;
+      }>
+    ) => {
+      state.memoActiveTodoId = action.payload.memoActiveTodoId;
+      state.memoOverTodoId = action.payload.memoOverTodoId;
     },
   },
   selectors: {

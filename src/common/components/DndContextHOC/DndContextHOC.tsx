@@ -37,7 +37,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
     if (pointerCollisions.length > 0) {
       return pointerCollisions;
     }
-    return closestCorners(args);
+    return [];
   }
 
   // Новое условие для Task
@@ -50,7 +50,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
     return pointerCollisions;
   }
 
-  return [];
+  return closestCorners(args);
 };
 
 type Props = {};
@@ -83,6 +83,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     setMemoActiveTodoId,
     setMemoOverTodoId,
     setMemoActiveTaskCopy,
+    setMemoData,
   } = useActions();
 
   const onDragStartHandler = (event: DragStartEvent) => {
@@ -128,6 +129,10 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
       activeTodoListId = active.data.current?.task?.todoListId;
       overTodoListId = over.data.current?.task?.todoListId;
       if (activeTaskId === overTaskId) return;
+      // setMemoData({
+      //   memoActiveTodoId: activeTodoListId,
+      //   memoOverTodoId: overTodoListId,
+      // });
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId.toString());
       moveTaskAcrossTodolists({
@@ -144,6 +149,10 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
       overTodoListId = over.data.current?.todolist.id;
       setMemoActiveTodoId(activeTodoListId);
       setMemoOverTodoId(overTodoListId);
+      // setMemoData({
+      //   memoActiveTodoId: activeTodoListId,
+      //   memoOverTodoId: overTodoListId,
+      // });
       setMemoActiveTaskCopy(active.data.current?.task);
       moveTaskInEmptyTodolists({
         todoListId: activeTodoListId,
@@ -158,6 +167,10 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
       overTodoListId = over?.data.current?.todolist.id;
       setMemoOverTodoId(overTodoListId);
       setMemoActiveTodoId(activeTodoListId);
+      // setMemoData({
+      //   memoActiveTodoId: activeTodoListId,
+      //   memoOverTodoId: overTodoListId,
+      // });
       if (activeTodo) {
         reorderTodolist({
           endShiftId: overTodoListId,
