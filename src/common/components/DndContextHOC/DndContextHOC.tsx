@@ -26,25 +26,52 @@ import { dndActions, dndSelectors } from "../../../redux/dndSlice";
 import { useSelector } from "react-redux";
 import { pointerWithin, rectIntersection } from "@dnd-kit/core";
 
+// const customCollisionDetection: CollisionDetection = (args) => {
+//   // Проверяем, является ли перетаскиваемый элемент Todolist
+//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
+//   // Если перетаскиваемый элемент является Todolist, то мы не ищем столкновений с Task
+//   if (isDraggingTodolist) {
+//     // Фильтруем результаты pointerWithin, исключая столкновения с Task
+//     const pointerCollisions = pointerWithin(args).filter((entry) => {
+//       return entry.data?.current?.type !== "Task";
+//     });
+//
+//     if (pointerCollisions.length > 0) {
+//       return pointerCollisions;
+//     }
+//
+//     return []; // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
+//   }
+//
+//   // Новое условие для Task
+//   if (args.active.data.current?.type === "Task") {
+//     return closestCorners(args);
+//   }
+//
+//   const pointerCollisions = pointerWithin(args);
+//   if (pointerCollisions.length > 0) {
+//     return pointerCollisions;
+//   }
+//
+//   return closestCorners(args);
+// };
+
 const customCollisionDetection: CollisionDetection = (args) => {
   // Проверяем, является ли перетаскиваемый элемент Todolist
   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
-  // Если перетаскиваемый элемент является Todolist, то мы не ищем столкновений с Task
-  if (isDraggingTodolist) {
-    // Фильтруем результаты pointerWithin, исключая столкновения с Task
-    const pointerCollisions = pointerWithin(args).filter((entry) => {
-      return entry.data?.current?.type !== "Task";
-    });
+  const isDraggingTask = args.active.data.current?.type === "Task";
 
-    if (pointerCollisions.length > 0) {
-      return pointerCollisions;
-    }
+  // Проверяем, находится ли перетаскиваемый элемент над другим элементом
+  const isOverAnotherTodo = args.droppableContainers?.some((container) => container.data.current?.type === "Todolist");
+  const isOverAnotherTask = args.droppableContainers?.some((container) => container.data.current?.type === "Task");
 
-    return []; // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
+  // Если перетаскиваемый элемент является Todolist и находится над другим Todolist, то возвращаем closestCorners
+  if (isDraggingTodolist && isOverAnotherTodo) {
+    return closestCorners(args);
   }
 
   // Новое условие для Task
-  if (args.active.data.current?.type === "Task") {
+  if (isDraggingTask && isOverAnotherTask) {
     return closestCorners(args);
   }
 
