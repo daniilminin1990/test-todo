@@ -40,7 +40,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
       return pointerCollisions;
     }
 
-    return closestCorners(args); // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
+    return []; // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
   }
 
   // Новое условие для Task
@@ -53,7 +53,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
     return pointerCollisions;
   }
 
-  return rectIntersection(args);
+  return closestCorners(args);
 };
 
 type Props = {};
