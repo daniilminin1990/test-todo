@@ -50,7 +50,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
     return pointerCollisions;
   }
 
-  return rectIntersection(args);
+  return [];
 };
 
 type Props = {};

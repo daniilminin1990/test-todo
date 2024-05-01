@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx add customCollisionDetection return closestCorners">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
@@ -110,7 +110,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\tosolists" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="npm.deploy">
     <configuration name="correct task should be deleted from correct array" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -167,8 +167,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
@@ -315,7 +315,8 @@
       <workItem from="1714400056919" duration="3570000" />
       <workItem from="1714483278026" duration="2255000" />
       <workItem from="1714516164117" duration="152000" />
-      <workItem from="1714571531654" duration="731000" />
+      <workItem from="1714571531654" duration="1135000" />
+      <workItem from="1714573055835" duration="1269000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -525,7 +526,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714485180126</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="refactor DndContextHOC.tsx add customCollisionDetection return closestCorners">
+      <option name="closed" value="true" />
+      <created>1714572515179</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1714572515179</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,7 +552,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="." />
     <MESSAGE value="start point to check rtk2.0" />
     <MESSAGE value="REFACTOR HUDE, sorted folders and files, added beautiful theme" />
     <MESSAGE value="refactor minor don't remember ceratin smth like progressbar or fixbug logout and tasks moving to another todo" />
@@ -568,6 +576,7 @@
     <MESSAGE value="refactor styles for AddItemForm" />
     <MESSAGE value="refactor styles for AddItemForm2" />
     <MESSAGE value="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx add customCollisionDetection to prevent stackOverflow" />
+    <MESSAGE value="refactor DndContextHOC.tsx add customCollisionDetection return closestCorners" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx add customCollisionDetection return closestCorners" />
   </component>
 </project>
