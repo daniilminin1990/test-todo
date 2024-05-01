@@ -37,8 +37,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
     if (pointerCollisions.length > 0) {
       return pointerCollisions;
     }
-
-    return [];
+    return closestCorners(args);
   }
 
   // Новое условие для Task
