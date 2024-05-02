@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx customCollisionDetection returns []">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx customCollisionDetection function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
@@ -319,7 +319,8 @@
       <workItem from="1714573055835" duration="1334000" />
       <workItem from="1714575492774" duration="204000" />
       <workItem from="1714578967386" duration="1746000" />
-      <workItem from="1714581032229" duration="3047000" />
+      <workItem from="1714581032229" duration="3191000" />
+      <workItem from="1714618387738" duration="3724000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -577,7 +578,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714582958455</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="refactor DndContextHOC.tsx customCollisionDetection function">
+      <option name="closed" value="true" />
+      <created>1714584147548</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1714584147548</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -595,7 +604,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refactor block todos and tasks on drag" />
     <MESSAGE value="add drag and drop using dndKit" />
     <MESSAGE value="going back to not use dndkit" />
     <MESSAGE value="temp cannot resolve catch" />
@@ -620,6 +628,7 @@
     <MESSAGE value="refactor DndContextHOC.tsx add customCollisionDetection return []  and dndSlice" />
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection returns" />
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection returns []" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx customCollisionDetection returns []" />
+    <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection function" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx customCollisionDetection function" />
   </component>
 </project>
