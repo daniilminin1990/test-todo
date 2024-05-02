@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC.tsx customCollisionDetection function">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 },">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
@@ -110,7 +110,7 @@
       <recent name="D:\long-term-projects-it-incubator\test-todo\src\testsReducers\tosolists" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="npm.deploy">
     <configuration name="correct task should be deleted from correct array" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
@@ -167,8 +167,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
@@ -320,7 +320,7 @@
       <workItem from="1714575492774" duration="204000" />
       <workItem from="1714578967386" duration="1746000" />
       <workItem from="1714581032229" duration="3191000" />
-      <workItem from="1714618387738" duration="3724000" />
+      <workItem from="1714618387738" duration="7426000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -586,7 +586,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714584147548</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 },">
+      <option name="closed" value="true" />
+      <created>1714622126513</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1714622126513</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -604,7 +612,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add drag and drop using dndKit" />
     <MESSAGE value="going back to not use dndkit" />
     <MESSAGE value="temp cannot resolve catch" />
     <MESSAGE value="global refactor made dnd useing dndKit" />
@@ -629,6 +636,7 @@
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection returns" />
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection returns []" />
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection function" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC.tsx customCollisionDetection function" />
+    <MESSAGE value="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 }," />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 }," />
   </component>
 </project>
