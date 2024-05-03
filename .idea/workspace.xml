@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor I confused and got customCollisionDetection back">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
     </list>
@@ -323,7 +323,7 @@
       <workItem from="1714618387738" duration="7771000" />
       <workItem from="1714674829321" duration="808000" />
       <workItem from="1714678490551" duration="50000" />
-      <workItem from="1714737131689" duration="403000" />
+      <workItem from="1714737131689" duration="3602000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -605,7 +605,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714625904372</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15">
+      <option name="closed" value="true" />
+      <created>1714737646164</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1714737646165</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -623,7 +631,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="temp cannot resolve catch" />
     <MESSAGE value="global refactor made dnd useing dndKit" />
     <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
     <MESSAGE value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
@@ -648,6 +655,7 @@
     <MESSAGE value="refactor DndContextHOC.tsx customCollisionDetection function" />
     <MESSAGE value="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 }," />
     <MESSAGE value="refactor I confused and got customCollisionDetection back" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor I confused and got customCollisionDetection back" />
+    <MESSAGE value="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15" />
   </component>
 </project>

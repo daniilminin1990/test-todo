@@ -72,41 +72,59 @@ import { pointerWithin, rectIntersection } from "@dnd-kit/core";
 //   return pointerCollisions.length > 0 ? pointerCollisions : closestCorners(args);
 // };
 
-const customCollisionDetection: CollisionDetection = (args) => {
-  // Проверяем, является ли перетаскиваемый элемент Todolist
-  const isDraggingTodolist = args.active.data.current?.type === "Todolist";
-  const isDraggingTask = args.active.data.current?.type === "Task";
-
-  // Проверяем, находится ли перетаскиваемый элемент над другим элементом
-  const isOverAnotherTodo = args.droppableContainers?.some((container) => container.data.current?.type === "Todolist");
-  console.log(isOverAnotherTodo);
-  const isOverAnotherTask = args.droppableContainers?.some((container) => container.data.current?.type === "Task");
-
-  // Если перетаскиваемый элемент является Todolist и находится над другим Todolist, то возвращаем closestCorners
-  if (isDraggingTodolist && isOverAnotherTodo) {
-    const pointerCollisions = pointerWithin(args);
-    if (pointerCollisions.length > 0) {
-      console.log(pointerCollisions);
-      return pointerCollisions;
-    }
-    return closestCorners(args);
-  }
-
-  // Новое условие для Task
-  if (isDraggingTask && isOverAnotherTask && isOverAnotherTodo) {
-    return closestCorners(args);
-  }
-
-  const pointerCollisions = pointerWithin(args);
-  console.log(pointerCollisions);
-  if (pointerCollisions.length > 0) {
-    return pointerCollisions;
-  }
-
-  return pointerCollisions;
-  // return [...closestCorners(args), ...closestCenter(args)];
-  // return [];
-};
+// Region Вариант работал только для пустых туду и туду с менее 2 тасок
+// const customCollisionDetection: CollisionDetection = (args) => {
+//   // Проверяем, является ли перетаскиваемый элемент Todolist
+//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
+//   const isDraggingTask = args.active.data.current?.type === "Task";
+//
+//   // Проверяем, находится ли перетаскиваемый элемент над другим элементом
+//   const isOverAnotherTodo = args.droppableContainers?.some((container) => container.data.current?.type === "Todolist");
+//   console.log(isOverAnotherTodo);
+//   const isOverAnotherTask = args.droppableContainers?.some((container) => container.data.current?.type === "Task");
+//
+//   // Если перетаскиваемый элемент является Todolist и находится над другим Todolist, то возвращаем closestCorners
+//   if (isDraggingTodolist && isOverAnotherTodo) {
+//     const pointerCollisions = pointerWithin(args);
+//     if (pointerCollisions.length > 0) {
+//       console.log(pointerCollisions);
+//       return pointerCollisions;
+//     }
+//     return closestCorners(args);
+//   }
+//
+//   // Новое условие для Task
+//   if (isDraggingTask && isOverAnotherTask && isOverAnotherTodo) {
+//     return closestCorners(args);
+//   }
+//
+//   const pointerCollisions = pointerWithin(args);
+//   console.log(pointerCollisions);
+//   if (pointerCollisions.length > 0) {
+//     return pointerCollisions;
+//   }
+//
+//   return pointerCollisions;
+//   // return [...closestCorners(args), ...closestCenter(args)];
+//   // return [];
+// };
+// const customCollisionDetection: CollisionDetection = (args) => {
+//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
+//
+//   if (isDraggingTodolist) {
+//     const filteredContainers = args.droppableContainers.filter((container) => {
+//       return container.node?.current?.tagName.toLowerCase() !== "li";
+//     });
+//     console.log(filteredContainers);
+//
+//     const collisions = [...pointerWithin({ ...args, droppableContainers: filteredContainers }), ...closestCorners({ ...args, droppableContainers: filteredContainers })];
+//
+//     return collisions;
+//   }
+//
+//   const collisions = [...pointerWithin(args), ...closestCorners(args)];
+//   return collisions;
+// };
 
 type Props = {};
 
@@ -218,10 +236,13 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
     // Region Активный тудулист
     if (isActiveATodolist && isOverATodolist) {
       console.log("Активный тудулист");
+
       activeTodoListId = active?.data.current?.todolist.id;
       overTodoListId = over?.data.current?.todolist.id;
       setMemoOverTodoId(overTodoListId);
       setMemoActiveTodoId(activeTodoListId);
+      console.log("memoOverTodoId", memoOverTodoId);
+      console.log("memoActiveTodoId", memoActiveTodoId);
       // setMemoData({
       //   memoActiveTodoId: activeTodoListId,
       //   memoOverTodoId: overTodoListId,
@@ -343,11 +364,11 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 5 },
+      activationConstraint: { distance: 15 },
     })
   );
   return (
-    <DndContext onDragStart={onDragStartHandler} onDragOver={onDragOverHandler} onDragEnd={onDragEndHandler} sensors={sensors} collisionDetection={customCollisionDetection}>
+    <DndContext onDragStart={onDragStartHandler} onDragOver={onDragOverHandler} onDragEnd={onDragEndHandler} sensors={sensors} collisionDetection={closestCorners}>
       {props.children}
       {createPortal(
         <DragOverlay>
