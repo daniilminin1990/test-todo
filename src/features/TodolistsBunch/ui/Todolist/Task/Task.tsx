@@ -59,7 +59,7 @@ export const Task = ({ task, todoListId }: Props) => {
   const isTaskCompleted = task.status === TaskStatuses.Completed;
 
   if (isDragging) {
-    const styleIfDragging = { opacity: 0.3, border: "mistyrose 2px solid", backgroundColor: "lightgreen", minHeight: "40px" };
+    const styleIfDragging = { opacity: 0.3, backgroundColor: "lightgreen", minHeight: "40px" };
     return <li className={isTaskCompleted ? s.isDone : ""} ref={setNodeRef} style={{ ...style, ...styleIfDragging }} {...attributes} {...listeners} />;
   }
   return (

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { AddItemForm } from "../../../../common/components/AddItemForm/AddItemForm";
 import Typography from "@mui/material/Typography";
-import { Paper } from "@mui/material";
+import { Paper, TextareaAutosize } from "@mui/material";
 import { tasksSelectors } from "../../../../redux/tasksSlice";
 import { Task } from "./Task/Task";
 import { TodoUIType } from "../../../../redux/todolistsSlice";
@@ -56,6 +56,21 @@ export const Todolist = React.memo(({ todolist }: Props) => {
   }
   if (todolist.filter === "active") {
     allTodoTasks = allTodoTasks.filter((t) => t.status === TaskStatuses.New);
+  }
+
+  if (isDragging) {
+    return (
+      <div ref={setNodeRef} style={style}>
+        <Paper elevation={6} style={{ padding: "30px", borderRadius: "10px", opacity: 0.3, backgroundColor: "lightgreen" }}>
+          <TodolistTitle todoList={todolist} />
+          <AddItemForm callback={addTask} disabled={todolist.entityStatus === "loading"} placeholderText={"task"} />
+          <Skeleton>
+            <div>somehing</div>
+          </Skeleton>
+          <FilterTasksButton todoList={todolist} />
+        </Paper>
+      </div>
+    );
   }
 
   return (
