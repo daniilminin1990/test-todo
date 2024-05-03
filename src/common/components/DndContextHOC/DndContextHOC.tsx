@@ -89,7 +89,7 @@ const customCollisionDetection: CollisionDetection = (args) => {
       console.log(pointerCollisions);
       return pointerCollisions;
     }
-    return [];
+    return closestCorners(args);
   }
 
   // Новое условие для Task
@@ -330,8 +330,8 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
       });
     }
     if (isActiveATodolist && isOverATodolist) {
-      const startDragId = activeTodoListId;
-      const endShiftId = overTodoListId;
+      const startDragId = memoActiveTodoId || "";
+      const endShiftId = memoOverTodoId;
       reorderTodolistTC({ endShiftId, startDragId });
     }
 
@@ -343,7 +343,7 @@ export const DndContextHOC = (props: { children: React.ReactNode }) => {
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 15 },
+      activationConstraint: { distance: 5 },
     })
   );
   return (
