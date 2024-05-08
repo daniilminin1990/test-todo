@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15">
+    <list default="true" id="5f4b2251-6278-4811-be43-8a0a796689ee" name="Changes" comment="refactor Todolist styles isDragging&#10;THE PROLEM Maximum depth exceeded is concerned with animation while moving todolists diagonally!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Task/Task.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/TodolistsBunch/ui/Todolist/Todolist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/components/DndContextHOC/DndContextHOC.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/instance/instance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/instance/instance.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,8 +168,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.test" />
         <item itemvalue="Jest.property with todolistId should be deleted" />
         <item itemvalue="Jest.correct task should be deleted from correct array" />
@@ -325,6 +325,8 @@
       <workItem from="1714674829321" duration="808000" />
       <workItem from="1714678490551" duration="50000" />
       <workItem from="1714737131689" duration="3602000" />
+      <workItem from="1714749175220" duration="2645000" />
+      <workItem from="1715186862827" duration="4128000" />
     </task>
     <task id="LOCAL-00001" summary="refactor removed title node in ThemeToggler">
       <option name="closed" value="true" />
@@ -614,7 +616,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714737646165</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="refactor Todolist styles isDragging&#10;THE PROLEM Maximum depth exceeded is concerned with animation while moving todolists diagonally!">
+      <option name="closed" value="true" />
+      <created>1714743101395</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1714743101395</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +642,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="global refactor made dnd useing dndKit" />
     <MESSAGE value="refactor title ResponseType -&gt; BasicResponseType" />
     <MESSAGE value="refactor removed unreasonable dispatches in tasksSlice. Cause I am doing fetch tasks it is of no need" />
     <MESSAGE value="refactor still getting stackOverflow. Changed collision detection" />
@@ -657,6 +666,7 @@
     <MESSAGE value="refactor DndContextHOC REMOVED CUSTOMCOLLISIONDETECTION function and changed activationConstraint: { distance: 5 to 15 }," />
     <MESSAGE value="refactor I confused and got customCollisionDetection back" />
     <MESSAGE value="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor customCollisionDetection return closestCorners and useSensors distance = 5 instead 15" />
+    <MESSAGE value="refactor Todolist styles isDragging&#10;THE PROLEM Maximum depth exceeded is concerned with animation while moving todolists diagonally!" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor Todolist styles isDragging&#10;THE PROLEM Maximum depth exceeded is concerned with animation while moving todolists diagonally!" />
   </component>
 </project>

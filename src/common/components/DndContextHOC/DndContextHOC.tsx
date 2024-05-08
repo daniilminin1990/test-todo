@@ -1,12 +1,15 @@
 import {
+  Active,
   closestCenter,
   closestCorners,
+  Collision,
   CollisionDetection,
   DndContext,
   DragEndEvent,
   DragOverEvent,
   DragOverlay,
   DragStartEvent,
+  DroppableContainer,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -25,106 +28,7 @@ import { Task } from "../../../features/TodolistsBunch/ui/Todolist/Task/Task";
 import { dndActions, dndSelectors } from "../../../redux/dndSlice";
 import { useSelector } from "react-redux";
 import { pointerWithin, rectIntersection } from "@dnd-kit/core";
-
-// const customCollisionDetection: CollisionDetection = (args) => {
-//   // Проверяем, является ли перетаскиваемый элемент Todolist
-//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
-//   // Если перетаскиваемый элемент является Todolist, то мы не ищем столкновений с Task
-//   if (isDraggingTodolist) {
-//     // Фильтруем результаты pointerWithin, исключая столкновения с Task
-//     const pointerCollisions = pointerWithin(args).filter((entry) => {
-//       return entry.data?.current?.type !== "Task";
-//     });
-//
-//     if (pointerCollisions.length > 0) {
-//       return pointerCollisions;
-//     }
-//
-//     return []; // Не возвращаем столкновения, если перетаскиваемый элемент - Todolist
-//   }
-//
-//   // Новое условие для Task
-//   if (args.active.data.current?.type === "Task") {
-//     return closestCorners(args);
-//   }
-//
-//   const pointerCollisions = pointerWithin(args);
-//   if (pointerCollisions.length > 0) {
-//     return pointerCollisions;
-//   }
-//
-//   return closestCorners(args);
-// };
-
-// const customCollisionDetection: CollisionDetection = (args) => {
-//   const { active, droppableRects, droppableContainers, collisionRect, pointerCoordinates } = args;
-//
-//   const activeType = active.data.current?.type;
-//
-//   const overType = droppableContainers?.some((container) => container.data.current?.type === activeType);
-//
-//   if ((activeType === "Todolist" && overType) || (activeType === "Task" && overType)) {
-//     return closestCorners(args);
-//   }
-//
-//   const pointerCollisions = pointerWithin(args);
-//
-//   return pointerCollisions.length > 0 ? pointerCollisions : closestCorners(args);
-// };
-
-// Region Вариант работал только для пустых туду и туду с менее 2 тасок
-// const customCollisionDetection: CollisionDetection = (args) => {
-//   // Проверяем, является ли перетаскиваемый элемент Todolist
-//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
-//   const isDraggingTask = args.active.data.current?.type === "Task";
-//
-//   // Проверяем, находится ли перетаскиваемый элемент над другим элементом
-//   const isOverAnotherTodo = args.droppableContainers?.some((container) => container.data.current?.type === "Todolist");
-//   console.log(isOverAnotherTodo);
-//   const isOverAnotherTask = args.droppableContainers?.some((container) => container.data.current?.type === "Task");
-//
-//   // Если перетаскиваемый элемент является Todolist и находится над другим Todolist, то возвращаем closestCorners
-//   if (isDraggingTodolist && isOverAnotherTodo) {
-//     const pointerCollisions = pointerWithin(args);
-//     if (pointerCollisions.length > 0) {
-//       console.log(pointerCollisions);
-//       return pointerCollisions;
-//     }
-//     return closestCorners(args);
-//   }
-//
-//   // Новое условие для Task
-//   if (isDraggingTask && isOverAnotherTask && isOverAnotherTodo) {
-//     return closestCorners(args);
-//   }
-//
-//   const pointerCollisions = pointerWithin(args);
-//   console.log(pointerCollisions);
-//   if (pointerCollisions.length > 0) {
-//     return pointerCollisions;
-//   }
-//
-//   return pointerCollisions;
-//   // return [...closestCorners(args), ...closestCenter(args)];
-//   // return [];
-// };
-// const customCollisionDetection: CollisionDetection = (args) => {
-//   const isDraggingTodolist = args.active.data.current?.type === "Todolist";
-//
-//   if (isDraggingTodolist) {
-//     const filteredContainers = args.droppableContainers.filter((container) => {
-//       return container.node?.current?.tagName.toLowerCase() !== "li";
-//     });
-//     console.log(filteredContainers);
-//
-//     const collisions = [...pointerWithin({ ...args, droppableContainers: filteredContainers }), ...closestCorners({ ...args, droppableContainers: filteredContainers })];
-//
-//     return collisions;
-//   }
-//
-//   const collisions = [...pointerWithin(args), ...closestCorners(args)];
-//   return collisions;
-// };
+import { Rect } from "@dnd-kit/core/dist/utilities";
 
 type Props = {};
 
